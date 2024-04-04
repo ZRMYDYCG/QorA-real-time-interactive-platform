@@ -1,7 +1,7 @@
 import { fetchFeaturedPicksBanners } from '@/service/modules/FeaturedPicks/index.js'
 import { defineStore } from 'pinia'
 
-const useFeaturedPicksStore = defineStore('FeaturedPicksStore', {
+const useCommunityStore = defineStore('community', {
   state: () => ({}),
   actions: {
     async FetchFeaturedPicksBanners() {
@@ -11,4 +11,4 @@ const useFeaturedPicksStore = defineStore('FeaturedPicksStore', {
   }
 })
 
-export default useFeaturedPicksStore
+export default useCommunityStore
