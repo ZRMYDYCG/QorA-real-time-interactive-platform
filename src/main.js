@@ -4,7 +4,7 @@ import App from './App.vue'
 import router from './router'
 import 'normalize.css' // 重置样式
 import './assets/scss/index.scss' // 重要样式出口
-import { registerElementPlusIcons } from './utils/registerElementPlusIcons'
+import { registerElementPlusIcons } from '@/utils/index.js'
 
 const app = createApp(App)
 

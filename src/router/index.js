@@ -4,7 +4,11 @@ import Layout from '@/layout/index.vue'
 export const constantRoutes = [
   {
     path: '/',
-    component: Layout
+    component: Layout,
+    redirect: '/userHome',
+    children: [
+      { path: '/userHome', name: 'UserHome', component: import('@/views/UserHome/index.vue') }
+    ]
   }
 ]
 

@@ -24,19 +24,25 @@
         </div>
         <div class="message--icon">
           <el-icon>
-            <Notification />
+            <Connection />
           </el-icon>
-          <span> 消息 </span>
-        </div>
-        <div class="message--icon">
-          <el-icon>
-            <Notification />
-          </el-icon>
-          <span> 消息 </span>
+          <span> 私信 </span>
         </div>
       </div>
       <div class="userinfo__avatarPic">
-        <img src="https://pic.imgdb.cn/item/660e1fa89f345e8d03525df8.png" alt="" />
+        <el-dropdown>
+          <img src="https://pic.imgdb.cn/item/660e1fa89f345e8d03525df8.png" alt="" />
+          <template #dropdown>
+            <el-dropdown-menu>
+              <el-dropdown-item>
+                <router-link to="/userHome">个人主页</router-link>
+              </el-dropdown-item>
+              <el-dropdown-item>我的提问</el-dropdown-item>
+              <el-dropdown-item>我的回答</el-dropdown-item>
+              <el-dropdown-item>退出登录</el-dropdown-item>
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
       </div>
     </div>
   </div>
@@ -54,10 +60,13 @@ const handleSelect = (key, keyPath) => {
 <style lang="scss" scoped>
 .layout-header {
   display: flex;
+  height: 50px;
   width: calc(100vw - 160px);
   padding: 0 80px;
   align-items: center;
   justify-content: space-between;
+  background-color: #ffffff;
+  position: fixed;
 
   .layout-header--logo {
     width: 40px;
@@ -76,6 +85,7 @@ const handleSelect = (key, keyPath) => {
 
     .el-menu {
       border-bottom: none;
+      height: 50px;
     }
   }
 
