@@ -34,8 +34,8 @@
         :activeIndex="activeTabIndex"
         :isVertical="isVertical"
       >
-        <div v-for="(item, index) in tabConfig" :key="index">
-          <router-link to="item.path"></router-link>
+        <div class="tab-content">
+          <router-view></router-view>
         </div>
       </YsTabs>
     </div>

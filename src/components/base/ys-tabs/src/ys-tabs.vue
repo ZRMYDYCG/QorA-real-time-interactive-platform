@@ -7,7 +7,7 @@
         class="tab-item"
         :class="{ active: index === activeIndex }"
         :style="{ backgroundColor: isVertical && activeBackground, borderColor: activeColor }"
-        @click="handleTabClick(index)"
+        @click="handleTabClick(index, item.path)"
       >
         <i v-if="item.icon" :class="item.icon"></i>
         <span v-else>{{ item.name }}</span>
@@ -22,7 +22,9 @@
 
 <script setup>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 
+const router = useRouter()
 const props = defineProps({
   tabs: {
     type: Array,
@@ -50,7 +52,8 @@ const activeIndex = ref(props.activeIndex)
 
 const emit = defineEmits(['update:activeIndex'])
 
-const handleTabClick = (index) => {
+const handleTabClick = (index, path) => {
+  router.push(path)
   activeIndex.value = index
   emit('update:activeIndex', index)
 }
