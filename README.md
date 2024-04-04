@@ -1,6 +1,6 @@
-# YS-Music
+# QorA-real-time-interactive-platform
 
-想做这个项目的原因很简单，因为网易云音乐陪伴了我太多孤单的时光。
+项目小组倾情打造
 
 ## GitFlow
 
