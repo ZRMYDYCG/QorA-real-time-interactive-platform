@@ -2,7 +2,7 @@
   <Teleport to="body">
     <div v-if="showModal" class="image-preview-modal">
       <div class="image-preview">
-        <img :src="currentImage" @click="closeModal" />
+        <img :src="currentImage" @click="closeModal" alt="" />
       </div>
       <div class="overlay" @click="closeModal"></div>
     </div>

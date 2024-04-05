@@ -190,6 +190,7 @@ const handleActionClick = (actionType) => {
   height: 100%;
   object-fit: cover; /* 图片覆盖整个容器，不失真 */
   border-radius: 10px;
+  cursor: pointer;
 }
 
 .card-footer {
