@@ -67,6 +67,7 @@ const handleSelect = (key, keyPath) => {
   justify-content: space-between;
   background-color: #ffffff;
   position: fixed;
+  z-index: 10000000000000000000000000000000;
 
   .layout-header--logo {
     width: 40px;
