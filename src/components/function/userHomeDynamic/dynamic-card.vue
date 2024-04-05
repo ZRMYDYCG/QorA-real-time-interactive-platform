@@ -1,4 +1,12 @@
 <script setup>
+import { ref } from 'vue'
+import YsImagePreview from '@/components/base/ys-imge-preview/src/ys-image-preview.vue'
+
+const YsImagePreviewRef = ref()
+const openPreview = (image) => {
+  YsImagePreviewRef.value.openModal(image)
+}
+
 const emit = defineEmits(['action-click'])
 defineProps({
   title: {
@@ -91,23 +99,25 @@ const handleActionClick = (actionType) => {
     <div class="card-content">
       <!-- 动态文本 -->
       <div class="text-content">
-        <!-- 这里可以根据实际情况使用v-html或其他方法渲染文本内容 -->
         {{ dynamicText }}
       </div>
 
       <!-- 九宫格图片展示 -->
       <div class="images-grid" v-if="hasImages.length">
         <div class="image-item" v-for="(image, index) in hasImages" :key="index">
-          <img :src="image" alt="" />
+          <img @click="openPreview(image)" :src="image" alt="" />
         </div>
       </div>
+      <!--   预览图  -->
+      <YsImagePreview ref="YsImagePreviewRef"></YsImagePreview>
     </div>
-
     <!-- 底部信息区域 -->
     <div class="card-footer">
       <!-- 点赞、分享、评论计数 -->
       <div class="counts">
-        <span class="count like-count">{{ likesCount }}</span>
+        <span class="count like-count">
+          {{ likesCount }}
+        </span>
         <span class="count share-count">{{ sharesCount }}</span>
         <span class="count comment-count">{{ commentsCount }}</span>
       </div>
