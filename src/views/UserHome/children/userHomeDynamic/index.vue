@@ -5,6 +5,10 @@ import DynamicCard from '@/components/function/userHomeDynamic/dynamic-card.vue'
 <template>
   <div class="user-home-dynamic">
     <dynamic-card></dynamic-card>
+    <dynamic-card></dynamic-card>
+    <dynamic-card></dynamic-card>
+    <dynamic-card></dynamic-card>
+    <dynamic-card></dynamic-card>
   </div>
 </template>
 

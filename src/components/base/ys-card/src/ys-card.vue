@@ -2,7 +2,7 @@
   <div :style="cardStyle" class="card">
     <div class="card-header">
       <h3>{{ title }}</h3>
-      <div style="cursor: pointer">
+      <div v-if="isDelete" style="cursor: pointer">
         <el-icon>
           <DeleteFilled />
         </el-icon>
@@ -14,10 +14,19 @@
     <div class="card-content">
       <slot name="content"></slot>
     </div>
+    <div class="card-extra-content" :class="{ expanded: isExpanded }">
+      <slot name="extraContent"></slot>
+    </div>
+    <div class="card-footer" @click="toggleExpand" v-if="showDropdown">
+      <el-icon>
+        <component :is="iconType" />
+      </el-icon>
+    </div>
   </div>
 </template>
 
 <script setup>
+import { ref } from 'vue'
 import { defineProps, computed } from 'vue'
 
 const props = defineProps({
@@ -32,13 +41,39 @@ const props = defineProps({
   backgroundColor: {
     type: String,
     default: '#ffffff'
+  },
+  isDelete: {
+    type: Boolean,
+    default: true
+  },
+  isExpanded: {
+    type: Boolean,
+    default: false
+  },
+  showDropdown: {
+    type: Boolean,
+    default: false
   }
 })
+const emit = defineEmits(['update:isExpanded'])
 
 const cardStyle = computed(() => ({
   with: props.width,
   backgroundColor: props.backgroundColor
 }))
+
+const localIsExpanded = ref(props.isExpanded)
+
+const iconType = computed(() => {
+  return localIsExpanded.value ? 'ArrowUp' : 'ArrowDown'
+})
+
+const toggleExpand = () => {
+  localIsExpanded.value = !localIsExpanded.value
+  if (props.isExpanded !== undefined) {
+    emit('update:isExpanded', localIsExpanded.value)
+  }
+}
 </script>
 
 <style scoped>
@@ -63,5 +98,28 @@ const cardStyle = computed(() => ({
 
 .card-content {
   padding: 15px;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.card-footer el-icon {
+  transition: transform 0.3s ease;
+}
+
+.card-extra-content {
+  height: 0;
+  transition: height 0.3s ease;
+  overflow: hidden;
+}
+
+.card-extra-content.expanded {
+  height: 250px;
+  overflow: auto;
 }
 </style>

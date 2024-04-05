@@ -7,7 +7,7 @@
       <div class="userInfo--other">
         <div class="name">
           <span>一小池勺</span>
-          <el-icon>
+          <el-icon @click="$router.push('/editUserInfo')" style="cursor: pointer">
             <Edit />
           </el-icon>
         </div>
