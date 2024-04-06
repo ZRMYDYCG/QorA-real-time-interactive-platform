@@ -40,7 +40,7 @@ const props = defineProps({
   },
   backgroundColor: {
     type: String,
-    default: '#ffffff'
+    default: ''
   },
   isDelete: {
     type: Boolean,

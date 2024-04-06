@@ -14,4 +14,10 @@ import UserInfoForm from '@/components/function/EditUserInfo/UserInfoForm.vue'
   </div>
 </template>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.edit-user-info {
+  .title {
+    margin-bottom: 20px;
+  }
+}
+</style>

@@ -1,0 +1,120 @@
+<template>
+  <div class="user-card">
+    <div class="user-avatar">
+      <el-image
+        class="avatar-image"
+        :src="user.avatar"
+        :fit="fit"
+        :error-icon-class="defaultAvatar"
+        @click="handleAvatar"
+      ></el-image>
+    </div>
+    <div class="user-info">
+      <div class="nickname">{{ user.nickname }}</div>
+      <div class="bio">{{ bio }}</div>
+    </div>
+    <el-button class="action-button" round plain>
+      <slot name="btnContent"></slot>
+    </el-button>
+  </div>
+</template>
+
+<script setup>
+import { computed } from 'vue'
+
+const emit = defineEmits(['click'])
+const defaultAvatar = 'data:image/svg+xml,<svg>...</svg>' // 默认头像的SVG代码
+
+const props = defineProps({
+  user: {
+    type: Object,
+    required: true,
+    default: () => ({
+      nickname: '未命名用户',
+      bio: '',
+      avatar: 'https://pic3.zhimg.com/v2-23937566383e76528b9ce98846136b6a_r.jpg'
+    })
+  },
+  buttonText: {
+    type: String,
+    default: '查看'
+  },
+  cardBgColor: {
+    type: String,
+    default: '#f5f7fa'
+  },
+  width: {
+    type: String,
+    default: 'auto'
+  },
+  height: {
+    type: String,
+    default: 'auto'
+  },
+  fit: {
+    type: String,
+    default: 'cover'
+  }
+})
+
+const bio = computed(() => {
+  if (props.user.bio.length > 20) {
+    return props.user.bio.slice(0, 20) + '...'
+  }
+  return props.user.bio
+})
+
+const handleAvatar = () => {
+  emit('click')
+}
+</script>
+
+<style scoped>
+.user-card {
+  display: flex;
+  align-items: center;
+  border-radius: 8px;
+  overflow: hidden;
+  padding: 10px;
+  min-width: v-bind(width);
+  min-height: v-bind(height);
+}
+
+.user-avatar {
+  margin-right: 10px;
+  flex-shrink: 0; /* 防止头像压缩 */
+  width: 60px;
+  height: 60px;
+}
+
+.avatar-image {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.user-info {
+  flex: 1;
+  margin-right: 20px;
+}
+
+.nickname {
+  font-size: 16px;
+  color: #303133;
+  margin-bottom: 5px;
+}
+
+.bio {
+  font-size: 14px;
+  color: #606266;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.action-button {
+  padding: 10px 15px;
+  margin-left: auto; /* 按钮靠右 */
+}
+</style>

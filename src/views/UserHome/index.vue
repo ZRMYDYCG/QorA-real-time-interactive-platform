@@ -16,11 +16,11 @@
           <span class="num">Lv.8</span>
         </div>
         <div class="following">
-          <div class="concern">
+          <div class="concern" @click="$router.push('/socializingDetail')">
             <span>关注</span>
             <span> 9</span>
           </div>
-          <div class="fan">
+          <div class="fan" @click="$router.push('/socializingDetail')">
             <span>粉丝</span>
             <span> 10</span>
           </div>
@@ -117,7 +117,12 @@ const isVertical = false
         font-weight: 700;
 
         .concern {
+          cursor: pointer;
           margin-right: 20px;
+        }
+
+        .fan {
+          cursor: pointer;
         }
       }
     }
