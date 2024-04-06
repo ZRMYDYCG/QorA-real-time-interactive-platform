@@ -15,6 +15,7 @@
       <el-input></el-input>
     </div>
     <div class="layout-header--userinfo">
+      <themeSwitch></themeSwitch>
       <div class="userinfo__message">
         <div class="message--icon">
           <el-icon>
@@ -50,6 +51,7 @@
 
 <script setup>
 import { ref } from 'vue'
+import themeSwitch from './theme-switch.vue'
 
 const activeIndex = ref('1')
 const handleSelect = (key, keyPath) => {
@@ -65,7 +67,6 @@ const handleSelect = (key, keyPath) => {
   padding: 0 80px;
   align-items: center;
   justify-content: space-between;
-  background-color: #ffffff;
   position: fixed;
 
   .layout-header--logo {
