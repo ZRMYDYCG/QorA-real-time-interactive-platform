@@ -21,21 +21,27 @@ export default defineConfig({
       resolvers: [ElementPlusResolver()]
     }),
     Components({
-      resolvers: [ElementPlusResolver()]
+      resolvers: [
+        // 配置elementPlus，采用sass样式配色系统
+        ElementPlusResolver({ importStyle: 'sass' })
+      ]
     })
   ],
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
-    },
-    css: {
-      // css预处理器
-      preprocessorOptions: {
-        scss: {
-          // 引入 variable.scss 这样就可以在全局中使用 variable.scss 中预定义的变量了
-          // 注意：给导入的路径最后加上 `;`
-          additionalData: '@import "@/assets/scss/variable.scss";'
-        }
+    }
+  },
+  css: {
+    // css预处理器
+    preprocessorOptions: {
+      scss: {
+        // 引入 variable.scss 这样就可以在全局中使用 variable.scss 中预定义的变量了
+        // 注意：给导入的路径最后加上 `;`
+        additionalData: `
+          @use '@/assets/scss/variable.scss' as *;
+          @use '@/styles/element/index.scss' as *;
+        `
       }
     }
   }

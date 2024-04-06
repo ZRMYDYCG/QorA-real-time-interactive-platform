@@ -1,8 +1,5 @@
 <template>
   <div class="layout-header">
-    <div class="layout-header--logo">
-      <img src="https://pic.imgdb.cn/item/660e1cb59f345e8d03405bbd.png" alt="" />
-    </div>
     <div class="layout-header--menu">
       <el-menu :default-active="activeIndex" mode="horizontal" @select="handleSelect">
         <el-menu-item index="1">社区</el-menu-item>
@@ -11,10 +8,13 @@
         <el-menu-item index="4">更多</el-menu-item>
       </el-menu>
     </div>
-    <div class="layout-header--search">
-      <el-input></el-input>
+    <div class="layout-header--logo">
+      <img src="https://pic.imgdb.cn/item/661144af68eb93571340264d.png" alt="" />
     </div>
     <div class="layout-header--userinfo">
+      <div class="layout-header--search">
+        <el-input></el-input>
+      </div>
       <themeSwitch></themeSwitch>
       <div class="userinfo__message">
         <div class="message--icon">
@@ -62,17 +62,14 @@ const handleSelect = (key, keyPath) => {
 <style lang="scss" scoped>
 .layout-header {
   display: flex;
-  height: 50px;
+  height: auto;
   width: calc(100vw - 160px);
-  padding: 0 80px;
+  margin: 0 auto;
   align-items: center;
   justify-content: space-between;
-  position: fixed;
-  z-index: 10000000000000000000000000000000;
 
   .layout-header--logo {
-    width: 40px;
-    height: 40px;
+    width: 100px;
     margin-right: 20px;
     flex-shrink: 0;
 
@@ -83,8 +80,6 @@ const handleSelect = (key, keyPath) => {
   }
 
   .layout-header--menu {
-    flex: 2;
-
     .el-menu {
       border-bottom: none;
       height: 50px;
@@ -92,7 +87,6 @@ const handleSelect = (key, keyPath) => {
   }
 
   .layout-header--search {
-    flex: 3;
     margin-right: 120px;
   }
 
