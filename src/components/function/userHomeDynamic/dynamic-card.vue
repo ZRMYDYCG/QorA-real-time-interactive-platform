@@ -128,6 +128,7 @@ const handleActionClick = (actionType) => {
 <style scoped lang="scss">
 .el-card {
   border-radius: 10px;
+  margin-bottom: 20px;
 }
 
 .header-content {

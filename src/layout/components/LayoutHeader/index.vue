@@ -68,6 +68,7 @@ const handleSelect = (key, keyPath) => {
   align-items: center;
   justify-content: space-between;
   position: fixed;
+  z-index: 10000000000000000000000000000000;
 
   .layout-header--logo {
     width: 40px;
