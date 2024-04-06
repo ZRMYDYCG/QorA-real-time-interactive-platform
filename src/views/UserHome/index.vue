@@ -46,6 +46,7 @@
 import YsTabs from '@/components/base/ys-tabs/src/ys-tabs.vue'
 
 const tabConfig = [
+  { name: '主页', path: '/userHome/index' },
   { name: '动态', path: '/userHome/dynamic' },
   { name: '回答', path: '/userHome/response' },
   { name: '求助', path: '/userHome/help' },

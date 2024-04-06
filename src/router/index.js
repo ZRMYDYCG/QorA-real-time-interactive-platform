@@ -11,8 +11,13 @@ export const constantRoutes = [
         path: '/userHome',
         name: 'UserHome',
         component: () => import('@/views/UserHome/index.vue'),
-        redirect: '/userHome/dynamic',
+        redirect: '/userHome/index',
         children: [
+          {
+            path: '/userHome/index',
+            name: 'userHomeIndex',
+            component: () => import('@/views/UserHome/children/UserHomeIndex/index.vue')
+          },
           {
             path: '/userHome/dynamic',
             name: 'userHomeDynamic',
