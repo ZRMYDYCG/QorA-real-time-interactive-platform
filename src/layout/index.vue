@@ -5,17 +5,20 @@ import LayoutHeader from './components/LayoutHeader/index.vue'
 
 const paddingLeft = ref('180px')
 const paddingRight = ref('180px')
+const paddingTop = ref('30px')
 const route = useRoute()
 
 watch(
   route,
   (newRoute) => {
     if (newRoute.path === '/exchangeCommunity') {
-      paddingLeft.value = '60px'
-      paddingRight.value = '60px'
+      paddingLeft.value = '0px'
+      paddingRight.value = '0px'
+      paddingTop.value = '5px'
     } else {
       paddingLeft.value = '180px'
       paddingRight.value = '180px'
+      paddingTop.value = '30px'
     }
   },
   { immediate: true }
@@ -33,6 +36,6 @@ watch(
 
 <style scoped lang="scss">
 .layout-main {
-  padding: 30px v-bind(paddingLeft) 0 v-bind(paddingRight);
+  padding: v-bind(paddingTop) v-bind(paddingLeft) 0 v-bind(paddingRight);
 }
 </style>
