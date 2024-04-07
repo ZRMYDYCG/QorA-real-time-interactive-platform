@@ -1,6 +1,12 @@
 .dark {
+  /**
+  * Global
+  **/
   background-color: #000;
   color: #ffffff;
+  /**
+  * ElementPlus
+  **/
   --el-fill-color-blank: #333;
   --el-input-bg-color: #333;
   --el-card-bg-color: #333;
@@ -8,4 +14,27 @@
   --el-menu-hover-bg-color: #000;
   --el-color-primary-light-9: #000;
   --el-bg-color-overlay: #000;
+  /**
+  * Layout
+  **/
+  --layout-bg-color: #000;
+  --layout-header-bg-color: #000;
+  /**
+  * RouterView: exchangeCommunity
+  **/
+  --ys-bar-bg-color: #333;
+  --ys-bar-border-color: #fff;
+}
+
+.light {
+  /**
+  * Layout
+  **/
+  --layout-bg-color: #EEECEC;
+  --layout-header-bg-color: #fff;
+  /**
+  * RouterView: exchangeCommunity
+  **/
+  --ys-bar-bg-color: #c1c1c1;
+  --ys-bar-border-color: #ccc;
 }

@@ -10,7 +10,7 @@ const themeChange = () => {
     html.className = 'dark'
     // document.getElementById('theme-style').href = './src/styles/element/dark-theme.scss'
   } else {
-    html.className = ''
+    html.className = 'light'
     // document.getElementById('theme-style').href = './src/styles/element/light-theme.scss'
   }
 }

@@ -63,10 +63,10 @@ const handleSelect = (key, keyPath) => {
 .layout-header {
   display: flex;
   height: auto;
-  width: calc(100vw - 160px);
-  margin: 0 auto;
+  width: 100%;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-around;
+  background-color: var(--layout-header-bg-color);
 
   .layout-header--logo {
     width: 100px;

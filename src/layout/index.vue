@@ -32,6 +32,10 @@ watch(
 </template>
 
 <style scoped lang="scss">
+.layout {
+  background-color: var(--layout-bg-color);
+}
+
 .layout-main {
   padding: 30px v-bind(paddingLeft) 0 v-bind(paddingRight);
 }

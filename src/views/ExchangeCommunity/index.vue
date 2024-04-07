@@ -143,7 +143,8 @@
 
 .left-bar {
   flex: 0 0 200px; /* 固定左栏的宽度 */
-  background-color: #333;
+  background-color: var(--ys-bar-bg-color);
+  border-right: 1px solid var(--ys-bar-border-color);
   color: #fff;
   padding: 20px;
   overflow-y: auto;
