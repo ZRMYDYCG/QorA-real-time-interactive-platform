@@ -130,7 +130,7 @@
 .container {
   display: flex;
   flex-direction: row;
-  height: 100%;
+  height: calc(100vh - 100px);
   transition: all 0.3s ease; /* 添加过渡效果 */
 }
 
