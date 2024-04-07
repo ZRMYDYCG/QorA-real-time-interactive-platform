@@ -1,7 +1,12 @@
 <template>
   <div class="layout-header">
     <div class="layout-header--menu">
-      <el-menu :default-active="activeIndex" mode="horizontal" @select="handleSelect">
+      <el-menu
+        :ellipsis="false"
+        :default-active="activeIndex"
+        mode="horizontal"
+        @select="handleSelect"
+      >
         <el-menu-item index="1">社区</el-menu-item>
         <el-menu-item index="2">问答</el-menu-item>
         <el-menu-item index="3">发现</el-menu-item>
