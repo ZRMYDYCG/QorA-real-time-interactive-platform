@@ -7,15 +7,19 @@ const paddingLeft = ref('180px')
 const paddingRight = ref('180px')
 const route = useRoute()
 
-watch(route, (newRoute) => {
-  if (newRoute.path === '/exchangeCommunity') {
-    paddingLeft.value = '20px'
-    paddingRight.value = '20px'
-  } else {
-    paddingLeft.value = '180px'
-    paddingRight.value = '180px'
-  }
-})
+watch(
+  route,
+  (newRoute) => {
+    if (newRoute.path === '/exchangeCommunity') {
+      paddingLeft.value = '20px'
+      paddingRight.value = '20px'
+    } else {
+      paddingLeft.value = '180px'
+      paddingRight.value = '180px'
+    }
+  },
+  { immediate: true }
+)
 </script>
 
 <template>
