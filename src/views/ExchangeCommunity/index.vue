@@ -15,7 +15,8 @@
   height: calc(100vh - 60px);
   transition: all 0.3s ease; /* 添加过渡效果 */
   overflow: hidden;
-  border: 1px solid var(--ys-container-border-color);
+  width: 80vw;
+  margin: 0 auto;
 }
 
 .left-bar,
