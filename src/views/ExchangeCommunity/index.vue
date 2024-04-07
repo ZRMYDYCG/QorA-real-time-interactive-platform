@@ -1,9 +1,19 @@
-<script setup></script>
+<script setup>
+import ExchangeItem from './components/exchange-item/index.vue'
+</script>
 
 <template>
   <div class="container">
     <div class="left-bar"></div>
-    <div class="main-content"></div>
+    <div class="main-content">
+      <exchange-item></exchange-item>
+      <exchange-item></exchange-item>
+      <exchange-item></exchange-item>
+      <exchange-item></exchange-item>
+      <exchange-item></exchange-item>
+      <exchange-item></exchange-item>
+      <exchange-item></exchange-item>
+    </div>
     <div class="right-bar"></div>
   </div>
 </template>
@@ -15,7 +25,7 @@
   height: calc(100vh - 60px);
   transition: all 0.3s ease; /* 添加过渡效果 */
   overflow: hidden;
-  width: 80vw;
+  width: 90vw;
   margin: 0 auto;
 }
 
@@ -37,7 +47,7 @@
 .main-content {
   flex: 1; /* 占据剩余空间 */
   background-color: var(--ys-bar-bg-color);
-  padding: 20px;
+  padding: 20px 40px;
   overflow-x: hidden; /* 隐藏水平滚动条 */
   -ms-overflow-style: none; /* IE和Edge隐藏滚动条 */
   scrollbar-width: none; /* Firefox隐藏滚动条 */
