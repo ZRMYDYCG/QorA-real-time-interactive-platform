@@ -5,6 +5,7 @@ export const constantRoutes = [
   {
     path: '/',
     component: Layout,
+    redirect: '/exchangeCommunity',
     children: [
       {
         path: '/userHome',
@@ -51,6 +52,10 @@ export const constantRoutes = [
       {
         path: '/socializingDetail',
         component: () => import('@/views/SocializingDetail/index.vue')
+      },
+      {
+        path: '/exchangeCommunity',
+        component: () => import('@/views/ExchangeCommunity/index.vue')
       }
     ]
   }
