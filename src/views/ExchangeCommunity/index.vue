@@ -132,6 +132,9 @@
   flex-direction: row;
   height: calc(100vh - 100px);
   transition: all 0.3s ease; /* 添加过渡效果 */
+  border-radius: 15px;
+  overflow: hidden;
+  border: 1px solid var(--ys-container-border-color);
 }
 
 .left-bar,
@@ -145,14 +148,13 @@
   flex: 0 0 200px; /* 固定左栏的宽度 */
   background-color: var(--ys-bar-bg-color);
   border-right: 1px solid var(--ys-bar-border-color);
-  color: #fff;
   padding: 20px;
   overflow-y: auto;
 }
 
 .main-content {
   flex: 1; /* 占据剩余空间 */
-  background-color: #f8f8f8;
+  background-color: var(--ys-bar-bg-color);
   padding: 20px;
   overflow-x: hidden; /* 隐藏水平滚动条 */
   -ms-overflow-style: none; /* IE和Edge隐藏滚动条 */
@@ -161,7 +163,8 @@
 
 .right-bar {
   flex: 0 0 200px; /* 固定右栏的宽度 */
-  background-color: #ff9900;
+  background-color: var(--ys-bar-bg-color);
+  border-left: 1px solid var(--ys-bar-border-color);
   color: #333;
   padding: 20px;
   overflow-y: auto;
@@ -174,6 +177,7 @@
     opacity: 0; /* 设置透明度为0，实现淡出效果 */
     transform: scale(0); /* 缩小至屏幕外 */
     display: block; /* 保持元素在DOM中，但不可见 */
+    padding: 0;
   }
 
   .right-bar {
@@ -181,12 +185,13 @@
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 760px) {
   .right-bar {
     flex: 0 0 0; /* 右栏宽度设置为0 */
     opacity: 0; /* 设置透明度为0，实现淡出效果 */
     transform: scale(0); /* 缩小至屏幕外 */
     display: block; /* 保持元素在DOM中，但不可见 */
+    padding: 0;
   }
 }
 </style>

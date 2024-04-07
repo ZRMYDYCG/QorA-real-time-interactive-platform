@@ -11,8 +11,8 @@ watch(
   route,
   (newRoute) => {
     if (newRoute.path === '/exchangeCommunity') {
-      paddingLeft.value = '20px'
-      paddingRight.value = '20px'
+      paddingLeft.value = '60px'
+      paddingRight.value = '60px'
     } else {
       paddingLeft.value = '180px'
       paddingRight.value = '180px'
@@ -32,10 +32,6 @@ watch(
 </template>
 
 <style scoped lang="scss">
-.layout {
-  background-color: var(--layout-bg-color);
-}
-
 .layout-main {
   padding: 30px v-bind(paddingLeft) 0 v-bind(paddingRight);
 }

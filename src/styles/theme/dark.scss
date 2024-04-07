@@ -24,17 +24,19 @@
   **/
   --ys-bar-bg-color: #333;
   --ys-bar-border-color: #fff;
+  --ys-container-border-color: #fff;
 }
 
 .light {
   /**
   * Layout
   **/
-  --layout-bg-color: #EEECEC;
+  --layout-bg-color: #F9FAFA;
   --layout-header-bg-color: #fff;
   /**
   * RouterView: exchangeCommunity
   **/
-  --ys-bar-bg-color: #c1c1c1;
+  --ys-bar-bg-color: #fff;
   --ys-bar-border-color: #ccc;
+  --ys-container-border-color: transparent;
 }

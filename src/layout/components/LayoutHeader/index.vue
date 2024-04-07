@@ -67,6 +67,7 @@ const handleSelect = (key, keyPath) => {
   align-items: center;
   justify-content: space-around;
   background-color: var(--layout-header-bg-color);
+  border-bottom: 1px solid var(--ys-bar-bg-color);
 
   .layout-header--logo {
     width: 100px;
