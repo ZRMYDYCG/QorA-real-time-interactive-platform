@@ -2,7 +2,7 @@
   <div ref="scrollRef">
     <div ref="realBoxRef" :style="realBoxStyle" @mouseenter="enter" @mouseleave="leave">
       <div ref="slotListRef" :style="floatStyle">
-        <slot></slot>
+        <slot :datas="datas" name="default"></slot>
       </div>
       <div v-if="slotHtml && isScroll" :style="floatStyle">
         <slot name="html" />
@@ -47,13 +47,13 @@ export default defineComponent({
     // 开启滚动的数据量
     limitScrollNum: {
       type: [Number, String],
-      default: 5,
+      default: 4,
       validator
     },
     // 是否开启鼠标悬停
     hover: {
       type: Boolean,
-      default: false
+      default: true
     },
     // 控制滚动方向
     direction: {
@@ -91,13 +91,13 @@ export default defineComponent({
     // 动画时间
     delay: {
       type: [Number, String],
-      default: 0,
+      default: 5,
       validator
     },
     // 动画方式
     ease: {
       type: String,
-      default: 'ease-in'
+      default: 'ease-in-out'
     }
   },
   setup(props, { slots }) {
@@ -106,6 +106,8 @@ export default defineComponent({
     const realBoxRef = ref(null)
     const slotHtml = ref(slots.html !== undefined)
     const scrollHtml = ref('')
+
+    const currentIndex = ref(0) // 初始化数组项索引
 
     const state = reactive({
       xPos: 0,
@@ -129,7 +131,7 @@ export default defineComponent({
     const isHorizontal = computed(() => props.direction === 'left' || props.direction === 'right')
 
     const floatStyle = computed(() => {
-      return isHorizontal.value ? { float: 'left', overflow: 'hidden' } : { overflow: 'hidden' }
+      return isHorizontal.value ? { display: 'flex' } : { overflow: 'hidden' }
     })
 
     const isScroll = computed(() => props.datas.length >= props.limitScrollNum)

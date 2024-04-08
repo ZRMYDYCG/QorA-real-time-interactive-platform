@@ -23,7 +23,7 @@
 import { computed } from 'vue'
 
 const emit = defineEmits(['click'])
-const defaultAvatar = 'data:image/svg+xml,<svg>...</svg>' // 默认头像的SVG代码
+const defaultAvatar = '....'
 
 const props = defineProps({
   user: {

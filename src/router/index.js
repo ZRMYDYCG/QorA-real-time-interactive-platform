@@ -1,5 +1,7 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import Layout from '@/layout/index.vue'
+import nprogress from 'nprogress'
+import 'nprogress/nprogress.css'
 
 export const constantRoutes = [
   {
@@ -64,6 +66,15 @@ export const constantRoutes = [
 const router = createRouter({
   history: createWebHashHistory(),
   routes: constantRoutes
+})
+
+router.beforeEach((to, from, next) => {
+  nprogress.start() // 开始路由前显示进度条
+  next()
+})
+
+router.afterEach((to, from) => {
+  nprogress.done() // 完成路由后隐藏进度条
 })
 
 export default router
