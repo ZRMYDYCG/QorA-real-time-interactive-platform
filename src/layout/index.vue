@@ -15,6 +15,10 @@ watch(
       paddingLeft.value = '0px'
       paddingRight.value = '0px'
       paddingTop.value = '5px'
+    } else if (newRoute.path.includes('/searchDetail')) {
+      paddingLeft.value = '0px'
+      paddingRight.value = '0px'
+      paddingTop.value = '5px'
     } else {
       paddingLeft.value = '180px'
       paddingRight.value = '180px'
