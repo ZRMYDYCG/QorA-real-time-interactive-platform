@@ -1,6 +1,9 @@
 <script setup>
 import ExchangeItem from './components/exchange-item/index.vue'
 import { ref } from 'vue'
+import { pcaTextArr } from 'element-china-area-data'
+
+const searchValue = ref('')
 
 const dataArray = [
   [
@@ -173,6 +176,39 @@ colors.forEach((color) => {
 })
 
 const checkListLevel = ref([])
+
+const selectedOptions = ref([])
+
+const timeRange = ref('')
+
+const PriceValue = ref('')
+
+const PriceOptions = [
+  {
+    value: '50',
+    label: '50-100'
+  },
+  {
+    value: '100',
+    label: '100-200'
+  },
+  {
+    value: '200',
+    label: '200-300'
+  },
+  {
+    value: '300',
+    label: '300-400'
+  },
+  {
+    value: '400',
+    label: '400-500'
+  },
+  {
+    value: '500',
+    label: '500-600'
+  }
+]
 </script>
 
 <template>
@@ -194,7 +230,7 @@ const checkListLevel = ref([])
       <el-form label-position="top">
         <div class="keyword-search">
           <el-form-item label="关键词">
-            <el-input placeholder="请输入关键词"></el-input>
+            <el-input placeholder="请输入关键词" v-model="searchValue"></el-input>
           </el-form-item>
         </div>
         <div class="specialties">
@@ -206,7 +242,7 @@ const checkListLevel = ref([])
               allow-create
               default-first-option
               :reserve-keyword="false"
-              placeholder="选择你喜欢的标签"
+              placeholder="选择或输入你喜欢的标签"
             >
               <el-option
                 v-for="item in specialtiesOptions"
@@ -219,7 +255,25 @@ const checkListLevel = ref([])
         </div>
         <div class="location">
           <el-form-item label="地区">
-            <el-input placeholder="搜索你想要看的地区"></el-input>
+            <el-cascader
+              size="large"
+              :options="pcaTextArr"
+              v-model="selectedOptions"
+              placeholder="选择地区"
+            >
+            </el-cascader>
+          </el-form-item>
+        </div>
+        <div class="time">
+          <el-form-item label="发布时间">
+            <el-date-picker
+              v-model="timeRange"
+              type="daterange"
+              range-separator="To"
+              start-placeholder="Start"
+              end-placeholder="End"
+              size="small"
+            />
           </el-form-item>
         </div>
         <div class="level">
@@ -233,7 +287,21 @@ const checkListLevel = ref([])
           </el-form-item>
         </div>
         <div class="price">
-          <el-form-item label="价格区间"></el-form-item>
+          <el-form-item label="价格区间">
+            <el-select
+              v-model="PriceValue"
+              placeholder="选择价格区间"
+              size="large"
+              style="width: 240px"
+            >
+              <el-option
+                v-for="item in PriceOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              />
+            </el-select>
+          </el-form-item>
         </div>
         <div class="colors">
           <el-form-item label="选择你喜欢的配色">
@@ -308,7 +376,9 @@ const checkListLevel = ref([])
   border-left: 1px solid var(--ys-bar-border-color);
   color: #333;
   padding: 20px;
-  overflow-y: auto;
+  overflow-x: hidden; /* 隐藏水平滚动条 */
+  -ms-overflow-style: none; /* IE和Edge隐藏滚动条 */
+  scrollbar-width: none; /* Firefox隐藏滚动条 */
 }
 
 @media (max-width: 1024px) {
