@@ -18,7 +18,20 @@
     </div>
     <div class="layout-header--userinfo">
       <div class="layout-header--search">
-        <el-input></el-input>
+        <el-popover
+          placement="bottom"
+          :width="370"
+          content="this is content, this is content, this is content"
+        >
+          <template #reference>
+            <el-input
+              prefix-icon="Search"
+              @keydown.enter.native="searchAction"
+              placeholder="快来输入你要搜索的内容吧"
+              v-model="searchQuery"
+            ></el-input>
+          </template>
+        </el-popover>
       </div>
       <themeSwitch></themeSwitch>
       <div class="userinfo__message">
@@ -52,15 +65,45 @@
       </div>
     </div>
   </div>
+  <div class="layout-header--search-hid">
+    <el-input
+      prefix-icon="Search"
+      placeholder="全站搜索"
+      style="padding: 30px 0 20px 30px"
+      @input="handleInputHidden"
+      @focus="handleInputFocus"
+    ></el-input>
+  </div>
 </template>
 
 <script setup>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 import themeSwitch from './theme-switch.vue'
+
+const router = useRouter()
 
 const activeIndex = ref('1')
 const handleSelect = (key, keyPath) => {
   console.log(key, keyPath)
+}
+
+const inputWidth = ref('40vw')
+const handleInputHidden = () => {
+  console.log('哥哥不要')
+}
+
+const handleInputFocus = () => {
+  inputWidth.value = '58vw'
+}
+
+const searchQuery = ref('')
+const searchAction = ($event) => {
+  console.log($event.target.value.trim())
+  router.push({
+    path: '/searchDetail',
+    query: { keyword: searchQuery.value }
+  })
 }
 </script>
 
@@ -136,6 +179,15 @@ const handleSelect = (key, keyPath) => {
   }
 }
 
+.layout-header--search-hid {
+  display: none;
+
+  .el-input {
+    transition: all 0.3s;
+    width: v-bind(inputWidth);
+  }
+}
+
 @media screen and (max-width: 867px) {
   .layout-header--menu {
     display: none;
@@ -148,6 +200,9 @@ const handleSelect = (key, keyPath) => {
   }
   .layout-header--search {
     display: none;
+  }
+  .layout-header--search-hid {
+    display: block;
   }
 }
 </style>

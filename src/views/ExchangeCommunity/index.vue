@@ -219,7 +219,7 @@ watch(
     if (newValue.length === text.length) {
       setTimeout(() => {
         typedText.value = ''
-      }, 1000) // 关键：要等待1秒后重置typedText，就实现永久循环
+      }, 1000) // 关键：要等待1秒后重置typedText，就实现永久循环啦
     } else {
       setTimeout(() => {
         typedText.value = text.slice(0, newValue.length + 1)

@@ -11,3 +11,9 @@ a {
 img {
   vertical-align: top;
 }
+
+html {
+  overflow-x: hidden; /* 隐藏水平滚动条 */
+  -ms-overflow-style: none; /* IE和Edge隐藏滚动条 */
+  scrollbar-width: none; /* Firefox隐藏滚动条 */
+}

@@ -58,6 +58,10 @@ export const constantRoutes = [
       {
         path: '/exchangeCommunity',
         component: () => import('@/views/ExchangeCommunity/index.vue')
+      },
+      {
+        path: '/searchDetail',
+        component: () => import('@/views/SearchDetail/index.vue')
       }
     ]
   }
