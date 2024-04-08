@@ -1,5 +1,4 @@
 <script setup>
-import { ref } from 'vue'
 import YsScroll from '@/components/base/ys-scroll/src/ys-scroll.vue'
 import { More } from '@element-plus/icons-vue'
 

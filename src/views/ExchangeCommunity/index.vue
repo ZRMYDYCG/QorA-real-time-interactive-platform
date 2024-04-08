@@ -119,6 +119,60 @@ const dataArray = [
     }
   ]
 ]
+
+const specialties = ref([])
+
+const specialtiesOptions = [
+  {
+    value: 'HTML',
+    label: '耳机'
+  },
+  {
+    value: 'CSS',
+    label: '耳塞'
+  },
+  {
+    value: 'JavaScript',
+    label: '音响'
+  }
+]
+
+const value = ref([])
+const colors = [
+  {
+    value: '#E63415',
+    label: 'red'
+  },
+  {
+    value: '#FF6600',
+    label: 'orange'
+  },
+  {
+    value: '#FFDE0A',
+    label: 'yellow'
+  },
+  {
+    value: '#1EC79D',
+    label: 'green'
+  },
+  {
+    value: '#14CCCC',
+    label: 'cyan'
+  },
+  {
+    value: '#4167F0',
+    label: 'blue'
+  },
+  {
+    value: '#6222C9',
+    label: 'purple'
+  }
+]
+colors.forEach((color) => {
+  value.value.push(color.value)
+})
+
+const checkListLevel = ref([])
 </script>
 
 <template>
@@ -132,11 +186,77 @@ const dataArray = [
       </el-menu>
     </div>
     <div class="main-content">
-      <template v-for="item in dataArray">
+      <template v-for="item in dataArray" :key="item">
         <exchange-item :data-array="item"></exchange-item>
       </template>
     </div>
-    <div class="right-bar"></div>
+    <div class="right-bar">
+      <el-form label-position="top">
+        <div class="keyword-search">
+          <el-form-item label="关键词">
+            <el-input placeholder="请输入关键词"></el-input>
+          </el-form-item>
+        </div>
+        <div class="specialties">
+          <el-form-item label="标签">
+            <el-select
+              v-model="specialties"
+              multiple
+              filterable
+              allow-create
+              default-first-option
+              :reserve-keyword="false"
+              placeholder="选择你喜欢的标签"
+            >
+              <el-option
+                v-for="item in specialtiesOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              />
+            </el-select>
+          </el-form-item>
+        </div>
+        <div class="location">
+          <el-form-item label="地区">
+            <el-input placeholder="搜索你想要看的地区"></el-input>
+          </el-form-item>
+        </div>
+        <div class="level">
+          <el-form-item label="体验官等级">
+            <el-checkbox-group v-model="checkListLevel">
+              <el-checkbox label="1-3" value="level_a" />
+              <el-checkbox label="3-6" value="level_b" />
+              <el-checkbox label="6-9" value="level_c" />
+              <el-checkbox label="9-12" value="level_d" />
+            </el-checkbox-group>
+          </el-form-item>
+        </div>
+        <div class="price">
+          <el-form-item label="价格区间"></el-form-item>
+        </div>
+        <div class="colors">
+          <el-form-item label="选择你喜欢的配色">
+            <el-select v-model="value" multiple placeholder="Select">
+              <el-option
+                v-for="item in colors"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              >
+                <div class="flex items-center">
+                  <el-tag :color="item.value" style="margin-right: 8px" size="small" />
+                  <span :style="{ color: item.value }">{{ item.label }}</span>
+                </div>
+              </el-option>
+              <template #tag>
+                <el-tag v-for="color in value" :key="color.value" :color="color" />
+              </template>
+            </el-select>
+          </el-form-item>
+        </div>
+      </el-form>
+    </div>
   </div>
 </template>
 
