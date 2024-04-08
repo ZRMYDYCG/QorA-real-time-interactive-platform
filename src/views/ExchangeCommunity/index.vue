@@ -1,6 +1,6 @@
 <script setup>
 import ExchangeItem from './components/exchange-item/index.vue'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { pcaTextArr } from 'element-china-area-data'
 
 const searchValue = ref('')
@@ -209,6 +209,25 @@ const PriceOptions = [
     label: '500-600'
   }
 ]
+
+const text = '体验官社区'
+const typedText = ref('')
+
+watch(
+  () => typedText.value,
+  (newValue, oldValue) => {
+    if (newValue.length === text.length) {
+      setTimeout(() => {
+        typedText.value = ''
+      }, 1000) // 关键：要等待1秒后重置typedText，就实现永久循环
+    } else {
+      setTimeout(() => {
+        typedText.value = text.slice(0, newValue.length + 1)
+      }, 200)
+    }
+  },
+  { immediate: true }
+)
 </script>
 
 <template>
@@ -229,6 +248,18 @@ const PriceOptions = [
           <el-menu-item index="3">标签</el-menu-item>
           <el-menu-item index="4">近期热议</el-menu-item>
         </el-menu>
+      </div>
+      <div class="desc">
+        <h3 class="title">
+          <span class="l">Welcome To</span> <span class="">{{ typedText }}</span>
+        </h3>
+        <p style="margin: 20px 0">我们都是生活里的品质体验官，欢迎来到体验官社区。</p>
+        <el-button round>
+          <el-icon>
+            <Refresh />
+          </el-icon>
+          换一批推荐
+        </el-button>
       </div>
       <template v-for="item in dataArray" :key="item">
         <exchange-item :data-array="item"></exchange-item>
@@ -380,6 +411,17 @@ const PriceOptions = [
   overflow-x: hidden; /* 隐藏水平滚动条 */
   -ms-overflow-style: none; /* IE和Edge隐藏滚动条 */
   scrollbar-width: none; /* Firefox隐藏滚动条 */
+  .desc {
+    padding: 20px 0;
+
+    .title {
+      .l {
+        font-family: 'Roboto Slab', serif;
+        color: var(--ys-font-title-color);
+        font-size: 35px;
+      }
+    }
+  }
 }
 
 .right-bar {
