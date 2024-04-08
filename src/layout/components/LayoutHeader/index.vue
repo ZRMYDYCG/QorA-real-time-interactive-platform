@@ -66,6 +66,7 @@ const handleSelect = (key, keyPath) => {
 
 <style lang="scss" scoped>
 .layout-header {
+  white-space: nowrap;
   display: flex;
   height: auto;
   width: 100%;
@@ -94,6 +95,10 @@ const handleSelect = (key, keyPath) => {
 
   .layout-header--search {
     margin-right: 120px;
+
+    .el-input {
+      width: 350px;
+    }
   }
 
   .layout-header--userinfo {
@@ -128,6 +133,21 @@ const handleSelect = (key, keyPath) => {
         height: 100%;
       }
     }
+  }
+}
+
+@media screen and (max-width: 867px) {
+  .layout-header--menu {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 720px) {
+  .layout-header {
+    padding: 30px 0;
+  }
+  .layout-header--search {
+    display: none;
   }
 }
 </style>

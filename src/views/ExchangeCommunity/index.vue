@@ -218,10 +218,18 @@ const PriceOptions = [
         <el-menu-item index="1">推荐</el-menu-item>
         <el-menu-item index="2">关注</el-menu-item>
         <el-menu-item index="3">标签</el-menu-item>
-        <el-menu-item index="3">近期热议</el-menu-item>
+        <el-menu-item index="4">近期热议</el-menu-item>
       </el-menu>
     </div>
     <div class="main-content">
+      <div class="top-bar">
+        <el-menu default-active="1" mode="horizontal">
+          <el-menu-item index="1">推荐</el-menu-item>
+          <el-menu-item index="2">关注</el-menu-item>
+          <el-menu-item index="3">标签</el-menu-item>
+          <el-menu-item index="4">近期热议</el-menu-item>
+        </el-menu>
+      </div>
       <template v-for="item in dataArray" :key="item">
         <exchange-item :data-array="item"></exchange-item>
       </template>
@@ -339,6 +347,10 @@ const PriceOptions = [
   margin: 0 auto;
 }
 
+.top-bar {
+  display: none;
+}
+
 .left-bar,
 .right-bar {
   transition: all 0.3s ease; /* 添加过渡效果 */
@@ -402,6 +414,12 @@ const PriceOptions = [
     transform: scale(0); /* 缩小至屏幕外 */
     display: block;
     padding: 0;
+  }
+}
+
+@media screen and (max-width: 720px) {
+  .top-bar {
+    display: block;
   }
 }
 </style>
