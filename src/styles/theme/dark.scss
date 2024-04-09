@@ -25,6 +25,10 @@
   --ys-bar-bg-color: #000;
   --ys-bar-border-color: #fff;
   --ys-container-border-color: #fff;
+  /**
+  * UserHome
+  **/
+  --ys-userHome-font-color: #fff;
 }
 
 .light {
@@ -40,4 +44,8 @@
   --ys-bar-border-color: #ccc;
   --ys-container-border-color: transparent;
   --ys-font-title-color: #AE34F1;
+  /**
+  * UserHome
+  **/
+  --ys-userHome-font-color: #000;
 }

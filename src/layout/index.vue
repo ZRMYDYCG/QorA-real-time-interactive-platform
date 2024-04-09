@@ -11,7 +11,7 @@ const route = useRoute()
 watch(
   route,
   (newRoute) => {
-    if (newRoute.path === '/exchangeCommunity') {
+    if (newRoute.path.includes('/exchangeCommunity')) {
       paddingLeft.value = '0px'
       paddingRight.value = '0px'
       paddingTop.value = '5px'

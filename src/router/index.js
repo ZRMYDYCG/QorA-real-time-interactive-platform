@@ -57,7 +57,27 @@ export const constantRoutes = [
       },
       {
         path: '/exchangeCommunity',
-        component: () => import('@/views/ExchangeCommunity/index.vue')
+        component: () => import('@/views/ExchangeCommunity/index.vue'),
+        redirect: '/exchangeCommunity/communityRecommend',
+        children: [
+          {
+            path: '/exchangeCommunity/communityRecommend',
+            component: () =>
+              import('@/views/ExchangeCommunity/children/CommunityRecommend/index.vue')
+          },
+          {
+            path: '/exchangeCommunity/communityConcern',
+            component: () => import('@/views/ExchangeCommunity/children/CommunityConcern/index.vue')
+          },
+          {
+            path: '/exchangeCommunity/communityTags',
+            component: () => import('@/views/ExchangeCommunity/children/CommunityTags/index.vue')
+          },
+          {
+            path: '/exchangeCommunity/communityTopic',
+            component: () => import('@/views/ExchangeCommunity/children/CommunityTopic/index.vue')
+          }
+        ]
       },
       {
         path: '/searchDetail',
