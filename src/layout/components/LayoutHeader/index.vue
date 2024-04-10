@@ -6,9 +6,10 @@
         :default-active="activeIndex"
         mode="horizontal"
         @select="handleSelect"
+        router
       >
-        <el-menu-item index="1">社区</el-menu-item>
-        <el-menu-item index="2">问答</el-menu-item>
+        <el-menu-item index="1">体验官社区</el-menu-item>
+        <el-menu-item index="2">体验问答</el-menu-item>
         <el-menu-item index="3">发现</el-menu-item>
         <el-menu-item index="4">更多</el-menu-item>
       </el-menu>

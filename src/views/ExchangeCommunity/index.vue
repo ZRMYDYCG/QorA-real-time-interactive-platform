@@ -126,11 +126,11 @@ watch(
     </div>
     <div class="main-content">
       <div class="top-bar">
-        <el-menu default-active="1" mode="horizontal">
-          <el-menu-item index="1">推荐</el-menu-item>
-          <el-menu-item index="2">关注</el-menu-item>
-          <el-menu-item index="3">标签</el-menu-item>
-          <el-menu-item index="4">近期热议</el-menu-item>
+        <el-menu default-active="/exchangeCommunity/communityRecommend" router mode="horizontal">
+          <el-menu-item index="/exchangeCommunity/communityRecommend"> 推荐</el-menu-item>
+          <el-menu-item index="/exchangeCommunity/communityConcern"> 关注</el-menu-item>
+          <el-menu-item index="/exchangeCommunity/communityTags"> 标签 / 专栏</el-menu-item>
+          <el-menu-item index="/exchangeCommunity/communityTopic">近期热议</el-menu-item>
         </el-menu>
       </div>
       <div class="desc">

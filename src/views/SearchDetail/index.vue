@@ -11,11 +11,6 @@ const handleTabChange = (name) => {
   console.log(name)
 }
 
-const count = ref(0)
-const load = () => {
-  count.value += 2
-}
-
 const itemList = [
   {
     id: '1',
@@ -203,9 +198,9 @@ const userList = ref([{ name: 1 }, {}, {}])
       </div>
 
       <div class="topic">
-        <SliderRecommendCard :data="userList" title="猜你喜欢">
+        <SliderRecommendCard :data="userList" title="猜你感兴趣">
           <template #default="slotProps">
-            <SearchUser v-for="item in slotProps"></SearchUser>
+            <SearchColumn v-for="item in slotProps"></SearchColumn>
           </template>
         </SliderRecommendCard>
       </div>

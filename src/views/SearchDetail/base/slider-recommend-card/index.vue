@@ -6,7 +6,7 @@ defineProps({
   },
   data: {
     type: Array,
-    default: []
+    default: () => []
   }
 })
 </script>
@@ -17,7 +17,7 @@ defineProps({
       <div class="header--left">
         <h3>{{ title }}</h3>
       </div>
-      <div class="header--right">
+      <div v-if="$slots.headerRight" class="header--right">
         <slot name="headerRight"></slot>
       </div>
     </template>
