@@ -5,6 +5,7 @@ import SearchColumn from './components/SearchColumn/index.vue'
 import SearchDiscuss from './components/SearchDiscuss/index.vue'
 import SearchSeek from './components/SearchSeek/index.vue'
 import SearchAll from './components/SearchAll/index.vue'
+import SliderRecommendCard from './base/slider-recommend-card/index.vue'
 
 const handleTabChange = (name) => {
   console.log(name)
@@ -161,6 +162,8 @@ const itemList = [
     like: false
   }
 ]
+
+const userList = ref([{ name: 1 }, {}, {}])
 </script>
 
 <template>
@@ -185,7 +188,27 @@ const itemList = [
       </el-tabs>
     </div>
     <div class="detail--right">
-      <el-card></el-card>
+      <div class="user">
+        <SliderRecommendCard :data="userList" title="体验官推荐">
+          <template #headerRight>
+            <span>换一批推荐官</span>
+            <el-icon>
+              <Refresh />
+            </el-icon>
+          </template>
+          <template #default="slotProps">
+            <SearchUser v-for="item in slotProps"></SearchUser>
+          </template>
+        </SliderRecommendCard>
+      </div>
+
+      <div class="topic">
+        <SliderRecommendCard :data="userList" title="猜你喜欢">
+          <template #default="slotProps">
+            <SearchUser v-for="item in slotProps"></SearchUser>
+          </template>
+        </SliderRecommendCard>
+      </div>
     </div>
   </div>
 </template>
@@ -205,9 +228,19 @@ const itemList = [
     height: 100px;
     margin-top: 40px;
     margin-left: 30px;
+    white-space: nowrap;
 
-    .el-card {
-      box-shadow: none;
+    .user {
+      margin-bottom: 30px;
+
+      span {
+        padding-right: 10px;
+        font-weight: 100;
+        font-size: 12px;
+      }
+    }
+
+    .topic {
     }
   }
 

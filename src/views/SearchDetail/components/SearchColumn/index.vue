@@ -17,6 +17,9 @@
           <div class="l__desc">耳机戴久了，耳朵会疼，我就是来解决这个问题的。</div>
         </div>
       </div>
+      <div class="btn">
+        <el-button>订阅 • SSR</el-button>
+      </div>
     </template>
   </el-card>
 </template>
@@ -76,6 +79,10 @@
           }
         }
       }
+    }
+
+    .btn {
+      margin-right: 20px;
     }
   }
 }

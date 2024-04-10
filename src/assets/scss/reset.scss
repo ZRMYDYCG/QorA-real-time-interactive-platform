@@ -17,3 +17,7 @@ html {
   -ms-overflow-style: none; /* IE和Edge隐藏滚动条 */
   scrollbar-width: none; /* Firefox隐藏滚动条 */
 }
+
+body {
+  cursor: url('../../../public/b.ico') 4 4, default;
+}
