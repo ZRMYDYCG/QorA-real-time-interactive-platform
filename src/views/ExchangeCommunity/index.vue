@@ -125,25 +125,32 @@ watch(
       </el-menu>
     </div>
     <div class="main-content">
-      <div class="top-bar">
-        <el-menu default-active="/exchangeCommunity/communityRecommend" router mode="horizontal">
-          <el-menu-item index="/exchangeCommunity/communityRecommend"> 推荐</el-menu-item>
-          <el-menu-item index="/exchangeCommunity/communityConcern"> 关注</el-menu-item>
-          <el-menu-item index="/exchangeCommunity/communityTags"> 标签 / 专栏</el-menu-item>
-          <el-menu-item index="/exchangeCommunity/communityTopic">近期热议</el-menu-item>
-        </el-menu>
-      </div>
-      <div class="desc">
-        <h3 class="title">
-          <span class="l">Welcome To</span> <span class="">{{ typedText }}</span>
-        </h3>
-        <p style="margin: 20px 0">我们都是生活里的品质体验官，欢迎来到体验官社区。</p>
-        <el-button round>
-          <el-icon>
-            <Refresh />
-          </el-icon>
-          换一批推荐
-        </el-button>
+      <div
+        v-if="
+          $route.path === '/exchangeCommunity/communityRecommend' ||
+          $route.path === '/exchangeCommunity/communityConcern'
+        "
+      >
+        <div class="top-bar">
+          <el-menu default-active="/exchangeCommunity/communityRecommend" router mode="horizontal">
+            <el-menu-item index="/exchangeCommunity/communityRecommend"> 推荐</el-menu-item>
+            <el-menu-item index="/exchangeCommunity/communityConcern"> 关注</el-menu-item>
+            <el-menu-item index="/exchangeCommunity/communityTags"> 标签 / 专栏</el-menu-item>
+            <el-menu-item index="/exchangeCommunity/communityTopic">近期热议</el-menu-item>
+          </el-menu>
+        </div>
+        <div class="desc">
+          <h3 class="title">
+            <span class="l">Welcome To</span> <span class="">{{ typedText }}</span>
+          </h3>
+          <p style="margin: 20px 0">我们都是生活里的品质体验官，欢迎来到体验官社区。</p>
+          <el-button round>
+            <el-icon>
+              <Refresh />
+            </el-icon>
+            换一批推荐
+          </el-button>
+        </div>
       </div>
       <router-view></router-view>
     </div>

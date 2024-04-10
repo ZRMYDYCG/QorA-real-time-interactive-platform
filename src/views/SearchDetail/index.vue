@@ -183,28 +183,31 @@ const userList = ref([{ name: 1 }, {}, {}])
       </el-tabs>
     </div>
     <div class="detail--right">
-      <div class="user">
-        <SliderRecommendCard :data="userList" title="体验官推荐">
-          <template #headerRight>
-            <span>换一批推荐官</span>
-            <el-icon>
-              <Refresh />
-            </el-icon>
-          </template>
-          <template #default="slotProps">
-            <SearchUser v-for="item in slotProps"></SearchUser>
-          </template>
-        </SliderRecommendCard>
-      </div>
+      <el-affix :offset="20">
+        <div class="user">
+          <SliderRecommendCard :data="userList" title="体验官推荐">
+            <template #headerRight>
+              <span>换一批推荐官</span>
+              <el-icon>
+                <Refresh />
+              </el-icon>
+            </template>
+            <template #default="slotProps">
+              <SearchUser v-for="item in slotProps"></SearchUser>
+            </template>
+          </SliderRecommendCard>
+        </div>
 
-      <div class="topic">
-        <SliderRecommendCard :data="userList" title="猜你感兴趣">
-          <template #default="slotProps">
-            <SearchColumn v-for="item in slotProps"></SearchColumn>
-          </template>
-        </SliderRecommendCard>
-      </div>
+        <div class="topic">
+          <SliderRecommendCard :data="userList" title="猜你感兴趣">
+            <template #default="slotProps">
+              <SearchColumn v-for="item in slotProps"></SearchColumn>
+            </template>
+          </SliderRecommendCard>
+        </div>
+      </el-affix>
     </div>
+    <el-backtop :right="100" :bottom="100" />
   </div>
 </template>
 
@@ -215,11 +218,11 @@ const userList = ref([{ name: 1 }, {}, {}])
   display: flex;
 
   .detail--left {
-    flex: 5;
+    flex: 8;
   }
 
   .detail--right {
-    flex: 3;
+    flex: 2;
     height: 100px;
     margin-top: 40px;
     margin-left: 30px;
