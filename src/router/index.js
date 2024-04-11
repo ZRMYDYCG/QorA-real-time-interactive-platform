@@ -80,6 +80,10 @@ export const constantRoutes = [
         ]
       },
       {
+        path: '/findOut',
+        component: () => import('@/views/FindOut/index.vue')
+      },
+      {
         path: '/searchDetail',
         component: () => import('@/views/SearchDetail/index.vue')
       }
