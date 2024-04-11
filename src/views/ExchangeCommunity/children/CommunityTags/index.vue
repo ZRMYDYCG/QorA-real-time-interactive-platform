@@ -1,51 +1,45 @@
 <template>
+  <!-- 注意：标签与专栏不是一回事，当用户发布产品体会的时候，都会让其添加对应的标签 -->
+  <!-- 而专栏：是用户自己创建的一个分享产品文章的地方，属于一个富文本区 -->
   <div class="community-tags">
-    <el-row>
-      <el-col :span="6">
-        <el-anchor
-          :container="containerRef"
-          direction="vertical"
-          type="default"
-          :offset="30"
-          @click="handleClick"
-        >
-          <el-anchor-link href="#part1" title="part1" />
-          <el-anchor-link href="#part2" title="part2" />
-          <el-anchor-link href="#part3" title="part3" />
-        </el-anchor>
-      </el-col>
-      <el-col :span="18">
-        <div ref="containerRef" style="height: 300px; overflow-y: auto">
-          <div
-            id="part1"
-            style="height: 300px; background: rgba(255, 0, 0, 0.02); margin-top: 30px"
-          >
-            part1
-          </div>
-          <div
-            id="part2"
-            style="height: 300px; background: rgba(0, 255, 0, 0.02); margin-top: 30px"
-          >
-            part2
-          </div>
-          <div
-            id="part3"
-            style="height: 300px; background: rgba(0, 0, 255, 0.02); margin-top: 30px"
-          >
-            part3
-          </div>
-        </div>
-      </el-col>
-    </el-row>
+    <div class="header">
+      <h3 class="title">标签</h3>
+      <p class="desc">快来寻找你喜欢的生活标签和生活专栏吧</p>
+    </div>
+    <div class="search">
+      <el-input placeholder="搜索标签"></el-input>
+      <div class="btn">
+        <filter-button></filter-button>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
-
-const containerRef = ref(null)
-
-const handleClick = (e) => {
-  e.preventDefault()
-}
+import filterButton from './components/filter-button/index.vue'
 </script>
+
+<style lang="scss" scoped>
+.community-tags {
+  .header {
+    .title {
+      margin-bottom: 10px;
+    }
+
+    .desc {
+      color: #aaaaaa;
+      font-size: 12px;
+    }
+  }
+
+  .search {
+    margin: 20px 0;
+    display: flex;
+    justify-content: space-between;
+
+    .el-input {
+      width: 220px;
+    }
+  }
+}
+</style>
