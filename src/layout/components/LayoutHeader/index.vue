@@ -1,72 +1,74 @@
 <template>
-  <div class="layout-header">
-    <div class="layout-header--menu">
-      <el-menu
-        :ellipsis="false"
-        :default-active="activeIndex"
-        mode="horizontal"
-        @select="handleSelect"
-        router
-      >
-        <el-menu-item index="/exchangeCommunity">体验官社区</el-menu-item>
-        <el-menu-item index="/findOut">体验问答</el-menu-item>
-        <el-menu-item index="3">发现</el-menu-item>
-        <el-menu-item index="4">更多</el-menu-item>
-      </el-menu>
-    </div>
-    <div class="layout-header--logo">
-      <img src="https://pic.imgdb.cn/item/661144af68eb93571340264d.png" alt="" />
-    </div>
-    <div class="layout-header--userinfo">
-      <div class="layout-header--search">
-        <el-popover
-          placement="bottom"
-          :width="370"
-          content="this is content, this is content, this is content"
+  <el-affix>
+    <div class="layout-header">
+      <div class="layout-header--menu">
+        <el-menu
+          :ellipsis="false"
+          :default-active="activeIndex"
+          mode="horizontal"
+          @select="handleSelect"
+          router
         >
-          <template #reference>
-            <el-input
-              prefix-icon="Search"
-              @keydown.enter.native="searchAction"
-              placeholder="快来输入你要搜索的内容吧"
-              v-model="searchQuery"
-            ></el-input>
-          </template>
-        </el-popover>
+          <el-menu-item index="/exchangeCommunity">体验官社区</el-menu-item>
+          <el-menu-item index="/findOut">体验问答</el-menu-item>
+          <el-menu-item index="3">发现</el-menu-item>
+          <el-menu-item index="4">更多</el-menu-item>
+        </el-menu>
       </div>
-      <themeSwitch></themeSwitch>
-      <div class="userinfo__message">
-        <div class="message--icon">
-          <el-icon>
-            <Notification />
-          </el-icon>
-          <span> 消息 </span>
-        </div>
-        <div class="message--icon">
-          <el-icon>
-            <Connection />
-          </el-icon>
-          <span> 私信 </span>
-        </div>
+      <div class="layout-header--logo">
+        <img src="https://pic.imgdb.cn/item/661144af68eb93571340264d.png" alt="" />
       </div>
-      <div class="userinfo__avatarPic">
-        <el-dropdown>
-          <img src="https://pic.imgdb.cn/item/660e1fa89f345e8d03525df8.png" alt="" />
-          <template #dropdown>
-            <el-dropdown-menu>
-              <el-dropdown-item>
-                <router-link to="/userHome">个人主页</router-link>
-              </el-dropdown-item>
-              <el-dropdown-item>我的提问</el-dropdown-item>
-              <el-dropdown-item>我的回答</el-dropdown-item>
-              <el-dropdown-item>退出登录</el-dropdown-item>
-            </el-dropdown-menu>
-          </template>
-        </el-dropdown>
+      <div class="layout-header--userinfo">
+        <div class="layout-header--search">
+          <el-popover
+            placement="bottom"
+            :width="370"
+            content="this is content, this is content, this is content"
+          >
+            <template #reference>
+              <el-input
+                prefix-icon="Search"
+                @keydown.enter.native="searchAction"
+                placeholder="快来输入你要搜索的内容吧"
+                v-model="searchQuery"
+              ></el-input>
+            </template>
+          </el-popover>
+        </div>
+        <themeSwitch></themeSwitch>
+        <div class="userinfo__message">
+          <div class="message--icon">
+            <el-icon>
+              <Notification />
+            </el-icon>
+            <span> 消息 </span>
+          </div>
+          <div class="message--icon">
+            <el-icon>
+              <Connection />
+            </el-icon>
+            <span> 私信 </span>
+          </div>
+        </div>
+        <div class="userinfo__avatarPic">
+          <el-dropdown>
+            <img src="https://pic.imgdb.cn/item/660e1fa89f345e8d03525df8.png" alt="" />
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item>
+                  <router-link to="/userHome">个人主页</router-link>
+                </el-dropdown-item>
+                <el-dropdown-item>我的提问</el-dropdown-item>
+                <el-dropdown-item>我的回答</el-dropdown-item>
+                <el-dropdown-item>退出登录</el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
+        </div>
       </div>
     </div>
-  </div>
-  <div class="layout-header--search-hid">
+  </el-affix>
+  <div v-if="$route.path !== '/findOut'" class="layout-header--search-hid">
     <el-input
       prefix-icon="Search"
       placeholder="全站搜索"
@@ -78,11 +80,12 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, watch } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 import themeSwitch from './theme-switch.vue'
 
 const router = useRouter()
+const route = useRoute()
 
 const activeIndex = ref('1')
 const handleSelect = (key, keyPath) => {
@@ -106,6 +109,20 @@ const searchAction = ($event) => {
     query: { keyword: searchQuery.value }
   })
 }
+
+const backGroundType = ref('')
+watch(
+  route,
+  (newRoute) => {
+    if (newRoute.path === '/findOut') {
+      backGroundType.value =
+        'url(https://th.bing.com/th/id/R.7e57686b89419361ce0b5d6c5658c744?rik=Eh9qfhw%2bRUZEJA&riu=http%3a%2f%2fimg.yipic.cn%2fthumb%2f357c44cf%2f6ac27d55%2fb6f5075c%2f48241d3b%2fbig_357c44cf6ac27d55b6f5075c48241d3b.png%3fx-oss-process%3dimage%2fformat%2cwebp%2fsharpen%2c100&ehk=xXfDoME280n3hSeJBvDzHUQkWZ9efEYw0oSiTE90Ew0%3d&risl=&pid=ImgRaw&r=0)'
+    } else {
+      backGroundType.value = 'var(--layout-header-bg-color)'
+    }
+  },
+  { immediate: true }
+)
 </script>
 
 <style lang="scss" scoped>
@@ -116,7 +133,7 @@ const searchAction = ($event) => {
   width: 100%;
   align-items: center;
   justify-content: space-around;
-  background-color: var(--layout-header-bg-color);
+  background: v-bind(backGroundType);
   border-bottom: 1px solid var(--ys-bar-bg-color);
 
   .layout-header--logo {
@@ -134,6 +151,7 @@ const searchAction = ($event) => {
     .el-menu {
       border-bottom: none;
       height: 50px;
+      background: v-bind(backGroundType);
     }
   }
 

@@ -12,11 +12,108 @@
         <filter-button></filter-button>
       </div>
     </div>
+    <div class="main">
+      <div class="main--tags">
+        <tag-item
+          :tagInfo="{
+            tagName: '茶具',
+            total: 234,
+            content:
+              '今天你喝茶了吗,今天你喝茶了吗,今天你喝茶了吗,今天你喝茶了吗,今天你喝茶了吗,今天你喝茶了吗,今天你喝茶了吗,今天你喝茶了吗,今天你喝茶了吗'
+          }"
+        ></tag-item>
+        <tag-item
+          :tagInfo="{
+            tagName: '茶具',
+            total: 234,
+            content:
+              '今天你喝茶了吗,今天你喝茶了吗,今天你喝茶了吗,今天你喝茶了吗,今天你喝茶了吗,今天你喝茶了吗,今天你喝茶了吗,今天你喝茶了吗,今天你喝茶了吗'
+          }"
+        ></tag-item>
+        <tag-item
+          :tagInfo="{
+            tagName: '茶具',
+            total: 234,
+            content:
+              '今天你喝茶了吗,今天你喝茶了吗,今天你喝茶了吗,今天你喝茶了吗,今天你喝茶了吗,今天你喝茶了吗,今天你喝茶了吗,今天你喝茶了吗,今天你喝茶了吗'
+          }"
+        ></tag-item>
+        <tag-item
+          :tagInfo="{
+            tagName: '茶具',
+            total: 234,
+            content:
+              '今天你喝茶了吗,今天你喝茶了吗,今天你喝茶了吗,今天你喝茶了吗,今天你喝茶了吗,今天你喝茶了吗,今天你喝茶了吗,今天你喝茶了吗,今天你喝茶了吗'
+          }"
+        ></tag-item>
+        <tag-item
+          :tagInfo="{
+            tagName: '茶具',
+            total: 234,
+            content:
+              '今天你喝茶了吗,今天你喝茶了吗,今天你喝茶了吗,今天你喝茶了吗,今天你喝茶了吗,今天你喝茶了吗,今天你喝茶了吗,今天你喝茶了吗,今天你喝茶了吗'
+          }"
+        ></tag-item>
+        <tag-item
+          :tagInfo="{
+            tagName: '茶具',
+            total: 234,
+            content:
+              '今天你喝茶了吗,今天你喝茶了吗,今天你喝茶了吗,今天你喝茶了吗,今天你喝茶了吗,今天你喝茶了吗,今天你喝茶了吗,今天你喝茶了吗,今天你喝茶了吗'
+          }"
+        ></tag-item>
+        <tag-item
+          :tagInfo="{
+            tagName: '茶具',
+            total: 234,
+            content:
+              '今天你喝茶了吗,今天你喝茶了吗,今天你喝茶了吗,今天你喝茶了吗,今天你喝茶了吗,今天你喝茶了吗,今天你喝茶了吗,今天你喝茶了吗,今天你喝茶了吗'
+          }"
+        ></tag-item>
+        <tag-item
+          :tagInfo="{
+            tagName: '茶具',
+            total: 234,
+            content:
+              '今天你喝茶了吗,今天你喝茶了吗,今天你喝茶了吗,今天你喝茶了吗,今天你喝茶了吗,今天你喝茶了吗,今天你喝茶了吗,今天你喝茶了吗,今天你喝茶了吗'
+          }"
+        ></tag-item>
+        <tag-item
+          :tagInfo="{
+            tagName: '茶具',
+            total: 234,
+            content:
+              '今天你喝茶了吗,今天你喝茶了吗,今天你喝茶了吗,今天你喝茶了吗,今天你喝茶了吗,今天你喝茶了吗,今天你喝茶了吗,今天你喝茶了吗,今天你喝茶了吗'
+          }"
+        ></tag-item>
+        <tag-item
+          :tagInfo="{
+            tagName: '茶具',
+            total: 234,
+            content:
+              '今天你喝茶了吗,今天你喝茶了吗,今天你喝茶了吗,今天你喝茶了吗,今天你喝茶了吗,今天你喝茶了吗,今天你喝茶了吗,今天你喝茶了吗,今天你喝茶了吗'
+          }"
+        ></tag-item>
+        <tag-item
+          :tagInfo="{
+            tagName: '茶具',
+            total: 234,
+            content:
+              '今天你喝茶了吗,今天你喝茶了吗,今天你喝茶了吗,今天你喝茶了吗,今天你喝茶了吗,今天你喝茶了吗,今天你喝茶了吗,今天你喝茶了吗,今天你喝茶了吗'
+          }"
+        ></tag-item>
+        <div style="width: 280px; margin: 20px"></div>
+      </div>
+      <div class="main-page">
+        <el-pagination background layout="prev, pager, next" :total="1000" />
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup>
 import filterButton from './components/filter-button/index.vue'
+import tagItem from './components/tag-item/index.vue'
 </script>
 
 <style lang="scss" scoped>
@@ -39,6 +136,21 @@ import filterButton from './components/filter-button/index.vue'
 
     .el-input {
       width: 220px;
+    }
+  }
+
+  .main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .main--tags {
+      width: 100%;
+      display: flex;
+      flex-wrap: wrap;
+      margin: 0 auto; // 盒子内容水平居中
+      align-content: flex-start; // 解决换行后盒子垂直间距问题
+      justify-content: center;
     }
   }
 }

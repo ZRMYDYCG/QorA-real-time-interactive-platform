@@ -76,6 +76,10 @@ export const constantRoutes = [
           {
             path: '/exchangeCommunity/communityTopic',
             component: () => import('@/views/ExchangeCommunity/children/CommunityTopic/index.vue')
+          },
+          {
+            path: '/exchangeCommunity/communityTags',
+            component: () => import('@/views/ExchangeCommunity/children/CommunityColumn/index.vue')
           }
         ]
       },

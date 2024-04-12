@@ -1,5 +1,12 @@
 <script setup>
 import { ref, watch } from 'vue'
+
+import { useExchangeCommunityStore } from '@/stores/modules/ExchangeCommunity/index.js'
+
+import messingItem from './components/messing-item/index.vue'
+
+const exchangeCommunityStore = useExchangeCommunityStore()
+
 import { pcaTextArr } from 'element-china-area-data'
 
 const searchValue = ref('')
@@ -116,15 +123,51 @@ watch(
 
 <template>
   <div class="container">
+    <!--  聊天窗口  -->
+    <el-drawer
+      :with-header="false"
+      v-model="exchangeCommunityStore.DrawerState"
+      :show-close="false"
+      direction="ltr"
+    >
+      <div class="chat-header">
+        <div class="header--left">
+          <el-icon>
+            <ArrowLeftBold />
+          </el-icon>
+          <span class="nickName">可目十</span>
+        </div>
+        <div class="header--right">
+          <el-icon>
+            <Setting />
+          </el-icon>
+        </div>
+      </div>
+      <div class="chat-content">
+        <messing-item :type="1"></messing-item>
+        <messing-item :type="1"></messing-item>
+        <messing-item :type="0"></messing-item>
+      </div>
+      <div class="chat-send">
+        <el-input placeholder="发个消息聊聊呗~"></el-input>
+        <el-icon>
+          <PictureRounded />
+        </el-icon>
+        <el-icon>
+          <Opportunity />
+        </el-icon>
+      </div>
+    </el-drawer>
     <div class="left-bar">
       <el-menu default-active="/exchangeCommunity/communityRecommend" router>
         <el-menu-item index="/exchangeCommunity/communityRecommend"> 推荐</el-menu-item>
         <el-menu-item index="/exchangeCommunity/communityConcern"> 关注</el-menu-item>
-        <el-menu-item index="/exchangeCommunity/communityTags"> 标签 / 专栏</el-menu-item>
+        <el-menu-item index="/exchangeCommunity/communityTags"> 标签</el-menu-item>
+        <el-menu-item index="/exchangeCommunity/communityColumn"> 专栏</el-menu-item>
         <el-menu-item index="/exchangeCommunity/communityTopic"> 近期热议</el-menu-item>
       </el-menu>
     </div>
-    <div class="main-content">
+    <div class="main-content" id="main">
       <div
         v-if="
           $route.path === '/exchangeCommunity/communityRecommend' ||
@@ -257,6 +300,58 @@ watch(
 </template>
 
 <style scoped lang="scss">
+// 聊天窗口样式
+// 特例：这个最外层要穿透样式
+:deep(.el-drawer) {
+  --el-dialog-padding-primary: 0;
+  background-color: #f1f2f3;
+
+  .chat-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 60px;
+    padding: 0 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px #eaeaea;
+
+    .header--left {
+      display: flex;
+      align-items: center;
+      font-size: 18px;
+
+      .nickName {
+        margin-left: 15px;
+      }
+    }
+
+    .header--right {
+    }
+  }
+
+  .chat-content {
+    height: calc(100% - 120px);
+    padding: 20px;
+    overflow: auto;
+  }
+
+  .chat-send {
+    display: flex;
+    padding: 0 30px;
+    align-items: center;
+    height: 60px;
+    background-color: #fff;
+
+    .el-input {
+      flex: 1;
+    }
+
+    .el-icon {
+      margin-left: 30px;
+    }
+  }
+}
+
 .container {
   display: flex;
   flex-direction: row;

@@ -1,6 +1,13 @@
 <script setup>
 import YsScroll from '@/components/base/ys-scroll/src/ys-scroll.vue'
 import { More } from '@element-plus/icons-vue'
+import { useExchangeCommunityStore } from '@/stores/modules/ExchangeCommunity/index.js'
+
+const exchangeCommunityStore = useExchangeCommunityStore()
+const openDrawer = () => {
+  exchangeCommunityStore.openDrawer()
+}
+
 import { ref, onMounted } from 'vue'
 
 defineProps({
@@ -57,7 +64,7 @@ onMounted(() => {
       <div class="exchange-item">
         <div class="item-header">
           <div class="header-userInfo">
-            <el-popover width="300" placement="bottom" :width="200" trigger="hover">
+            <el-popover width="300" placement="bottom" trigger="hover">
               <template #default>
                 <div class="info-popup">
                   <img
@@ -118,7 +125,7 @@ onMounted(() => {
             </div>
           </div>
           <div class="header-btn">
-            <el-button>私信</el-button>
+            <el-button @click="openDrawer">私信</el-button>
           </div>
         </div>
         <div class="item-content">
