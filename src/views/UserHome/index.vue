@@ -60,6 +60,10 @@ const isVertical = false
 
 <style lang="scss">
 .userHome {
+  width: 60vw;
+  margin: 0 auto;
+  background: url('../../../public/user-bg.svg');
+
   .header--userInfo {
     display: flex;
 

@@ -74,12 +74,12 @@ export const constantRoutes = [
             component: () => import('@/views/ExchangeCommunity/children/CommunityTags/index.vue')
           },
           {
-            path: '/exchangeCommunity/communityTopic',
-            component: () => import('@/views/ExchangeCommunity/children/CommunityTopic/index.vue')
+            path: '/exchangeCommunity/communityColumn',
+            component: () => import('@/views/ExchangeCommunity/children/CommunityColumn/index.vue')
           },
           {
-            path: '/exchangeCommunity/communityTags',
-            component: () => import('@/views/ExchangeCommunity/children/CommunityColumn/index.vue')
+            path: '/exchangeCommunity/communityTopic',
+            component: () => import('@/views/ExchangeCommunity/children/CommunityTopic/index.vue')
           }
         ]
       },
