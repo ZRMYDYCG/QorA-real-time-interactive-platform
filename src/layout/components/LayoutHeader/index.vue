@@ -43,12 +43,31 @@
             </el-icon>
             <span> 消息 </span>
           </div>
-          <div class="message--icon">
-            <el-icon>
-              <Connection />
-            </el-icon>
-            <span> 私信 </span>
-          </div>
+          <el-popover placement="bottom" title="我的私信" :width="400" trigger="click">
+            <template #reference>
+              <div class="message--icon">
+                <el-icon>
+                  <Connection />
+                </el-icon>
+                <span> 私信 </span>
+              </div>
+            </template>
+            <template #default>
+              <div class="message-main">
+                <message-item></message-item>
+                <message-item></message-item>
+                <message-item></message-item>
+                <message-item></message-item>
+                <message-item></message-item>
+                <message-item></message-item>
+                <message-item></message-item>
+                <message-item></message-item>
+              </div>
+              <div class="message-footer">
+                <div class="footer-right">查看全部私信</div>
+              </div>
+            </template>
+          </el-popover>
         </div>
         <div class="userinfo__avatarPic">
           <el-dropdown>
@@ -83,6 +102,7 @@
 import { ref, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import themeSwitch from './theme-switch.vue'
+import messageItem from './message-item.vue'
 
 const router = useRouter()
 const route = useRoute()
@@ -227,5 +247,29 @@ watch(
   .layout-header--search-hid {
     display: block;
   }
+}
+</style>
+
+<style>
+.el-popover__title {
+  text-align: center;
+  font-size: 20px;
+  font-weight: 100;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 20px;
+}
+
+.message-main {
+  height: 400px;
+  overflow: auto;
+}
+
+.message-footer {
+  display: flex;
+  justify-content: flex-end;
+  border-top: 1px solid #eee;
+  padding-top: 12px;
+  color: #ccc;
+  cursor: pointer;
 }
 </style>
