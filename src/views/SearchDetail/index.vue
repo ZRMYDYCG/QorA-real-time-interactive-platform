@@ -183,29 +183,35 @@ const userList = ref([{ name: 1 }, {}, {}])
       </el-tabs>
     </div>
     <div class="detail--right">
-      <el-affix :offset="100">
-        <div class="user">
-          <SliderRecommendCard :data="userList" title="体验官推荐">
-            <template #headerRight>
-              <span>换一批推荐官</span>
-              <el-icon>
-                <Refresh />
-              </el-icon>
-            </template>
-            <template #default="slotProps">
-              <SearchUser v-for="item in slotProps"></SearchUser>
-            </template>
-          </SliderRecommendCard>
-        </div>
+      <div class="user">
+        <SliderRecommendCard :data="userList" title="体验官推荐">
+          <template #headerRight>
+            <span>换一批推荐官</span>
+            <el-icon>
+              <Refresh />
+            </el-icon>
+          </template>
+          <template #default="slotProps">
+            <SearchUser v-for="item in slotProps"></SearchUser>
+          </template>
+        </SliderRecommendCard>
+      </div>
 
-        <div class="topic">
-          <SliderRecommendCard :data="userList" title="猜你感兴趣">
-            <template #default="slotProps">
-              <SearchColumn v-for="item in slotProps"></SearchColumn>
-            </template>
-          </SliderRecommendCard>
-        </div>
-      </el-affix>
+      <div class="topic">
+        <SliderRecommendCard :data="userList" title="猜你感兴趣">
+          <template #default="slotProps">
+            <SearchColumn v-for="item in slotProps"></SearchColumn>
+          </template>
+        </SliderRecommendCard>
+      </div>
+
+      <div class="seek">
+        <SliderRecommendCard title="发现好问题"></SliderRecommendCard>
+      </div>
+
+      <div class="column">
+        <SliderRecommendCard title="专栏推荐"></SliderRecommendCard>
+      </div>
     </div>
     <el-backtop :right="100" :bottom="100" />
   </div>
@@ -239,6 +245,11 @@ const userList = ref([{ name: 1 }, {}, {}])
     }
 
     .topic {
+      margin-bottom: 30px;
+    }
+
+    .seek {
+      margin-bottom: 30px;
     }
   }
 
