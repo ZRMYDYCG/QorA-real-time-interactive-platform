@@ -183,7 +183,7 @@ const userList = ref([{ name: 1 }, {}, {}])
       </el-tabs>
     </div>
     <div class="detail--right">
-      <el-affix :offset="20">
+      <el-affix :offset="100">
         <div class="user">
           <SliderRecommendCard :data="userList" title="体验官推荐">
             <template #headerRight>

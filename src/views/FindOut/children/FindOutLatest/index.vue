@@ -6,14 +6,6 @@ import SeekHelpItem from '../../components/seek-help-item/index.vue'
   <div style="display: flex; flex-direction: column">
     <seek-help-item></seek-help-item>
     <seek-help-item></seek-help-item>
-
-    <seek-help-item></seek-help-item>
-    <seek-help-item></seek-help-item>
-
-    <seek-help-item></seek-help-item>
-    <seek-help-item></seek-help-item>
-    <seek-help-item></seek-help-item>
-    <seek-help-item></seek-help-item>
     <seek-help-item></seek-help-item>
     <seek-help-item></seek-help-item>
     <seek-help-item></seek-help-item>
