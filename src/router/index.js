@@ -85,7 +85,26 @@ export const constantRoutes = [
       },
       {
         path: '/findOut',
-        component: () => import('@/views/FindOut/index.vue')
+        component: () => import('@/views/FindOut/index.vue'),
+        redirect: '/findOut/latest',
+        children: [
+          {
+            path: '/findOut/latest',
+            component: () => import('@/views/FindOut/children/FindOutLatest/index.vue')
+          },
+          {
+            path: '/findOut/urgent',
+            component: () => import('@/views/FindOut/children/FindOutUnresolved/index.vue')
+          },
+          {
+            path: '/findOut/commend',
+            component: () => import('@/views/FindOut/children/FindOutreCommend/index.vue')
+          },
+          {
+            path: '/findOut/unresolved',
+            component: () => import('@/views/FindOut/children/FindOutUnresolved/index.vue')
+          }
+        ]
       },
       {
         path: '/searchDetail',
