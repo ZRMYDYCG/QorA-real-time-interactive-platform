@@ -1,8 +1,15 @@
-<script setup></script>
+<script setup>
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
+const toChatWindow = () => {
+  router.push('/chatRoom/chatDetail')
+}
+</script>
 
 <template>
   <div class="contact-item">
-    <el-menu-item>
+    <el-menu-item @click.native="toChatWindow">
       <div class="contact-item">
         <img
           class="user-pic"
@@ -11,6 +18,11 @@
         />
         <div class="item-right">
           <span class="nickName">小明</span>
+        </div>
+        <div class="icon">
+          <el-icon>
+            <Promotion />
+          </el-icon>
         </div>
       </div>
     </el-menu-item>
@@ -25,6 +37,7 @@
 
 .contact-item {
   display: flex;
+  position: relative;
   align-items: center;
   width: 100%;
   background-color: transparent;
@@ -36,6 +49,7 @@
   }
 
   .user-pic {
+    position: relative;
     width: 35px;
     height: 35px;
     border-radius: 50%;
@@ -47,6 +61,15 @@
     .nickName {
       font-weight: 100;
       margin-top: -15px;
+    }
+  }
+
+  .icon {
+    position: absolute;
+    right: -160px;
+
+    &:hover {
+      scale: (1.1);
     }
   }
 }
