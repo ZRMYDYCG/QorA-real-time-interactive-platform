@@ -109,6 +109,32 @@ export const constantRoutes = [
       {
         path: '/searchDetail',
         component: () => import('@/views/SearchDetail/index.vue')
+      },
+      {
+        path: '/chatRoom',
+        component: () => import('@/views/ChatRoom/index.vue'),
+        children: [
+          {
+            path: '',
+            component: () => import('@/views/ChatRoom/children/Default/index.vue')
+          },
+          {
+            path: '/chatRoom/blackUser',
+            component: () => import('@/views/ChatRoom/children/BlacklistUser/index.vue')
+          },
+          {
+            path: '/chatRoom/chatDetail',
+            component: () => import('@/views/ChatRoom/children/ChatDetail/index.vue')
+          },
+          {
+            path: '/chatRoom/SearchUser',
+            component: () => import('@/views/ChatRoom/children/SearchUser/index.vue')
+          },
+          {
+            path: '/chatRoom/CharSetting',
+            component: () => import('@/views/ChatRoom/children/ChatSetting/index.vue')
+          }
+        ]
       }
     ]
   }

@@ -64,7 +64,7 @@
                 <message-item></message-item>
               </div>
               <div class="message-footer">
-                <div class="footer-right">查看全部私信</div>
+                <div class="footer-right" @click="$router.push('/chatRoom')">查看全部私信</div>
               </div>
             </template>
           </el-popover>
@@ -87,7 +87,10 @@
       </div>
     </div>
   </el-affix>
-  <div v-if="!$route.path.includes('/findOut')" class="layout-header--search-hid">
+  <div
+    v-if="!$route.path.includes('/findOut') && !$route.path.includes('/chatRoom')"
+    class="layout-header--search-hid"
+  >
     <el-input
       prefix-icon="Search"
       placeholder="全站搜索"

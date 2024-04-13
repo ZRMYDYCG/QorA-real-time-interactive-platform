@@ -29,6 +29,10 @@ watch(
       paddingLeft.value = '0px'
       paddingRight.value = '0px'
       paddingTop.value = '0px'
+    } else if (newRoute.path.includes('/chatRoom')) {
+      paddingLeft.value = '0px'
+      paddingRight.value = '0px'
+      paddingTop.value = '50px'
     } else {
       paddingLeft.value = '180px'
       paddingRight.value = '180px'
