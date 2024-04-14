@@ -1,0 +1,7 @@
+<template>
+  <div class="Login"></div>
+</template>
+
+<script setup></script>
+
+<style scoped lang="scss"></style>

@@ -29,6 +29,18 @@ export default defineConfig({
       ]
     })
   ],
+  server: {
+    proxy: {
+      '/socket.io': {
+        target: 'http://10.22.207.112:5000', // 后端服务器地址
+        ws: true, // 代理WebSocket连接
+        changeOrigin: true, // 改变源，去掉代理请求头
+        pathRewrite: {
+          '^/socket.io': '' // 重写路径，去掉前面的`/socket.io`
+        }
+      }
+    }
+  },
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))

@@ -137,6 +137,10 @@ export const constantRoutes = [
         ]
       }
     ]
+  },
+  {
+    path: '/login',
+    component: () => import('@/views/Login/index.vue')
   }
 ]
 
