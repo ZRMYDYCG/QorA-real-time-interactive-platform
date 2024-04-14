@@ -46,7 +46,7 @@ onMounted(() => {
             <Failed />
           </el-icon>
         </div>
-        <div class="set">
+        <div class="set" @click="$router.push('/chatRoom/CharSetting')">
           <el-icon :size="20">
             <Setting />
           </el-icon>

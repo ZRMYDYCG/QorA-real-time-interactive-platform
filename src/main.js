@@ -7,6 +7,7 @@ import './assets/scss/index.scss' // 重要样式出口
 import { registerElementPlusIcons } from '@/utils/index.js'
 // import 'element-plus/theme-chalk/dark/css-vars.css' // 暗黑模式 WRONG: 原组件主题色还保存
 import '@/styles/theme/dark.scss'
+import 'virtual:uno.css' // uno-css
 
 const app = createApp(App)
 

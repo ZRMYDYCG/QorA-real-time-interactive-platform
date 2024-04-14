@@ -4,6 +4,7 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import VueDevTools from 'vite-plugin-vue-devtools'
+import UnoCSS from 'unocss/vite'
 
 // 引入插件
 import AutoImport from 'unplugin-auto-import/vite'
@@ -16,6 +17,7 @@ export default defineConfig({
     vue(),
     vueJsx(),
     VueDevTools(),
+    UnoCSS(),
     // 配置插件
     AutoImport({
       resolvers: [ElementPlusResolver()]
