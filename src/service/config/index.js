@@ -1,26 +1,28 @@
-// 引入
+// 对于 axios 进行二次封装
 import axios from 'axios'
-// 创建实例
-const http = axios.create({
-  baseUrl: 'http://127.0.0.1:5000', // 基地址
-  timeout: 5000 // 超时时间
-})
-// 配置拦截器
-// 添加请求拦截器
-axios.interceptors.request.use(function(config) {
-  // 在发送请求之前做些什么
-  return config
-}, function(error) {
-  // 对请求错误做些什么
-  return Promise.reject(error)
-})
 
-// 添加响应拦截器
-axios.interceptors.response.use(function(response) {
-  // 对响应数据做点什么
-  return response
-}, function(error) {
-  // 对响应错误做点什么
-  return Promise.reject(error)
+// 1. 利用 axios 对象的方法 create, 去创建一个 axios 实例
+let request = axios.create({
+  // create 里面实际就是一个配置对象
+  baseURL: 'http://10.22.207.112:5000',
+  // 代表请求超时的时间
+  timeout: 5000
 })
-export default http // 将该实例对外暴露
+// 2. 请求拦截器：在发请求之前，请求拦截器可以检测到，可以在请求发出去之前做一些事情
+request.interceptors.request.use((config) => {
+  // config：配置对象，对象里面有一个属性很重要，headers请求头
+  return config
+})
+// 3. 响应拦截器
+request.interceptors.response.use(
+  (res) => {
+    // 成功回调函数：服务器响应数据回来之后，响应拦截器可以检测到，可以做一些处理
+    return res
+  },
+  (error) => {
+    // 响应失败的回调函数
+    return Promise.reject(new Error('faile', error))
+  }
+)
+
+export default request

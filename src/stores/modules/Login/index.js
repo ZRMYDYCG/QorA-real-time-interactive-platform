@@ -1,13 +1,13 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import { userLogin } from '@/service/modules/Login/index.js'
+import { adminLogin } from '@/service/Login/index.js'
 
 export const useLoginStore = defineStore('loginStore', () => {
   const token = ref('')
   const userInfo = ref({})
   const loginAccountInfo = ref({})
-  const accountLoginAction = async (accountInfo) => {
-    const res = await userLogin(accountInfo)
+  const accountLoginAction = async () => {
+    const res = await adminLogin()
     console.log(res)
   }
 

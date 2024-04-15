@@ -1,7 +1,9 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 
 const isAdopted = ref(true) // 假设问题是否被采纳的状态，根据实际情况进行调整
+
+onMounted(() => {})
 </script>
 
 <template>

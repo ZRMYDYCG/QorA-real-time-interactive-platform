@@ -63,9 +63,9 @@ const accountInfo = reactive({
 
 const loginAction = () => {
   console.log('登录')
-  const user_number = accountInfo.user_number
-  const user_password = accountInfo.user_password
-  loginStore.accountLoginAction({ user_number, user_password })
+  // const account = accountInfo.user_number
+  // const password = accountInfo.user_password
+  loginStore.accountLoginAction()
 }
 
 // 用户注册模态框
