@@ -39,6 +39,11 @@ export default defineConfig({
           '^/socket.io': '' // 重写路径，去掉前面的`/socket.io`
         }
       }
+      // '/api': {
+      //   target: 'http://10.22.207.112:5000', // 目标服务器地址
+      //   changeOrigin: true, // 改变源站
+      //   rewrite: (path) => path.replace(/^\/api/, '') // 重写请求路径
+      // }
     }
   },
   resolve: {
