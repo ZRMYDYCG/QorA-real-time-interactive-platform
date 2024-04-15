@@ -135,6 +135,10 @@ export const constantRoutes = [
             component: () => import('@/views/ChatRoom/children/ChatSetting/index.vue')
           }
         ]
+      },
+      {
+        path: 'topicDetail',
+        component: () => import('@/views/TopicDetail/index.vue')
       }
     ]
   },
