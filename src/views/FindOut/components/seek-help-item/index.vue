@@ -20,6 +20,7 @@ const isAdopted = ref(true) // 假设问题是否被采纳的状态，根据实�
         <el-tag size="small">Vue.js</el-tag>
       </div>
     </div>
+    <div class="isAdopted">已采纳</div>
   </el-card>
 </template>
 
@@ -28,11 +29,18 @@ const isAdopted = ref(true) // 假设问题是否被采纳的状态，根据实�
   width: 40vw;
   min-width: 300px;
   margin-bottom: 10px;
+  padding: 30px 0;
+
+  &:hover {
+    scale: (1.05);
+    cursor: pointer;
+  }
 
   :deep(.el-card__body) {
-    padding: 20px 10px 10px 10px;
+    padding: 20px 30px 10px 30px;
     display: flex;
     align-items: center;
+    justify-content: space-between;
 
     .left {
       .el-tag {
@@ -43,16 +51,6 @@ const isAdopted = ref(true) // 假设问题是否被采纳的状态，根据实�
 
     .right {
       position: relative;
-
-      &::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        right: 0;
-        width: 60px;
-        height: 20px;
-        background-color: pink;
-      }
 
       .right--top {
         .title {
@@ -67,6 +65,16 @@ const isAdopted = ref(true) // 假设问题是否被采纳的状态，根据实�
           margin-right: 10px;
         }
       }
+    }
+
+    .isAdopted {
+      min-width: 60px;
+      height: 25px;
+      border-radius: 4px;
+      background-color: #6ff298;
+      text-align: center;
+      line-height: 25px;
+      color: #ffff;
     }
   }
 }
