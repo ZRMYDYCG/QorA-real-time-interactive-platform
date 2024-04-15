@@ -1,9 +1,9 @@
 <script setup>
-import { onMounted } from 'vue'
-import { useRealTimeCommunicationStore } from '@/stores/modules/RealTimeCommunication/index.js'
-import io from 'socket.io-client'
+// import { onMounted } from 'vue'
+// import { useRealTimeCommunicationStore } from '@/stores/modules/RealTimeCommunication/index.js'
+// import io from 'socket.io-client'
 
-const realTimeCommunicationStore = useRealTimeCommunicationStore()
+// const realTimeCommunicationStore = useRealTimeCommunicationStore()
 
 // onMounted(() => {
 //   const token = 'your_signed_key'

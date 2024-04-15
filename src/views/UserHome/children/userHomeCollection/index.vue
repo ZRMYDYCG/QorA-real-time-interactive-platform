@@ -1,5 +1,7 @@
 <script setup></script>
 
-<template>div</template>
+<template>
+  <div></div>
+</template>
 
 <style scoped lang="scss"></style>
