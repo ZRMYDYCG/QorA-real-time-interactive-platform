@@ -2,6 +2,7 @@
 import { ref, nextTick, watch, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
+import 'element-plus/theme-chalk/el-message.css'
 
 const router = useRouter()
 
@@ -32,10 +33,7 @@ const handleClose = (tag) => {
 const showInput = (value) => {
   if (value === 5) {
     inputVisible.value = false
-    ElMessage({
-      message: '最多添加 5 个标签',
-      type: 'warning'
-    })
+    ElMessage.error('最多添加 5 个标签')
     return
   }
   inputVisible.value = true
@@ -194,7 +192,7 @@ const handleCloseModel = () => {
               size="small"
               @click="showInput(dynamicTags.length)"
             >
-              {{ dynamicTags.length === 5 ? '最多添加 5 个标签' : '+ 自定义标签' }}
+              + 自定义标签
               <div :class="dynamicTextColor">{{ dynamicTags.length }}<span>&nbsp</span></div>
               / 5
             </el-button>

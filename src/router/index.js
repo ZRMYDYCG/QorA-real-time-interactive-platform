@@ -107,6 +107,10 @@ export const constantRoutes = [
         ]
       },
       {
+        path: 'findOut/detail/:id',
+        component: () => import('@/views/HelpDetail/index.vue')
+      },
+      {
         path: '/searchDetail',
         component: () => import('@/views/SearchDetail/index.vue')
       },

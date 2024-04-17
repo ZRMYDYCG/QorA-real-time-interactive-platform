@@ -1,103 +1,141 @@
 <template>
-  <div ref="textOverflow" class="text-overflow" :style="boxStyle">
-    <span ref="overEllipsis">{{ realText }}</span>
-    <span class="slot-box" v-if="showSlotNode">
-      <slot :click-toggle="toggle" :expanded="expanded"></slot>
-    </span>
+  <h2 class="mb-3">{{ title }}</h2>
+  <div class="dp-text-ellipsis-wrapper">
+    <div class="text" :class="textClass" :style="textStyleObject">
+      <label class="btn" @click="toggleShowAll">
+        <div v-if="!showall">
+          <span>
+            展开
+            {{ hiddenBtn ? '' : '...' }}</span
+          >
+        </div>
+        <span v-else>
+          收起
+          <el-icon><ArrowUpBold /></el-icon
+        ></span>
+      </label>
+      <div v-html="displayInfo"></div>
+    </div>
   </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted, nextTick } from 'vue'
+import { ref, computed, watch } from 'vue'
 
 const props = defineProps({
-  text: {
+  info: {
     type: String,
     default: ''
   },
-  maxLines: {
+  lineClamp: {
     type: Number,
     default: 3
   },
-  width: {
-    type: Number,
-    default: 0
+  hiddenBtn: {
+    type: Boolean,
+    default: false
+  },
+  title: {
+    type: String,
+    default: ''
   }
 })
 
-const offset = ref(props.text.length)
-const expanded = ref(false)
-const slotBoxWidth = ref(0)
-const textBoxWidth = ref(props.width)
-const showSlotNode = ref(false)
+const showall = ref(false)
 
-const boxStyle = computed(() => {
-  if (props.width) {
-    return { width: props.width + 'px' }
+const displayInfo = computed(() => {
+  if (showall.value || props.lineClamp < 1) {
+    return props.info
+  } else {
+    const lines = props.info
+      .split(' ')
+      .slice(0, props.lineClamp * 2)
+      .join(' ')
+    return lines.trim() + (lines.length < props.info.length ? '...' : '')
   }
 })
 
-const realText = computed(() => {
-  const isCutOut = offset.value !== props.text.length
-  let realText = props.text
-  if (isCutOut && !expanded.value) {
-    realText = props.text.slice(0, offset.value) + '...'
-  }
-  return realText
+const textClass = computed(() => {
+  let cls = 'text'
+  cls += showall.value ? ' showall' : ''
+  cls += props.hiddenBtn ? ' hidden-btn' : ''
+  return cls
 })
 
-const calculateOffset = (from, to) => {
-  nextTick(() => {
-    if (Math.abs(from - to) <= 1) return
-    if (isOverflow.value) {
-      offset.value = to
-    } else {
-      offset.value = from
-    }
-    calculateOffset(from, to)
-  })
+const textStyleObject = computed(() => {
+  return showall.value ? { 'max-height': 'none' } : { 'max-height': `${1.5 * props.lineClamp}em` }
+})
+
+const toggleShowAll = () => {
+  showall.value = !showall.value
 }
 
-const isOverflow = computed(() => {
-  const { len, lastWidth } = getLines.value
-
-  if (len < props.maxLines) {
-    return false
+watch(
+  () => props.info,
+  () => {
+    showall.value = false
   }
-  if (props.maxLines) {
-    const lastLineOver =
-      len === props.maxLines && lastWidth + slotBoxWidth.value > textBoxWidth.value
-    if (len > props.maxLines || lastLineOver) {
-      return true
-    }
-  }
-  return false
-})
-
-const getLines = () => {
-  const clientRects = ref('overEllipsis').value.getClientRects()
-  return { len: clientRects.length, lastWidth: clientRects[clientRects.length - 1].width }
-}
-
-const toggle = () => {
-  expanded.value = !expanded.value
-}
-
-onMounted(() => {
-  const { len } = getLines.value
-  if (len > props.maxLines) {
-    showSlotNode.value = true
-    nextTick(() => {
-      slotBoxWidth.value = ref('slotRef').value.clientWidth
-      textBoxWidth.value = ref('textOverflow').value.clientWidth
-      calculateOffset(0, props.text.length)
-    })
-  }
-})
+)
 </script>
 
 <style scoped>
-.slot-box {
-  display: inline-block;
+.dp-text-ellipsis-wrapper {
+  display: flex;
+  margin: 6px 0 20px 0;
+  overflow: hidden;
+  font-size: 14px;
+  line-height: 20px;
+
+  .text {
+    position: relative;
+    overflow: hidden;
+    line-height: 1.5;
+    text-align: justify;
+    text-overflow: ellipsis;
+    word-break: break-all;
+    transition: all 0.3s;
+  }
+
+  .text::before {
+    float: right;
+    height: calc(100% - 20px);
+    content: '';
+  }
+
+  .text::after {
+    position: absolute;
+    width: 999vw;
+    height: 999vw;
+    margin-left: -100px;
+    box-shadow: inset calc(100px - 999vw) calc(30px - 999vw) 0 0 #fff;
+    content: '';
+  }
+
+  .btn {
+    position: relative;
+    float: right;
+    clear: both;
+    margin-left: 10px;
+    font-size: 14px;
+    padding: 0 8px;
+    color: #f396e1;
+    line-height: 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    z-index: 10;
+  }
+
+  .text.showall {
+    max-height: none;
+    transition: all 0.3s;
+  }
+
+  .text.showall .btn::before {
+    visibility: hidden;
+  }
+
+  .text.showall .btn::after {
+    visibility: hidden;
+  }
 }
 </style>
