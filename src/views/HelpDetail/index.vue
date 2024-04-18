@@ -1,8 +1,51 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, reactive } from 'vue'
 import CollapseExpands from '@/components/base/collapse-expands/index.vue'
 import YsImagePreview from '@/components/base/ys-imge-preview/src/ys-image-preview.vue'
 import responseItem from './components/response-item/index.vue'
+
+const responseDetailList = reactive([
+  {
+    userId: 1,
+    nickName: '一小池勺',
+    signature: '我的世界已经是这样了',
+    userAvatarPic: 'https://pic.imgdb.cn/item/661fcb210ea9cb1403b668f8.jpg',
+    isAgree: false,
+    isFold: true,
+    content:
+      '1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 21 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 21 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 21 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 21 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 21 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 21 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 21 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 21 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 21 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2+ 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 21 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 21 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 21 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 21 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 21 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 21 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 21 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 21 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2'
+  },
+  {
+    userId: 2,
+    nickName: '一小池勺',
+    signature: '我的世界已经是这样了',
+    userAvatarPic: 'https://pic.imgdb.cn/item/661fcb210ea9cb1403b668f8.jpg',
+    isAgree: false,
+    isFold: true,
+    content:
+      '1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 21 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 21 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 21 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 21 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 21 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 21 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 21 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 21 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 21 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2+ 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 21 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 21 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 21 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 21 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 21 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 21 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 21 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 21 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2'
+  },
+  {
+    userId: 3,
+    nickName: '一小池勺',
+    signature: '我的世界已经是这样了',
+    userAvatarPic: 'https://pic.imgdb.cn/item/661fcb210ea9cb1403b668f8.jpg',
+    isAgree: true,
+    isFold: true,
+    content:
+      '1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 21 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 21 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 21 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 21 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 21 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 21 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 21 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 21 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 21 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2+ 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 21 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 21 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 21 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 21 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 21 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 21 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 21 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 21 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2'
+  },
+  {
+    userId: 4,
+    nickName: '一小池勺',
+    signature: '我的世界已经是这样了',
+    userAvatarPic: 'https://pic.imgdb.cn/item/661fcb210ea9cb1403b668f8.jpg',
+    isAgree: false,
+    isFold: true,
+    content:
+      '1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 21 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 21 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 21 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 21 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 21 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 21 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 21 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 21 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 21 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2+ 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 21 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 21 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 21 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 21 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 21 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 21 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 21 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 21 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2'
+  }
+])
 
 const hasImages = [
   'https://pic3.zhimg.com/v2-241f40c96463c998f5e3bae85024a93a_r.jpg',
@@ -16,6 +59,24 @@ const hasImages = [
 const YsImagePreviewRef = ref()
 const openPreview = (image) => {
   YsImagePreviewRef.value.openModal(image)
+}
+
+// TODO: 区分不同的回答
+const setRefs = ref({}) // refs 收集器
+
+// 向 ref 收集器中写入
+const setItemRef = (el, key) => {
+  if (el) {
+    setRefs.value[key] = el
+  }
+}
+
+const unfoldBox = (userId, isFold) => {
+  responseDetailList.forEach((item) => {
+    if (item.userId === userId) {
+      item.isFold = !isFold
+    }
+  })
 }
 </script>
 
@@ -120,40 +181,53 @@ const openPreview = (image) => {
           </div>
         </div>
         <div class="card--main">
-          <responseItem response-detail="{}">
-            <template #optionsBtn>
-              <div class="slotBtn">
-                <div class="share item">
-                  <el-icon>
-                    <Share />
-                  </el-icon>
-                  <span>转发</span>
+          <template v-for="item in responseDetailList" :key="item.uerId">
+            <responseItem
+              :ref="(el) => setItemRef(el, `user-${item.userId}`)"
+              :response-detail="item"
+            >
+              <template #optionsBtn="slotScopes">
+                <div class="slotBtn">
+                  <div class="share item">
+                    <el-icon>
+                      <Share />
+                    </el-icon>
+                    <span>转发</span>
+                  </div>
+                  <div
+                    class="comments item"
+                    @click="
+                      unfoldBox(
+                        slotScopes.responseDetail?.userId,
+                        slotScopes.responseDetail?.isFold
+                      )
+                    "
+                  >
+                    <el-icon>
+                      <ChatDotRound />
+                    </el-icon>
+                    <span v-if="slotScopes.responseDetail?.isFold">{{ 3 }} 条评论</span>
+                    <span v-else>收起评论</span>
+                  </div>
+                  <div class="collection item">
+                    <el-icon>
+                      <StarFilled />
+                    </el-icon>
+                    <span>收藏</span>
+                  </div>
+                  <div class="more item">
+                    <el-icon>
+                      <MoreFilled />
+                    </el-icon>
+                    <span>更多</span>
+                  </div>
                 </div>
-                <div class="comments item">
-                  <el-icon>
-                    <ChatDotRound />
-                  </el-icon>
-                  <span>{{ 2 }} 条评论</span>
-                </div>
-                <div class="collection item">
-                  <el-icon>
-                    <StarFilled />
-                  </el-icon>
-                  <span>收藏</span>
-                </div>
-                <div class="more item">
-                  <el-icon>
-                    <MoreFilled />
-                  </el-icon>
-                  <span>更多</span>
-                </div>
-              </div>
-            </template>
-          </responseItem>
+              </template>
+            </responseItem>
+          </template>
         </div>
       </template>
     </el-card>
-
     <el-card class="response--recommend">
       <template #header>
         <div class="card-header">
@@ -294,10 +368,11 @@ const openPreview = (image) => {
 
   .response--recommend {
     width: 300px;
+    height: 350px;
     margin-top: 5px;
     margin-left: 30px;
     box-shadow: none;
-    padding: 20px 60px;
+    padding: 20px 20px;
   }
 }
 </style>

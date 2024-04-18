@@ -25,32 +25,29 @@ const handleAdopt = () => {}
           alt="#"
         />
         <div class="desc">
-          <p class="nickName">可目十</p>
-          <p class="signature">我的世界已经是这样了</p>
+          <p class="nickName">{{ responseDetail.nickName }}</p>
+          <p class="signature">{{ responseDetail.signature }}</p>
         </div>
-        <img class="isAgreeImg" v-if="responseDetail.isAgree" src="" alt="#" />
+        <img
+          class="isAgreeImg"
+          v-if="responseDetail.isAgree"
+          src="https://pic.imgdb.cn/item/6620aef30ea9cb1403d34cfe.png"
+          alt="#"
+        />
       </div>
-      <div class="item-header--dynamicBtn">
+      <div v-if="responseDetail.userId === 1" class="item-header--dynamicBtn">
         <el-button @click="handleConcern">关注</el-button>
       </div>
     </div>
     <div class="item-main">
-      1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1
-      = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1
-      + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 =
-      2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 +
-      1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2
-      ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1
-      = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ??1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2
-      ?1 + 1 = 2 ??1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ??1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 +
-      1 = 2 ??1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?1 + 1 = 2 ?
+      {{ responseDetail.content }}
     </div>
     <div class="item-footer">
       <div class="item-footer--time"></div>
       <div class="item-footer--options">
         <div class="left">
           <!--     便于识别该回答属于哪一个用户     -->
-          <slot name="optionsBtn" :response-id="responseDetail"></slot>
+          <slot name="optionsBtn" :responseDetail="responseDetail"></slot>
         </div>
         <div class="right">
           <el-button v-if="!responseDetail.isAgree" type="text" @click="handleAdopt"
@@ -58,6 +55,9 @@ const handleAdopt = () => {}
           </el-button>
         </div>
       </div>
+    </div>
+    <div v-if="responseDetail.isFold">
+      {{ 2 }}
     </div>
   </div>
 </template>
@@ -78,6 +78,12 @@ const handleAdopt = () => {}
         width: 50px;
         height: 50px;
         border-radius: 4px;
+      }
+
+      .isAgreeImg {
+        width: 65px;
+        height: 65px;
+        margin-left: 15px;
       }
 
       .desc {
