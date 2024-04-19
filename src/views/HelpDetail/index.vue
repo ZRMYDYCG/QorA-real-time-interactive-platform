@@ -147,7 +147,7 @@ const unfoldBox = (userId, isFold) => {
     </el-card>
   </div>
   <div class="help-operation">
-    <el-button type="text">
+    <el-button type="text" @click="$router.push('/richText')">
       <el-icon class="mr1">
         <EditPen />
       </el-icon>

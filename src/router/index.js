@@ -107,7 +107,7 @@ export const constantRoutes = [
         ]
       },
       {
-        path: 'findOut/detail/:id',
+        path: '/findOut/detail/:id',
         component: () => import('@/views/HelpDetail/index.vue')
       },
       {
@@ -143,6 +143,10 @@ export const constantRoutes = [
       {
         path: 'topicDetail',
         component: () => import('@/views/TopicDetail/index.vue')
+      },
+      {
+        path: '/richText',
+        component: () => import('@/views/RichText/index.vue')
       }
     ]
   },
