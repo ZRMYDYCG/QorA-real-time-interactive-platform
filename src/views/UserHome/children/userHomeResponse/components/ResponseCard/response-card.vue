@@ -39,6 +39,24 @@ const handleUpdateIsExpanded = (itemId, value) => {
           <div>1</div>
           <div>1</div>
           <div>1</div>
+          <div>1</div>
+          <div>1</div>
+          <div>1</div>
+          <div>1</div>
+          <div>1</div>
+          <div>1</div>
+          <div>1</div>
+          <div>1</div>
+          <div>1</div>
+          <div>1</div>
+          <div>1</div>
+          <div>1</div>
+          <div>1</div>
+          <div>1</div>
+          <div>1</div>
+          <div>1</div>
+          <div>1</div>
+          <div>1</div>
         </div>
       </template>
     </ys-card>
@@ -47,8 +65,6 @@ const handleUpdateIsExpanded = (itemId, value) => {
 
 <style scoped lang="scss">
 .help-card {
-  margin: 5px 0;
-
   .subtitle {
     padding: 10px;
   }

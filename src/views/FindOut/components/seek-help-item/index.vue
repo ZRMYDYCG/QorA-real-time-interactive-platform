@@ -2,9 +2,14 @@
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 
-const router = useRouter()
+defineProps({
+  itemDetail: {
+    type: Object,
+    default: () => {}
+  }
+})
 
-const isAdopted = ref(true) // 假设问题是否被采纳的状态，根据实际情况进行调整
+const router = useRouter()
 
 const toItemDetail = () => {
   router.push('/findOut/detail/1')
@@ -29,14 +34,15 @@ onMounted(() => {})
         <el-tag type="info" size="small">Vue.js</el-tag>
       </div>
     </div>
+    <!--  未解决  -->
     <div class="isAdopted">已采纳</div>
   </el-card>
 </template>
 
 <style scoped lang="scss">
 .el-card {
-  width: 40vw;
-  min-width: 300px;
+  width: 60vw;
+  min-width: 700px;
   margin-bottom: 10px;
   padding: 30px 0;
 

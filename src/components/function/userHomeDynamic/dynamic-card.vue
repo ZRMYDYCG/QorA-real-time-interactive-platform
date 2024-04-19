@@ -1,4 +1,11 @@
 <script setup>
+// 点赞失活 https://pic.imgdb.cn/item/662272270ea9cb1403be0c8f.png
+// 点赞激活 https://pic.imgdb.cn/item/662272a80ea9cb1403bf08b0.png
+
+// 收藏失活 https://pic.imgdb.cn/item/662272f10ea9cb1403bfb26a.png
+// 收藏激活 https://pic.imgdb.cn/item/662273060ea9cb1403bfd8c8.png
+
+// 评论 https://pic.imgdb.cn/item/662273300ea9cb1403c02a59.png
 import { ref } from 'vue'
 import YsImagePreview from '@/components/base/ys-imge-preview/src/ys-image-preview.vue'
 
@@ -111,15 +118,28 @@ const handleActionClick = (actionType) => {
       <!--   预览图  -->
       <YsImagePreview ref="YsImagePreviewRef"></YsImagePreview>
     </div>
+    <!--  标签  -->
+    <div class="tag">
+      <el-tag>生活</el-tag>
+      <el-tag>景点</el-tag>
+      <el-tag>旅行</el-tag>
+    </div>
     <!-- 底部信息区域 -->
     <div class="card-footer">
       <!-- 点赞、分享、评论计数 -->
       <div class="counts">
         <span class="count like-count">
+          <img src="https://pic.imgdb.cn/item/662272270ea9cb1403be0c8f.png" alt="" />
           {{ likesCount }}
         </span>
-        <span class="count share-count">{{ sharesCount }}</span>
-        <span class="count comment-count">{{ commentsCount }}</span>
+        <span class="count share-count">
+          <img src="https://pic.imgdb.cn/item/662272f10ea9cb1403bfb26a.png" alt="" />
+          {{ sharesCount }}
+        </span>
+        <span class="count comment-count">
+          <img src="https://pic.imgdb.cn/item/662273300ea9cb1403c02a59.png" alt="" />
+          {{ commentsCount }}
+        </span>
       </div>
     </div>
   </el-card>
@@ -194,11 +214,31 @@ const handleActionClick = (actionType) => {
   cursor: pointer;
 }
 
+.tag {
+  display: flex;
+  justify-content: flex-end;
+
+  .el-tag {
+    margin-right: 10px;
+  }
+}
+
 .card-footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 10px;
+
+  img {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+  }
+
+  .count {
+    display: flex;
+    align-items: center;
+  }
 }
 
 .counts {

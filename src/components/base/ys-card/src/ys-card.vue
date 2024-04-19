@@ -78,7 +78,6 @@ const toggleExpand = () => {
 
 <style scoped>
 .card {
-  border: 1px solid #ddd;
   border-radius: 5px;
   overflow: hidden;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -97,7 +96,7 @@ const toggleExpand = () => {
 }
 
 .card-content {
-  padding: 15px;
+  padding: 0;
 }
 
 .card-footer {
@@ -119,7 +118,7 @@ const toggleExpand = () => {
 }
 
 .card-extra-content.expanded {
-  height: 250px;
+  height: 200px;
   overflow: auto;
 }
 </style>

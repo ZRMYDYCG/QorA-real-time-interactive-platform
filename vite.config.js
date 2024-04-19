@@ -5,6 +5,7 @@ import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import VueDevTools from 'vite-plugin-vue-devtools'
 import UnoCSS from 'unocss/vite'
+import requireTransform from 'vite-plugin-require-transform'
 
 // 引入插件
 import AutoImport from 'unplugin-auto-import/vite'
@@ -16,6 +17,7 @@ export default defineConfig({
   plugins: [
     vue(),
     vueJsx(),
+    requireTransform({ fileRegex: /.js$|.vue$/ }),
     VueDevTools(),
     UnoCSS(),
     // 配置插件
