@@ -145,8 +145,8 @@ export const constantRoutes = [
         component: () => import('@/views/TopicDetail/index.vue')
       },
       {
-        path: '/richText',
-        component: () => import('@/views/RichText/index.vue')
+        path: '/publishArticle',
+        component: () => import('@/views/PublishArticle/index.vue')
       }
     ]
   },
