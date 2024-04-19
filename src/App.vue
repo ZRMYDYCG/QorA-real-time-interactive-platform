@@ -42,4 +42,23 @@
   <router-view></router-view>
 </template>
 
-<style scoped></style>
+<style>
+*::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: transparent;
+  border-radius: 4px;
+}
+
+*:hover::-webkit-scrollbar-thumb {
+  background: hsla(0, 0%, 53%, 0.4);
+}
+
+*:hover::-webkit-scrollbar-track {
+  background: transparent;
+}
+</style>
