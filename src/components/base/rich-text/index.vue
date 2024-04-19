@@ -15,9 +15,6 @@
       @onCreated="onCreated"
       @onChange="onChange"
     />
-
-    <button @click="setHtml()">调用API,插入自定义内容</button>
-    <button @click="clear()">调用API,清空全部内容</button>
   </div>
 </template>
 

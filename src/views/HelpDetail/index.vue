@@ -3,6 +3,7 @@ import { ref, reactive } from 'vue'
 import CollapseExpands from '@/components/base/collapse-expands/index.vue'
 import YsImagePreview from '@/components/base/ys-imge-preview/src/ys-image-preview.vue'
 import responseItem from './components/response-item/index.vue'
+import RichText from '@/components/base/rich-text/index.vue'
 
 const responseDetailList = reactive([
   {
@@ -80,7 +81,18 @@ const unfoldBox = (userId, isFold) => {
 }
 
 // 富文本
-const handleRichText = () => {}
+
+const RichTextVisible = ref(false)
+const handleRichText = () => {
+  RichTextVisible.value = !RichTextVisible.value
+}
+
+const content = ref('') // 富文本内容
+
+// 获取富文本内容
+const getContent = (data) => {
+  content.value = data
+}
 </script>
 
 <template>
@@ -244,6 +256,17 @@ const handleRichText = () => {}
       </template>
     </el-card>
   </div>
+
+  <!-- 发布回答模态框 -->
+  <el-dialog v-model="RichTextVisible">
+    <template #title>
+      <h3>回答</h3>
+    </template>
+    <RichText></RichText>
+    <template #footer>
+      <el-button>发布回答</el-button>
+    </template>
+  </el-dialog>
 </template>
 
 <style scoped lang="scss">

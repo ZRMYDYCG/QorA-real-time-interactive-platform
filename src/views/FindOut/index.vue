@@ -3,6 +3,7 @@ import { ref, nextTick, watch, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import 'element-plus/theme-chalk/el-message.css'
+// import UploadFile from '@/components/base/uplod-file/index.vue'
 
 const router = useRouter()
 
@@ -208,6 +209,9 @@ const handleCloseModel = () => {
           <el-checkbox v-model="checkValue" label="是否加急"></el-checkbox>
         </div>
       </div>
+
+      <!--<UploadFile></UploadFile>-->
+
       <div class="dialog-footer">
         <el-button type="primary" @click="dialogVisible = false">发布问题</el-button>
       </div>
