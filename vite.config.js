@@ -10,6 +10,8 @@ import UnoCSS from 'unocss/vite'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
+// OSS 官方配置
+// https://help.aliyun.com/document_detail/64097.html
 
 // 查看文档 https://vitejs.dev/config/
 export default defineConfig({
@@ -34,6 +36,18 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
   },
+  // accessKeyId
+  accessKeyId: '',
+  // accessKeySecret
+  accessKeySecret: '',
+  // 填写Bucket所在地域(以华东1(杭州)为例，region填写为oss-cn-hangzhou)
+  region: '',
+  // 要连接的bucket名称
+  bucket: '',
+  // 是否支持自定义域名
+  // cname: true,
+  // 自定义域名
+  // endpoint: 'http://xxx.com/'
   css: {
     // css预处理器
     preprocessorOptions: {

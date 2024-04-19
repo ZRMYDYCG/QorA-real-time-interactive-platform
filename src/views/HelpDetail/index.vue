@@ -78,6 +78,9 @@ const unfoldBox = (userId, isFold) => {
     }
   })
 }
+
+// 富文本
+const handleRichText = () => {}
 </script>
 
 <template>
@@ -147,7 +150,7 @@ const unfoldBox = (userId, isFold) => {
     </el-card>
   </div>
   <div class="help-operation">
-    <el-button type="text" @click="$router.push('/richText')">
+    <el-button type="text" @click="handleRichText">
       <el-icon class="mr1">
         <EditPen />
       </el-icon>
