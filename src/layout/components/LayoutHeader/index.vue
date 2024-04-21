@@ -11,7 +11,7 @@
         >
           <el-menu-item index="/exchangeCommunity">体验官社区</el-menu-item>
           <el-menu-item index="/findOut">体验问答</el-menu-item>
-          <el-menu-item index="3">发现</el-menu-item>
+          <el-menu-item index="/seek">发现</el-menu-item>
           <el-menu-item index="4">更多</el-menu-item>
         </el-menu>
       </div>

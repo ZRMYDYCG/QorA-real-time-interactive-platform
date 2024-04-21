@@ -49,13 +49,20 @@ const fileList = ref([
 const dialogImageUrl = ref('')
 const dialogVisible = ref(false)
 
+//处理图片移除
 const handleRemove = (uploadFile, uploadFiles) => {
   console.log(uploadFile, uploadFiles)
 }
 
+//处理图片预览
 const handlePictureCardPreview = (uploadFile) => {
   dialogImageUrl.value = !uploadFile.url
   dialogVisible.value = true
+}
+
+//处理文件成功上传
+const handleFileUp = () => {
+  console.log('success')
 }
 
 // 绑定好要检验的表单数据
@@ -170,6 +177,8 @@ const handleInputConfirm = () => {
               list-type="picture-card"
               :on-preview="handlePictureCardPreview"
               :on-remove="handleRemove"
+              :drag="true"
+              :on-success="handleFileUp"
             >
               <el-icon><Plus /></el-icon>
             </el-upload>
@@ -250,13 +259,15 @@ const handleInputConfirm = () => {
           &:hover {
             background-color: #f3a5b521;
           }
-          ::v-deep .el-form-item__label {
-            padding-top: 4px;
-          }
         }
       }
     }
   }
+}
+
+// 图片上传可拖拽设置
+.el-upload :deep(.el-form-item__label) {
+  padding-top: 4px;
 }
 
 /* 对文本框进行设置 */

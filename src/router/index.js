@@ -147,6 +147,10 @@ export const constantRoutes = [
       {
         path: '/publishArticle',
         component: () => import('@/views/PublishArticle/index.vue')
+      },
+      {
+        path: '/seek',
+        component: () => import('@/views/Seek/index.vue')
       }
     ]
   },
