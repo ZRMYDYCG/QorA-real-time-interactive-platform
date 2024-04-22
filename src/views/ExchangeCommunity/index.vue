@@ -1,7 +1,18 @@
 <script setup>
 import { ref, watch } from 'vue'
 
+import { onMounted } from 'vue'
+import { useSocketStore } from '@/stores/modules/ChartRoom/index.js'
+
+const socketStore = useSocketStore()
+
+onMounted(() => {
+  socketStore.initSocket()
+})
+
 import { useExchangeCommunityStore } from '@/stores/modules/ExchangeCommunity/index.js'
+
+import 'element-plus/theme-chalk/el-message.css'
 
 import messingItem from './components/messing-item/index.vue'
 

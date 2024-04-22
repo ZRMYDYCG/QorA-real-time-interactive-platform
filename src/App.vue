@@ -7,7 +7,6 @@
 //
 // onMounted(() => {
 //   const token = 'your_signed_key'
-//
 //   // 签名的密钥
 //   realTimeCommunicationStore.socket = io('http://10.22.207.112:5000', {
 //     auth: {

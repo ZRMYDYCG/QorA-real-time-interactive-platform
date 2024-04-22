@@ -1,7 +1,15 @@
-<script setup></script>
+<script setup>
+import { useSocketStore } from '@/stores/modules/ChartRoom/index.js'
+
+const socketStore = useSocketStore()
+
+const handleClick = () => {
+  socketStore.sendMessage(1, 2, '12345', null)
+}
+</script>
 
 <template>
-  <div class="person-item">
+  <div class="person-item" @click="handleClick">
     <div class="item-left">
       <img src="https://pic1.zhimg.com/v2-da5ff9fb7766a97d036c155b07b60ef8_b.jpg" alt="" />
     </div>

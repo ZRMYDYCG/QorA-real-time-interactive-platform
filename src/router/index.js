@@ -2,6 +2,9 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 import Layout from '@/layout/index.vue'
 import nprogress from 'nprogress'
 import 'nprogress/nprogress.css'
+import { getLocalStorage } from '@/utils/index.js'
+import { ElMessage } from 'element-plus'
+import 'element-plus/theme-chalk/el-message.css'
 
 export const constantRoutes = [
   {
@@ -166,8 +169,24 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  nprogress.start() // 开始路由前显示进度条
-  next()
+  const token = getLocalStorage('token')
+
+  if (to.path === '/login' && token) {
+    // 如果已经登录，尝试访问登录页面，则重定向到主页
+    next('/')
+  } else {
+    nprogress.start() // 开始进度条
+    if (to.path !== '/login' && !token) {
+      // 如果未登录且尝试访问非登录页面
+      next('/login') // 重定向到登录页面
+      ElMessage({
+        message: '请进行登录',
+        type: 'error' // 使用错误类型提示需要登录
+      })
+    } else {
+      next() // 正常进入目标路由
+    }
+  }
 })
 
 router.afterEach((to, from) => {
