@@ -71,7 +71,7 @@
         </div>
         <div class="userinfo__avatarPic">
           <el-dropdown>
-            <img src="https://pic.imgdb.cn/item/660e1fa89f345e8d03525df8.png" alt="" />
+            <img :src="loginStore.userInfo.value?.picture_address" alt="" />
             <template #dropdown>
               <el-dropdown-menu>
                 <el-dropdown-item>
@@ -106,6 +106,9 @@ import { ref, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import themeSwitch from './theme-switch.vue'
 import messageItem from './message-item.vue'
+import { useLoginStore } from '@/stores/modules/Login/index.js'
+
+const loginStore = useLoginStore()
 
 const router = useRouter()
 const route = useRoute()

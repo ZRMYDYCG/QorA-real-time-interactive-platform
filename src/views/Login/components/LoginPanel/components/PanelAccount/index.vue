@@ -43,7 +43,7 @@
     <template #footer>
       <div class="dialog-footer">
         <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="dialogVisible = false">注册</el-button>
+        <el-button type="primary" @click="enrollAction">注册</el-button>
       </div>
     </template>
   </el-dialog>
@@ -51,6 +51,7 @@
 
 <script setup>
 import { ref, reactive } from 'vue'
+import { ElMessage } from 'element-plus'
 import { useLoginStore } from '@/stores/modules/Login/index.js'
 
 const loginStore = useLoginStore()
@@ -61,11 +62,17 @@ const accountInfo = reactive({
   user_password: ''
 })
 
-const loginAction = () => {
-  console.log('登录')
-  // const account = accountInfo.user_number
-  // const password = accountInfo.user_password
-  loginStore.accountLoginAction()
+function loginAction() {
+  // 是否通过了验证
+  accountFormRef.value?.validate((isValid) => {
+    if (isValid) {
+      let user_number = accountInfo.user_number
+      let user_password = accountInfo.user_password
+      loginStore.accountLoginAction({ user_number, user_password })
+    } else {
+      ElMessage.warning({ message: '账号或者密码输入的规则错误~' })
+    }
+  })
 }
 
 // 用户注册模态框
@@ -125,6 +132,21 @@ const enrollRules = {
       trigger: ['blur', 'change']
     }
   ]
+}
+
+function enrollAction() {
+  // 是否通过了验证
+  enrollFormRef.value?.validate((isValid) => {
+    if (isValid) {
+      let user_number = enrollInfo.enroll_number
+      let user_password = enrollInfo.enroll_password
+      console.log(user_number, user_password)
+      dialogVisible.value = false
+      loginStore.enrollLoginAccount({ user_number, user_password })
+    } else {
+      ElMessage.warning({ message: '账号或者密码输入的规则错误~' })
+    }
+  })
 }
 
 // 注册校验

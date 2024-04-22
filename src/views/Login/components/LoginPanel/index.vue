@@ -34,7 +34,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 import PanelAccount from './components/PanelAccount/index.vue'
 import PanelEmail from './components/PanelEmail/index.vue'
 
