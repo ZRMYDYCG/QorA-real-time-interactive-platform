@@ -1,146 +1,140 @@
 <script setup>
-// import WaterFall from './components/Water-Fall.vue'
-import { ref } from 'vue'
+import SeekContent from './components/Seek-Content.vue'
+import { onMounted, ref } from 'vue'
 import { Search } from '@element-plus/icons-vue'
 const value = ref('城市')
 
 const options = [
   {
-    value: 'Option1',
-    label: 'Option1'
+    value: '北京',
+    label: '北京'
   },
   {
-    value: 'Option2',
-    label: 'Option2'
+    value: '上海',
+    label: '上海'
   },
   {
-    value: 'Option3',
-    label: 'Option3'
+    value: '广州',
+    label: '广州'
   },
   {
-    value: 'Option4',
-    label: 'Option4'
+    value: '深圳',
+    label: '深圳'
   },
   {
-    value: 'Option5',
-    label: 'Option5'
+    value: '湖南',
+    label: '湖南'
   }
 ]
 
 const imgArr = ref([
-  'https://p1.music.126.net/D-1BJmN0aqcwgh8F1AuyPA==/109951169341847902.jpg',
-  'https://p1.music.126.net/fAzUfd4CUeEsyHvui0Unhg==/109951169440246524.jpg',
-  'https://p1.music.126.net/lpgtc9vtrfrJwwm819XVgQ==/109951169478526448.jpg',
-  'https://b.zol-img.com.cn/sjbizhi/images/11/1080x1920/1592967802496.jpg',
-  'https://p1.music.126.net/CmDnOvSU7aIArdeL4CROMA==/109951169329849875.jpg',
-  'https://p1.music.126.net/ktmVwkScqx_tIWlPW6RGLQ==/109951169381065644.jpg',
-  'https://p1.music.126.net/WtbcqsNftMrjiR023IMmsQ==/109951169421204776.jpg',
-  'https://p1.music.126.net/awtNhyRGP_8nhDBSrUV2nQ==/109951169404208710.jpg',
-  'https://p1.music.126.net/xAnvQjUF_sjg6jYAXytw1g==/109951169392387106.jpg',
-  'https://p1.music.126.net/LiW3eIqDCPUCBh6AcrmE7A==/109951169452286493.jpg',
-  'https://img.keaitupian.cn/newupload/11/1667560871448849.jpg',
-  'https://ts1.cn.mm.bing.net/th/id/R-C.25a19c64d70fdb91fff0fe06bb739658?rik=RtD2kYNDk8It5Q&riu=http%3a%2f%2fimg.keaitupian.cn%2fuploads%2f2021%2f03%2f15%2f126f3667ebbe4a6daa1444df5e96a462.jpg&ehk=HczmnINUo9Tj1GlIp7UQfyerOiEuBenOiV5cjavdhjc%3d&risl=&pid=ImgRaw&r=0',
-  'https://tse4-mm.cn.bing.net/th/id/OIP-C.qkn-u2DXXEJ6L2KxAWHZ9wAAAA?rs=1&pid=ImgDetMain',
-  'https://c-ssl.duitang.com/uploads/item/201909/22/20190922104452_vtysx.jpg',
-  'https://c-ssl.duitang.com/uploads/blog/202108/20/20210820001030_4d060.jpg',
-  'https://tupian.qqw21.com/article/UploadPic/2021-4/202141120475135553.jpg',
-  'https://c-ssl.duitang.com/uploads/item/202007/27/20200727221046_srogr.jpg',
-  'https://c-ssl.duitang.com/uploads/item/202004/06/20200406193820_voidm.jpg'
+  { url: 'https://p1.music.126.net/D-1BJmN0aqcwgh8F1AuyPA==/109951169341847902.jpg' },
+  { url: 'https://p1.music.126.net/fAzUfd4CUeEsyHvui0Unhg==/109951169440246524.jpg' },
+  { url: 'https://p1.music.126.net/lpgtc9vtrfrJwwm819XVgQ==/109951169478526448.jpg' },
+  { url: 'https://b.zol-img.com.cn/sjbizhi/images/11/1080x1920/1592967802496.jpg' },
+  { url: 'https://p1.music.126.net/CmDnOvSU7aIArdeL4CROMA==/109951169329849875.jpg' },
+  { url: 'https://p1.music.126.net/ktmVwkScqx_tIWlPW6RGLQ==/109951169381065644.jpg' },
+  { url: 'https://p1.music.126.net/WtbcqsNftMrjiR023IMmsQ==/109951169421204776.jpg' },
+  { url: 'https://p1.music.126.net/awtNhyRGP_8nhDBSrUV2nQ==/109951169404208710.jpg' },
+  { url: 'https://p1.music.126.net/xAnvQjUF_sjg6jYAXytw1g==/109951169392387106.jpg' },
+  { url: 'https://p1.music.126.net/LiW3eIqDCPUCBh6AcrmE7A==/109951169452286493.jpg' },
+  { url: 'https://img.keaitupian.cn/newupload/11/1667560871448849.jpg' },
+  {
+    url: 'https://ts1.cn.mm.bing.net/th/id/R-C.25a19c64d70fdb91fff0fe06bb739658?rik=RtD2kYNDk8It5Q&riu=http%3a%2f%2fimg.keaitupian.cn%2fuploads%2f2021%2f03%2f15%2f126f3667ebbe4a6daa1444df5e96a462.jpg&ehk=HczmnINUo9Tj1GlIp7UQfyerOiEuBenOiV5cjavdhjc%3d&risl=&pid=ImgRaw&r=0'
+  },
+  { url: 'https://tse4-mm.cn.bing.net/th/id/OIP-C.qkn-u2DXXEJ6L2KxAWHZ9wAAAA?rs=1&pid=ImgDetMain' },
+  { url: 'https://pic3.zhimg.com/v2-0a519e9b9adf2d8073e861be6a43286b_r.jpg?source=1940ef5c' },
+  { url: 'https://www.keaitupian.cn/cjpic/frombd/1/253/3393399268/3196579081.jpg' },
+  { url: 'https://tupian.qqw21.com/article/UploadPic/2021-4/202141120475135553.jpg' },
+  { url: 'https://www.linfxk.com/zb_users/upload/2019/10/20191005185540157027294068197.jpg' },
+  {
+    url: 'https://ts1.cn.mm.bing.net/th/id/R-C.d761768122c59c824548af9a319b2a9b?rik=aT6CTHLSGXlbHw&riu=http%3a%2f%2fseopic.699pic.com%2fphoto%2f50017%2f0763.jpg_wh1200.jpg&ehk=a9yqHVMDyyNnX7eIrDspUnGgDaUdUPRIRB1hXCbaiJU%3d&risl=&pid=ImgRaw&r=0'
+  }
 ])
+
+//随机打乱 imgArr 内的索引
+const randomImgArr = () => {
+  for (let i = 0; i < imgArr.value.length; i++) {
+    let randIndex = Math.floor(Math.random() * imgArr.value.length)
+    let temp
+    temp = imgArr.value[randIndex]
+    imgArr.value[randIndex] = imgArr.value[i]
+    imgArr.value[i] = temp
+  }
+}
+
+onMounted(() => {
+  randomImgArr()
+})
 </script>
 <template>
+  <link rel="stylesheet" href="//at.alicdn.com/t/c/font_4498745_xovv0klg49.css" />
   <div>
     <div class="search-container">
-      <el-input
-        v-model="input3"
-        style="max-width: 600px"
-        placeholder="Please input"
-        class="input-with-select"
-        :prefix-icon="Search"
-        size="large"
-      >
-        <template #append>
-          <el-select v-model="select" placeholder="Select" style="width: 115px">
-            <el-option label="Restaurant" value="1" />
-            <el-option label="Order No." value="2" />
-            <el-option label="Tel" value="3" />
-          </el-select>
-        </template>
-      </el-input>
       <div class="select-region">
-        <el-select v-model="value" placeholder="Select" size="large" style="width: 240px">
+        <span
+          >当前搜索城市: <span class="city">{{ value == '城市' ? '上海' : value }}</span></span
+        >
+
+        <el-select v-model="value" placeholder="Select" size="large" style="width: 150px">
           <el-option
             v-for="item in options"
             :key="item.value"
             :label="item.label"
             :value="item.value"
+            :disabled="item.disabled"
           />
         </el-select>
       </div>
       <div class="search">
         <el-input
           v-model="input3"
-          style="width: 450px"
+          style="width: 450px; height: 45px"
           size="large"
           placeholder="请输入搜索关键词"
           :prefix-icon="Search"
         />
       </div>
     </div>
-    <div class="tabbar">
-      <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick">
-        <el-menu
-          :default-active="activeIndex"
-          class="el-menu-demo"
-          mode="horizontal"
-          @select="handleSelect"
-        >
-          <el-menu-item index="1">Processing Center</el-menu-item>
-          <el-menu-item index="3">Info</el-menu-item>
-          <el-menu-item index="4">Orders</el-menu-item>
-        </el-menu>
-      </el-tabs>
-    </div>
-    <div class="seek-content">
-      <!-- <WaterFall></WaterFall> -->
-      <div class="seek-item" v-for="item in imgArr">
-        <div class="img-box">
-          <img :src="item" alt="" />
-        </div>
-      </div>
-    </div>
+
+    <SeekContent :imgArr="imgArr" class="seekItem"></SeekContent>
   </div>
 </template>
 <style lang="scss" scoped>
 .search-container {
-}
-.tabbar {
-}
-.seek-content {
-  width: 100%;
-  columns: 5;
-  gap: 15px;
-  .seek-item {
-    width: 300px;
-    height: auto;
-    border: 1px solid #ccc;
-    padding-bottom: 15px;
-    margin-bottom: 15px;
-    .img-box {
-      overflow: hidden;
-      height: auto;
-      width: 100%;
-      border-radius: 5px;
-      overflow: hidden;
-      img {
-        height: 100%;
-        width: 100%;
-        transition: all 0.5s linear;
-        &:hover {
-          transform: scale(1.1);
-        }
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: white;
+  transition: all 0.4s linear;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  &:hover {
+    background-color: #925ff81a;
+  }
+  .select-region {
+    display: flex;
+    align-items: center;
+    padding: 30px 10px;
+    margin-left: 20px;
+    span:nth-child(1) {
+      font-size: 18px;
+      margin-right: 15px;
+      color: #6e6b6b;
+      .city {
+        font-weight: 550;
+        font-size: 20px;
+        color: #925ff8;
       }
     }
   }
+  .search {
+    margin-right: 550px;
+  }
+}
+.tabbar {
+}
+
+.seekItem {
+  margin-top: 30px;
 }
 </style>

@@ -1,13 +1,9 @@
-<script setup></script>
-
 <template>
-  <div class="column-item">
-    <el-card>专栏</el-card>
-  </div>
+  
 </template>
+<script setup>
 
-<style scoped lang="scss">
-.el-card {
-  width: 500px;
-}
+</script>
+<style scoped>
+
 </style>
