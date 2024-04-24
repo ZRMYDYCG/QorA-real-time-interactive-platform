@@ -12,6 +12,9 @@ import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 
+// 【第一步】引入插件
+// import vitePluginRequire from 'vite-plugin-require'
+
 // 查看文档 https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
@@ -30,6 +33,9 @@ export default defineConfig({
         ElementPlusResolver({ importStyle: 'sass' })
       ]
     })
+    // vitePluginRequire({
+    //   fileRegex: /.js$|.jsx$|.vue$/
+    // })
   ],
   resolve: {
     alias: {

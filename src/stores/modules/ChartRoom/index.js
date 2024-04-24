@@ -13,7 +13,7 @@ export const useSocketStore = defineStore('socket', {
     initSocket() {
       let _this = this
       // 连接到的 Flask-SocketIO 服务器端点
-      this.socket = io('http://192.168.31.86:5000', {
+      this.socket = io('http://127.0.0.1:5000', {
         transports: ['websocket'],
         query: `user_id=${_this.userId}`
       })
