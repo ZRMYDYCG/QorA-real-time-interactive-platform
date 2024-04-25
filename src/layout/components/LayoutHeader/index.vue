@@ -79,7 +79,7 @@
                 </el-dropdown-item>
                 <el-dropdown-item>我的提问</el-dropdown-item>
                 <el-dropdown-item>我的回答</el-dropdown-item>
-                <el-dropdown-item>退出登录</el-dropdown-item>
+                <el-dropdown-item @click="loginOut">退出登录</el-dropdown-item>
               </el-dropdown-menu>
             </template>
           </el-dropdown>
@@ -107,6 +107,8 @@ import { useRouter, useRoute } from 'vue-router'
 import themeSwitch from './theme-switch.vue'
 import messageItem from './message-item.vue'
 import { useLoginStore } from '@/stores/modules/Login/index.js'
+import { loginOutApi } from '@/service/Login/index.js'
+import { removeLocalStorage } from '@/utils/index.js'
 
 const loginStore = useLoginStore()
 
@@ -119,7 +121,7 @@ const handleSelect = (key, keyPath) => {
 
 const inputWidth = ref('40vw')
 const handleInputHidden = () => {
-  console.log('哥哥不要')
+  console.log('0')
 }
 
 const handleInputFocus = () => {
@@ -133,6 +135,16 @@ const searchAction = ($event) => {
     path: '/searchDetail',
     query: { keyword: searchQuery.value }
   })
+}
+
+// 下线
+const loginOut = async () => {
+  const res = loginOutApi(loginStore?.userInfo?.value?.user_id)
+  if (res.status === 200) {
+    await router.push('/login')
+    removeLocalStorage('userInfo')
+    removeLocalStorage('token')
+  }
 }
 </script>
 

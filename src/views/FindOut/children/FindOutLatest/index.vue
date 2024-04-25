@@ -1,17 +1,33 @@
 <script setup>
 import SeekHelpItem from '../../components/seek-help-item/index.vue'
 import { useLoginStore } from '@/stores/modules/Login/index.js'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, inject, watch } from 'vue'
 import { fetchLatestQuestionsApi } from '@/service/FindOut/index.js'
 
 const loginStore = useLoginStore()
 
 let itemDataList = ref([])
-onMounted(async () => {
-  console.log(1)
+
+let synchronous = ref(inject('synchronous'))
+
+watch(
+  () => synchronous.value,
+  (newValue) => {
+    fetchLatestQuestions()
+  }
+)
+
+const fetchLatestQuestions = async () => {
   const res = await fetchLatestQuestionsApi(loginStore.userInfo.value.user_id)
-  itemDataList.value = res.data.data
-  console.log(itemDataList)
+  itemDataList.value = res.data.data.reverse()
+}
+
+onMounted(async () => {
+  await fetchLatestQuestions()
+})
+
+defineExpose({
+  fetchLatestQuestions
 })
 </script>
 

@@ -1,5 +1,6 @@
 import request from '../config/index.js'
 
+// 获取最新提问
 export const fetchLatestQuestionsApi = (user_id) => {
   return request({
     url: '/api/index/questions',
@@ -10,6 +11,7 @@ export const fetchLatestQuestionsApi = (user_id) => {
   })
 }
 
+// 发布提问
 export const createQuestionApi = (questionDetail) => {
   return request({
     url: '/api/question',

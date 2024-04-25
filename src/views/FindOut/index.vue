@@ -1,11 +1,10 @@
 <script setup>
-import { ref, nextTick, watch, computed } from 'vue'
+import { ref, nextTick, watch, computed, provide } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import 'element-plus/theme-chalk/el-message.css'
 import { createQuestionApi } from '@/service/FindOut/index.js'
 import { useLoginStore } from '@/stores/modules/Login/index.js'
-// import UploadFile from '@/components/base/uplod-file/index.vue'
 
 const router = useRouter()
 const loginStore = useLoginStore()
@@ -120,6 +119,8 @@ const handleCloseModel = () => {
 }
 
 // 发布提问
+let synchronous = ref(1) // 更新标识
+provide('synchronous', synchronous)
 const createQuestion = () => {
   const questionDetail = {}
   questionDetail.title = title.value
@@ -131,12 +132,21 @@ const createQuestion = () => {
   createQuestionApi(questionDetail)
     .then((res) => {
       console.log(res)
-      // dialogVisible.value = false
+      if (res.data.message !== '该问题已存在') {
+        ElMessage.error('该问题已存在')
+      } else {
+        synchronous.value++
+        ElMessage.success('发布成功')
+      }
+
+      dialogVisible.value = false
     })
     .catch((error) => {
       console.log(error)
     })
 }
+
+// 图片上传
 </script>
 
 <template>
@@ -162,7 +172,9 @@ const createQuestion = () => {
           <el-tab-pane label="紧急问题" name="urgent"></el-tab-pane>
         </el-tabs>
         <div class="btn">
-          <el-button @click="StartQuestion">发起提问</el-button>
+          <el-button @click="StartQuestion" v-if="$route.path === '/findOut/latest'"
+            >发起提问
+          </el-button>
         </div>
       </div>
     </div>
@@ -232,7 +244,24 @@ const createQuestion = () => {
         </div>
       </div>
 
-      <!--<UploadFile></UploadFile>-->
+      <!--   问题描述图片上传   -->
+      <el-form-item label="图片：" prop="imgFileList">
+        <el-upload
+          action=""
+          :auto-upload="false"
+          :on-change="imgHandleChange"
+          :on-preview="handlePreview"
+          :on-remove="handleRemove"
+          :file-list="saleForm.imgFileList"
+          list-type="picture-card"
+        >
+          <i class="el-icon-plus" />
+          <div slot="tip" class="el-upload__tip">支持批量上传，上传格式为jpg文件</div>
+        </el-upload>
+        <el-dialog :visible.sync="dialogVisible">
+          <img width="100%" :src="dialogImageUrl" alt="" />
+        </el-dialog>
+      </el-form-item>
 
       <div class="dialog-footer">
         <el-button type="primary" @click="createQuestion">发布问题</el-button>
