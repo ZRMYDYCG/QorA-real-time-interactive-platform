@@ -29,8 +29,8 @@ const closeDialog = () => {
         <Edit />
       </el-icon>
     </div>
-    <div v-if="loginStore.userInfo.value?.user_introduce" class="content">
-      {{ loginStore.userInfo.value?.user_introduce }}
+    <div v-if="loginStore.userInfo.value?.user_introduce">
+      {{ loginStore.userInfo.value.user_introduce }}
     </div>
     <div class="content" v-else>
       <img src="https://pic.imgdb.cn/item/6610c9ba68eb935713575a4b.png" alt="" />
@@ -54,11 +54,6 @@ const closeDialog = () => {
   height: 300px;
 
   :deep(.el-card__body) {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-
     .header {
       display: flex;
       width: 100%;
@@ -74,6 +69,7 @@ const closeDialog = () => {
       justify-content: center;
       flex-direction: column;
       align-items: center;
+      height: 100%;
     }
   }
 

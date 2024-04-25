@@ -111,7 +111,6 @@ import { useLoginStore } from '@/stores/modules/Login/index.js'
 const loginStore = useLoginStore()
 
 const router = useRouter()
-const route = useRoute()
 
 const activeIndex = ref('1')
 const handleSelect = (key, keyPath) => {
@@ -135,29 +134,6 @@ const searchAction = ($event) => {
     query: { keyword: searchQuery.value }
   })
 }
-
-const backGroundType = ref('')
-watch(
-  route,
-  (newRoute) => {
-    if (
-      newRoute.path === '/findOut/latest' ||
-      newRoute.path === '/findOut/commend' ||
-      newRoute.path === '/findOut/unresolved' ||
-      newRoute.path === '/findOut/urgent'
-    ) {
-      if (document.getElementById('theme-style').className === 'dark') {
-        backGroundType.value = '#000'
-      } else {
-        backGroundType.value =
-          'url(https://th.bing.com/th/id/R.7e57686b89419361ce0b5d6c5658c744?rik=Eh9qfhw%2bRUZEJA&riu=http%3a%2f%2fimg.yipic.cn%2fthumb%2f357c44cf%2f6ac27d55%2fb6f5075c%2f48241d3b%2fbig_357c44cf6ac27d55b6f5075c48241d3b.png%3fx-oss-process%3dimage%2fformat%2cwebp%2fsharpen%2c100&ehk=xXfDoME280n3hSeJBvDzHUQkWZ9efEYw0oSiTE90Ew0%3d&risl=&pid=ImgRaw&r=0)'
-      }
-    } else {
-      backGroundType.value = 'var(--layout-header-bg-color)'
-    }
-  },
-  { immediate: true }
-)
 </script>
 
 <style lang="scss" scoped>
@@ -168,7 +144,7 @@ watch(
   width: 100%;
   align-items: center;
   justify-content: space-around;
-  background: v-bind(backGroundType);
+  background-color: var(--layout-header-bg-color);
   border-bottom: 1px solid var(--ys-bar-bg-color);
 
   .layout-header--logo {
@@ -186,7 +162,6 @@ watch(
     .el-menu {
       border-bottom: none;
       height: 50px;
-      background: v-bind(backGroundType);
 
       .el-menu-item {
         background-color: transparent;

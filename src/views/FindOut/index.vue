@@ -3,9 +3,12 @@ import { ref, nextTick, watch, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import 'element-plus/theme-chalk/el-message.css'
+import { createQuestionApi } from '@/service/FindOut/index.js'
+import { useLoginStore } from '@/stores/modules/Login/index.js'
 // import UploadFile from '@/components/base/uplod-file/index.vue'
 
 const router = useRouter()
+const loginStore = useLoginStore()
 
 // 切换子路由逻辑
 const handleTabClick = (tab, event) => {
@@ -115,6 +118,25 @@ const handleCloseModel = () => {
   content.value = ''
   dynamicTags.value = []
 }
+
+// 发布提问
+const createQuestion = () => {
+  const questionDetail = {}
+  questionDetail.title = title.value
+  questionDetail.TagList = dynamicTags.value
+  questionDetail.content = content.value
+  questionDetail.user_id = loginStore?.userInfo?.value?.user_id
+  questionDetail.integral = integral.value
+  questionDetail.imgList = []
+  createQuestionApi(questionDetail)
+    .then((res) => {
+      console.log(res)
+      // dialogVisible.value = false
+    })
+    .catch((error) => {
+      console.log(error)
+    })
+}
 </script>
 
 <template>
@@ -213,7 +235,7 @@ const handleCloseModel = () => {
       <!--<UploadFile></UploadFile>-->
 
       <div class="dialog-footer">
-        <el-button type="primary" @click="dialogVisible = false">发布问题</el-button>
+        <el-button type="primary" @click="createQuestion">发布问题</el-button>
       </div>
     </template>
   </el-dialog>
@@ -239,8 +261,6 @@ const handleCloseModel = () => {
 
 <style scoped lang="scss">
 .find-out {
-  background: var(--findout-bg);
-
   .find-out-banner {
     padding: 20px;
     display: flex;
