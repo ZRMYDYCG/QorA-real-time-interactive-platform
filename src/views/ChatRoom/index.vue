@@ -3,6 +3,9 @@ import { onMounted, ref } from 'vue'
 import ContactItem from './components/contact-item/index.vue'
 import PersonItem from './components/person-item/index.vue'
 import screenfull from 'screenfull'
+import { useSocketStore } from '@/stores/modules/ChartRoom/index.js'
+
+const soctetStore = useSocketStore()
 
 const fullscreenElement = () => {
   return document.fullscreenElement
@@ -19,6 +22,10 @@ onMounted(() => {
     }
   })
 })
+
+onMounted(() => {
+  soctetStore.chatInitView()
+})
 </script>
 
 <template>
@@ -27,10 +34,10 @@ onMounted(() => {
       <div class="user-img">
         <img src="https://pic.imgdb.cn/item/660e1fa89f345e8d03525df8.png" alt="" />
         <div class="toggle">
-          <el-icon @click.native="activeTab = 1" :class="{ active: activeTab === 1 }" :size="20">
+          <el-icon @click="activeTab = 1" :class="{ active: activeTab === 1 }" :size="20">
             <User />
           </el-icon>
-          <el-icon @click.native="activeTab = 0" :class="{ active: activeTab === 0 }" :size="20">
+          <el-icon @click="activeTab = 0" :class="{ active: activeTab === 0 }" :size="20">
             <ChatDotRound />
           </el-icon>
         </div>
@@ -72,7 +79,7 @@ onMounted(() => {
               <el-icon>
                 <Star color="#DCEE44" />
               </el-icon>
-              <span>特别关心</span>
+              <span>粉丝列表</span>
             </template>
             <contact-item></contact-item>
           </el-sub-menu>
@@ -81,7 +88,7 @@ onMounted(() => {
               <el-icon>
                 <Operation color="#ccc" />
               </el-icon>
-              <span>默认列表</span>
+              <span>我的关注</span>
             </template>
             <contact-item></contact-item>
             <contact-item></contact-item>
