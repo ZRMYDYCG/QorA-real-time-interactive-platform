@@ -71,7 +71,7 @@
         </div>
         <div class="userinfo__avatarPic">
           <el-dropdown>
-            <img :src="loginStore.userInfo.value?.picture_address" alt="" />
+            <img :src="loginStore?.userInfo.value?.picture_address" alt="" />
             <template #dropdown>
               <el-dropdown-menu>
                 <el-dropdown-item>

@@ -174,12 +174,11 @@ const srcList = [
     align-items: center;
     margin-top: 20px;
     .left-img-container {
-      flex: 6;
+      flex: 4;
       height: 450px;
       justify-content: space-around;
       display: grid;
       grid-template-columns: repeat(3, 150px); /* 固定三列网格布局，每列宽度为120px */
-      gap: 10px; /* 网格项之间的空间为10 */
       .img-items {
         height: 135px;
         width: 135px;
