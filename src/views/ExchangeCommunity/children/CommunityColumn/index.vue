@@ -37,12 +37,12 @@ const phoneImgDate = ref([
             <img :src="item.url" />
             <div class="mask"></div>
           </div>
-          <div class="title">手机性能排行榜</div>
-          <div class="detail">
+          <div class="title">I live to be the ruler of life, not a slave.</div>
+          <!-- <div class="detail">
             <p>
               为重归5G后最为轰动的产品，加入了卫星通信，超强的信号和鸿蒙生态，以及极为硬核玻璃，手机信号基本是顶部，产品的情绪价值拉满
             </p>
-          </div>
+          </div> -->
           <div class="user-info">
             <div class="about-user">
               <div class="user-avatar">
@@ -62,7 +62,7 @@ const phoneImgDate = ref([
                 <span class="views-num">120</span>
               </div>
               <div class="reply">
-                <i class="iconfont icon-comment"></i>
+                <i class="iconfont icon-shoucang"></i>
                 <span class="reply-num">22</span>
               </div>
             </div>
@@ -90,10 +90,10 @@ const phoneImgDate = ref([
           </div>
           <div class="right-content">
             <div class="content">
-              <span class="title">一加12</span>
-              <span class="intro"
+              <span class="title">I live to be the ruler of life, not a slave.</span>
+              <!-- <span class="intro"
                 >一加12手机是目前跑分最强的安卓手机，没有之一，而且机身手感优秀，屏幕也是目前夜间使用最为舒适的，支持杜比视界，以及雨水触控，除了这两点外，一加使用OPPO专用的ColorOS定制版，几乎实现了无广告的存在（通知全部关闭），操作上也很舒适，同时也是少数持续保留三段式开关的手机，影像也有哈苏色彩支持，算法介入表现比上代曾强很多，虽然不算拔尖，但是贵在自然。</span
-              >
+              > -->
             </div>
             <div class="creator">
               <el-popover
@@ -227,7 +227,7 @@ const phoneImgDate = ref([
         position: relative;
         overflow: hidden;
         border-radius: 5px;
-        height: 46%;
+        height: 57%;
         width: 100%;
         img {
           height: 100%;
@@ -380,28 +380,19 @@ const phoneImgDate = ref([
       }
       .right-content {
         margin-left: 20px;
+        margin-top: 15px;
         width: 80%;
+        cursor: pointer;
         .content {
-          display: flex;
-          flex-direction: column;
           margin-bottom: 20px;
           .title {
             font-size: 18px;
             font-weight: 550;
+            transition: all 0.3s linear;
             margin-bottom: 15px;
           }
-          .intro {
-            font-size: 14px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            -webkit-line-clamp: 2;
-            cursor: pointer;
-            display: -webkit-box;
-            -webkit-box-orient: vertical;
-            transition: all 0.3s linear;
-            &:hover {
-              color: #9a6df9;
-            }
+          &:hover {
+            color: #9a6df9;
           }
         }
         .creator {

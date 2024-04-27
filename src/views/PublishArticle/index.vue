@@ -1,7 +1,9 @@
 <script setup>
 import { ref, nextTick } from 'vue'
-
+import { submitArtAPI } from '@/service/PublishArticle/index.js'
+import { useLoginStore } from '@/stores/modules/Login/index.js'
 import RichText from '@/components/base/rich-text/index.vue'
+import { column } from 'element-plus/es/components/table-v2/src/common'
 
 // 富文本内容
 const content = ref('')
@@ -10,6 +12,11 @@ const content = ref('')
 const getContent = (data) => {
   content.value = data
 }
+
+//获取标题
+const title = ref('')
+//专栏名称
+const columnValue = ref('')
 
 const fileList = ref([
   {
@@ -52,11 +59,12 @@ const dialogVisible = ref(false)
 //处理图片移除
 const handleRemove = (uploadFile, uploadFiles) => {
   console.log(uploadFile, uploadFiles)
+  console.log('图片移除')
 }
 
 //处理图片预览
 const handlePictureCardPreview = (uploadFile) => {
-  dialogImageUrl.value = !uploadFile.url
+  dialogImageUrl.value = uploadFile.url
   dialogVisible.value = true
 }
 
@@ -65,17 +73,13 @@ const handleFileUp = () => {
   console.log('success')
 }
 
-// 绑定好要检验的表单数据
-// const ruleForm = ref({
-//   title: ''
-// })
-
 //tag标签
-const tagInpValue = ref('')
-const tags = ref(['Tag 1', 'Tag 2', 'Tag 3'])
+const tagInpValue = ref('') //输入框输入值
+const tags = ref([]) //添加的标签列表
 const inputVisible = ref(false)
 const TagInputRef = ref(null)
 
+//关闭标签触发函数
 const handleClose = (tag) => {
   const index = tags.value.indexOf(tag)
   if (index !== -1) {
@@ -92,12 +96,34 @@ const showInput = () => {
   })
 }
 
+//标签输入回车触发
 const handleInputConfirm = () => {
   if (tagInpValue.value) {
     tags.value.push(tagInpValue.value)
     tagInpValue.value = ''
   }
   inputVisible.value = false
+}
+
+const userStore = useLoginStore()
+//发布文章触发函数
+const onSubmit = async () => {
+  console.log('send')
+  const res = await submitArtAPI({
+    title: title.value,
+    TagList: tags.value,
+    imgList: [
+      'https://p1.music.126.net/D-1BJmN0aqcwgh8F1AuyPA==/109951169341847902.jpg',
+      'https://p1.music.126.net/fAzUfd4CUeEsyHvui0Unhg==/109951169440246524.jpg',
+      'https://p1.music.126.net/lpgtc9vtrfrJwwm819XVgQ==/109951169478526448.jpg',
+      'https://b.zol-img.com.cn/sjbizhi/images/11/1080x1920/1592967802496.jpg',
+      'https://p1.music.126.net/CmDnOvSU7aIArdeL4CROMA==/109951169329849875.jpg'
+    ],
+    content: content.value,
+    type: 'dynamic',
+    id: userStore.userInfo.value.user_id
+  })
+  console.log(res)
 }
 </script>
 
@@ -110,7 +136,7 @@ const handleInputConfirm = () => {
           <!-- 标题 -->
           <el-form-item label="请输入标题 (必填) :">
             <el-input
-              v-model="text"
+              v-model="title"
               style="width: 300px; height: 40px"
               maxlength="20"
               placeholder="标题"
@@ -121,7 +147,7 @@ const handleInputConfirm = () => {
           <!-- 专栏 -->
           <el-form-item label="选择专栏 (可选) :">
             <el-select
-              v-model="value"
+              v-model="columnValue"
               multiple
               filterable
               remote
@@ -192,7 +218,7 @@ const handleInputConfirm = () => {
     <!-- 富文本 -->
     <RichText @update="getContent" />
     <div class="submit">
-      <el-button>发布</el-button>
+      <el-button @click="onSubmit">发布</el-button>
     </div>
   </div>
 </template>
