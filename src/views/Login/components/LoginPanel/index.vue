@@ -37,13 +37,18 @@
 import { ref } from 'vue'
 import PanelAccount from './components/PanelAccount/index.vue'
 import PanelEmail from './components/PanelEmail/index.vue'
+import { useSocketStore } from '@/stores/modules/ChartRoom/index.js'
+
+const socketStore = useSocketStore()
 
 // 默认激活 Tab
 const activeName = ref('account')
 
 const accountRef = ref()
-const loginAction = () => {
-  accountRef.value.loginAction()
+const loginAction = async () => {
+  await accountRef.value.loginAction()
+
+  await socketStore.initSocket()
 }
 </script>
 

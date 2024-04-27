@@ -2,17 +2,17 @@
 import { ref, watch } from 'vue'
 import { useRoute, onBeforeRouteUpdate } from 'vue-router'
 import LayoutHeader from './components/LayoutHeader/index.vue'
-import Fireworks from '@/hooks/confetti.js'
+// import Fireworks from '@/hooks/confetti.js'
 
 const paddingLeft = ref('180px')
 const paddingRight = ref('180px')
 const paddingTop = ref('30px')
 const route = useRoute()
-Fireworks()
+// Fireworks()
 
-onBeforeRouteUpdate(() => {
-  Fireworks()
-})
+// onBeforeRouteUpdate(() => {
+//   Fireworks()
+// })
 
 watch(
   route,

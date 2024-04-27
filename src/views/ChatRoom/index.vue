@@ -5,7 +5,7 @@ import PersonItem from './components/person-item/index.vue'
 import screenfull from 'screenfull'
 import { useSocketStore } from '@/stores/modules/ChartRoom/index.js'
 
-const soctetStore = useSocketStore()
+const socketStore = useSocketStore()
 
 const fullscreenElement = () => {
   return document.fullscreenElement
@@ -24,7 +24,7 @@ onMounted(() => {
 })
 
 onMounted(() => {
-  soctetStore.chatInitView()
+  socketStore.chatInitView()
 })
 </script>
 

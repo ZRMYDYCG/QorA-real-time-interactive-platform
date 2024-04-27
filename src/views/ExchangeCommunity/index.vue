@@ -1,14 +1,7 @@
 <script setup>
 import { ref, watch } from 'vue'
 
-import { onMounted } from 'vue'
-import { useSocketStore } from '@/stores/modules/ChartRoom/index.js'
-
-const socketStore = useSocketStore()
-
-onMounted(() => {
-  socketStore.initSocket()
-})
+// import { onMounted } from 'vue'
 
 import { useExchangeCommunityStore } from '@/stores/modules/ExchangeCommunity/index.js'
 
@@ -198,7 +191,7 @@ watch(
             <span class="l">Welcome To</span> <span class="">{{ typedText }}</span>
           </h3>
           <p style="margin: 20px 0">我们都是生活里的品质体验官，欢迎来到体验官社区。</p>
-          <el-button round>
+          <el-button v-if="$route.path === '/exchangeCommunity/communityRecommend'" round>
             <el-icon>
               <Refresh />
             </el-icon>
@@ -208,7 +201,7 @@ watch(
       </div>
       <router-view></router-view>
     </div>
-    <div class="right-bar">
+    <div class="right-bar" v-if="$route.path === '/exchangeCommunity/communityRecommend'">
       <el-form label-position="top">
         <div class="keyword-search">
           <el-form-item label="关键词">
@@ -307,6 +300,10 @@ watch(
         </div>
       </el-form>
     </div>
+    <!--    <div class="right-bar" v-if="$route.path === '/exchangeCommunity/communityConcern'">2</div>-->
+    <div class="right-bar" v-if="$route.path === '/exchangeCommunity/communityTags'">3</div>
+    <div class="right-bar" v-if="$route.path === '/exchangeCommunity/communityColumn'">4</div>
+    <!--    <div class="right-bar" v-if="$route.path === '/exchangeCommunity/communityTopic'">5</div>-->
   </div>
 </template>
 

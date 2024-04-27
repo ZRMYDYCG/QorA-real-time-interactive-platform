@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import io from 'socket.io-client'
 import { chatInApi, chatUserMessageListApi } from '@/service/ChatRoom/index.js'
 import { useLoginStore } from '@/stores/modules/Login/index.js'
+import { getLocalStorage } from '@/utils/index.js'
 // import { getLocalStorage } from '@/utils/index.js'
 
 const loginStore = useLoginStore()
@@ -10,12 +11,12 @@ export const useSocketStore = defineStore('socket', {
     connected: false,
     socket: null,
     chatScrollbar: null,
-    userId: loginStore.userInfo?.value?.user_id, // 存储当前用户的 ID
+    userId: 1, // 存储当前用户的 ID
     messageList: [] // 聊天列表 discord_user => 消息发布人 id
   }),
   actions: {
     // 初始化 socket 连接
-    initSocket() {
+    async initSocket() {
       let _this = this
       // 连接到的 Flask-SocketIO 服务器端点
       this.socket = io('http://192.168.31.86:5000', {
@@ -28,7 +29,7 @@ export const useSocketStore = defineStore('socket', {
         this.connected = true
         console.log('Connected to the server!')
         // 通知服务器客户端已连接
-        this.socket.emit('one', { user_id: loginStore.userInfo?.value?.user_id })
+        this.socket.emit('one', { user_id: 1 })
       })
 
       // 监听服务器发送的 connected 事件
@@ -65,7 +66,8 @@ export const useSocketStore = defineStore('socket', {
       }, 300)
     },
     chatInitView() {
-      chatInApi().then((res) => {
+      let _this = this
+      chatInApi(_this.userId).then((res) => {
         console.log(res)
       })
     },
