@@ -1,11 +1,5 @@
 <script setup>
-import { useSocketStore } from '@/stores/modules/ChartRoom/index.js'
-
-const socketStore = useSocketStore()
-
-const handleClick = () => {
-  socketStore.sendMessage(1, 2, '12345', null)
-}
+const handleClick = () => {}
 </script>
 
 <template>

@@ -1,12 +1,15 @@
 <script setup>
 import { useRouter } from 'vue-router'
+import { useSocketStore } from '@/stores/modules/ChartRoom/index.js'
 
 const router = useRouter()
-const toChatWindow = () => {
-  router.push('/chatRoom/chatDetail')
+const socketStore = useSocketStore()
+const toChatWindow = async () => {
+  socketStore.chatUserMessageList()
+  await router.push('/chatRoom/chatDetail')
 }
 </script>
-
+)
 <template>
   <div class="contact-item">
     <el-menu-item @click.native="toChatWindow">

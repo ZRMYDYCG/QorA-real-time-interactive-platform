@@ -147,6 +147,37 @@ const createQuestion = () => {
 }
 
 // 图片上传
+const file = ref(null)
+
+const handleFileChange = (e) => {
+  file.value = e.target.files[0]
+}
+
+const uploadFile = async () => {
+  if (!file.value) {
+    console.error('No file selected.')
+    return
+  }
+
+  const formData = new FormData()
+  formData.append('image0', file.value)
+
+  try {
+    const response = await fetch('http://192.168.31.86:5000/api/upload/pics', {
+      method: 'POST',
+      body: formData
+    })
+
+    if (response.ok) {
+      const data = await response.json()
+      console.log(data)
+    } else {
+      console.error('Server responded with an error:', response.status)
+    }
+  } catch (err) {
+    console.error('Error uploading file:', err)
+  }
+}
 </script>
 
 <template>
@@ -245,23 +276,8 @@ const createQuestion = () => {
       </div>
 
       <!--   问题描述图片上传   -->
-      <el-form-item label="图片：" prop="imgFileList">
-        <el-upload
-          action=""
-          :auto-upload="false"
-          :on-change="imgHandleChange"
-          :on-preview="handlePreview"
-          :on-remove="handleRemove"
-          :file-list="saleForm.imgFileList"
-          list-type="picture-card"
-        >
-          <i class="el-icon-plus" />
-          <div slot="tip" class="el-upload__tip">支持批量上传，上传格式为jpg文件</div>
-        </el-upload>
-        <el-dialog :visible.sync="dialogVisible">
-          <img width="100%" :src="dialogImageUrl" alt="" />
-        </el-dialog>
-      </el-form-item>
+      <input type="file" @change="handleFileChange" />
+      <button @click="uploadFile">Upload</button>
 
       <div class="dialog-footer">
         <el-button type="primary" @click="createQuestion">发布问题</el-button>

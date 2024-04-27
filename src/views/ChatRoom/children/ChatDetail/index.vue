@@ -1,10 +1,14 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, nextTick, onMounted } from 'vue'
 import Vue3EmojiPicker from 'vue3-emoji-picker'
 import 'vue3-emoji-picker/css'
 import { useLoginStore } from '@/stores/modules/Login/index.js'
+import { useSocketStore } from '@/stores/modules/ChartRoom/index.js'
+import { storeToRefs } from 'pinia'
 
 const loginStore = useLoginStore()
+const socketStore = useSocketStore()
+const { messageList } = storeToRefs(socketStore)
 
 const inputRef = ref(null)
 let selectedEmoji = ref('')
@@ -21,54 +25,27 @@ function onEmojiSelect(emoji) {
   selectedEmoji.value = ''
 }
 
-const send = () => {
-  console.log(inputRef.value.value)
+const messageListRef = ref(null) // 添加对聊天内容容器的引用
+
+const send = async () => {
+  let content = inputRef.value.value
+  await socketStore.sendMessage(2, content, [])
+  await socketStore.chatUserMessageList()
+
+  socketStore.toBottom()
+
+  setTimeout(() => {
+    inputRef.value.value = ''
+  }, 200)
 }
 
-const conversationList = [
-  {
-    avatar: 'https://pic1.zhimg.com/80/v2-6dd7cbd20c9dbf65251a9ee0a08256ce_720w.webp', // 用户头像
-    sendId: 1, // 发送者 Id
-    type: '0', // 消息文件类型
-    content: '今天天气好好呀'
-  },
-  {
-    avatar: 'https://pic1.zhimg.com/80/v2-6dd7cbd20c9dbf65251a9ee0a08256ce_720w.webp', // 用户头像
-    sendId: 1, // 发送者 Id
-    type: '0', // 消息文件类型
-    content: '今天天气好好呀' // 消息内容
-  },
-  {
-    avatar: 'https://pic1.zhimg.com/80/v2-6dd7cbd20c9dbf65251a9ee0a08256ce_720w.webp', // 用户头像
-    sendId: 1, // 发送者 Id
-    type: '0', // 消息文件类型
-    content: '今天天气好好呀'
-  },
-  {
-    avatar: 'https://pic1.zhimg.com/80/v2-6dd7cbd20c9dbf65251a9ee0a08256ce_720w.webp', // 用户头像
-    sendId: 2, // 发送者 Id
-    type: '0', // 消息文件类型
-    content: '今天天气好好呀'
-  },
-  {
-    avatar: 'https://pic1.zhimg.com/80/v2-6dd7cbd20c9dbf65251a9ee0a08256ce_720w.webp', // 用户头像
-    sendId: 2, // 发送者 Id
-    type: '0', // 消息文件类型
-    content: '今天天气好好呀'
-  },
-  {
-    avatar: 'https://pic1.zhimg.com/80/v2-6dd7cbd20c9dbf65251a9ee0a08256ce_720w.webp', // 用户头像
-    sendId: 2, // 发送者 Id
-    type: '0', // 消息文件类型
-    content: '今天天气好好呀'
-  },
-  {
-    avatar: 'https://pic1.zhimg.com/80/v2-6dd7cbd20c9dbf65251a9ee0a08256ce_720w.webp', // 用户头像
-    sendId: 1, // 发送者 Id
-    type: '0', // 消息文件类型
-    content: '今天天气好好呀'
-  }
-]
+const chatScrollbar = ref(null)
+
+onMounted(() => {
+  nextTick(() => {
+    socketStore.chatScrollbar = chatScrollbar.value
+  })
+})
 </script>
 
 <template>
@@ -80,27 +57,30 @@ const conversationList = [
       </div>
     </div>
     <!--  聊天内容  -->
-    <div class="message-list">
-      <!--   聊天时间： 前端处理   -->
-      <!--   聊天列表   -->
-      <template v-for="(item, index) in conversationList" :key="index">
-        <el-row
-          el-row
-          type="flex"
-          class="mb-20px"
-          :class="item.sendId === loginStore.userInfo.value?.user_id && 'flex-row-reverse'"
-        >
-          <el-avatar :size="42" :src="item.avatar" />
-          <div
-            v-if="item.type === '0'"
-            :class="item.sendId === loginStore.userInfo.value?.user_id ? 'mr-10px' : 'ml-10px'"
-            style="color: #000"
-            class="text break-words px-15px rounded-6px text-left py-12px"
-            v-html="item.content"
-          ></div>
-        </el-row>
-      </template>
-    </div>
+    <el-scrollbar ref="chatScrollbar">
+      <div class="message-list" ref="messageListRef">
+        <!--   聊天时间： 前端处理   -->
+        <!--   聊天列表   -->
+        <template v-for="(item, index) in messageList" :key="index">
+          <el-row
+            el-row
+            type="flex"
+            class="mb-20px"
+            :class="item.discord_user !== loginStore.userInfo.value?.user_id && 'flex-row-reverse'"
+          >
+            <el-avatar :size="42" :src="item.avatar" />
+            <div
+              :class="
+                item.discord_user !== loginStore.userInfo.value?.user_id ? 'mr-10px' : 'ml-10px'
+              "
+              style="color: #000"
+              class="text break-words px-15px rounded-6px text-left py-12px"
+              v-html="item.discord_text"
+            ></div>
+          </el-row>
+        </template>
+      </div>
+    </el-scrollbar>
     <!--  文件上传区域  -->
     <div class="more">
       <el-popover :teleported="false" placement="top-start" trigger="click" width="auto">
@@ -147,17 +127,26 @@ const conversationList = [
     }
   }
 
-  .message-list {
+  .el-scrollbar {
     height: calc(100% - 260px);
+  }
+
+  .message-list {
+    height: 100%;
     background-color: #eeeeee;
     overflow: auto;
     padding: 0 20px;
+  }
+
+  .text {
+    background-color: #fff;
   }
 
   .more {
     height: 30px;
     display: flex;
     align-items: center;
+    transition: all 0.3s;
 
     img {
       width: 20px;
