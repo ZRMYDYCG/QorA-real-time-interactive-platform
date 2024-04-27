@@ -152,6 +152,10 @@ import tagItem from './components/tag-item/index.vue'
       align-content: flex-start; // 解决换行后盒子垂直间距问题
       justify-content: center;
     }
+
+    .main-page {
+      margin-top: 100px;
+    }
   }
 }
 </style>
