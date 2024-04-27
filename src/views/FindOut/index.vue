@@ -147,20 +147,62 @@ const createQuestion = () => {
 }
 
 // 图片上传
-const file = ref(null)
+// const file = ref(null)
+//
+// const handleFileChange = (e) => {
+//   file.value = e.target.files[0]
+// }
+//
+// const uploadFile = async () => {
+//   if (!file.value) {
+//     console.error('No file selected.')
+//     return
+//   }
+//
+//   const formData = new FormData()
+//   formData.append('image0', file.value)
+//
+//   try {
+//     const response = await fetch('http://192.168.31.86:5000/api/upload/pics', {
+//       method: 'POST',
+//       body: formData
+//     })
+//
+//     if (response.ok) {
+//       const data = await response.json()
+//       console.log(data)
+//     } else {
+//       console.error('Server responded with an error:', response.status)
+//     }
+//   } catch (err) {
+//     console.error('Error uploading file:', err)
+//   }
+// }
+
+const fileInput = ref(null)
+const files = ref([])
+const previewImages = ref([])
 
 const handleFileChange = (e) => {
-  file.value = e.target.files[0]
+  if (e.target.files.length > 9) {
+    alert('最多只能选择9张图片')
+    return
+  }
+  const selectedFiles = Array.from(e.target.files)
+  files.value = selectedFiles
+  previewImages.value = selectedFiles.map((file) => URL.createObjectURL(file))
 }
 
-const uploadFile = async () => {
-  if (!file.value) {
-    console.error('No file selected.')
+const uploadFiles = async () => {
+  if (!files.value.length) {
+    console.error('No files selected.')
     return
   }
 
   const formData = new FormData()
-  formData.append('image0', file.value)
+  for (let i = 0; i < files.value.length; i++) {
+    formData.append('image0', files.value[i])
+  }
 
   try {
     const response = await fetch('http://192.168.31.86:5000/api/upload/pics', {
@@ -171,11 +213,19 @@ const uploadFile = async () => {
     if (response.ok) {
       const data = await response.json()
       console.log(data)
+
+      files.value = []
+      previewImages.value = []
+      alert('图片上传成功')
     } else {
       console.error('Server responded with an error:', response.status)
+      alert('图片上传失败')
     }
   } catch (err) {
-    console.error('Error uploading file:', err)
+    console.error('Error uploading files:', err)
+    alert('图片上传异常')
+  } finally {
+    fileInput.value.value = null
   }
 }
 </script>
@@ -276,8 +326,24 @@ const uploadFile = async () => {
       </div>
 
       <!--   问题描述图片上传   -->
-      <input type="file" @change="handleFileChange" />
-      <button @click="uploadFile">Upload</button>
+      <!--      <input type="file" @change="handleFileChange" />-->
+      <!--      <button @click="uploadFile">Upload</button>-->
+
+      <div class="multi-image-upload">
+        <!-- 图片上传 -->
+        <input type="file" multiple @change="handleFileChange" />
+        <button @click="uploadFiles">Upload</button>
+
+        <!-- 图片预览九宫格 -->
+        <div class="preview-grid">
+          <img
+            v-for="(imgUrl, index) in previewImages"
+            :key="index"
+            :src="imgUrl"
+            class="preview-image"
+          />
+        </div>
+      </div>
 
       <div class="dialog-footer">
         <el-button type="primary" @click="createQuestion">发布问题</el-button>
@@ -399,6 +465,17 @@ const uploadFile = async () => {
     display: flex;
     justify-content: center;
   }
+}
+
+.preview-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 5px;
+}
+
+.preview-image {
+  width: 100%;
+  /* 根据需要设置图片高度等样式 */
 }
 </style>
 

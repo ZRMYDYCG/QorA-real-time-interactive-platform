@@ -6,6 +6,7 @@ let request = axios.create({
   // create 里面实际就是一个配置对象
   // baseURL: 'http://127.0.0.1:5000',
   baseURL: 'http://192.168.31.86:5000',
+  // baseURL: 'http://192.168.137.138:8080',
   // 代表请求超时的时间
   timeout: 5000
 })

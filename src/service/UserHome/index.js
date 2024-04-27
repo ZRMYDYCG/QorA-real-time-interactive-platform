@@ -13,7 +13,7 @@ export const modifyUserInformationApi = (user_id, user_introduce) => {
 }
 
 // 用户增删黑名单
-const blackListApi = (user_id, type, blacklist_id) => {
+export const blackListApi = (user_id, type, blacklist_id) => {
   return request({
     url: '/api/add/blacklist',
     data: {
@@ -25,7 +25,7 @@ const blackListApi = (user_id, type, blacklist_id) => {
 }
 
 // 用户增删关注和粉丝
-const attentionApi = (user_id, user_for, type) => {
+export const attentionApi = (user_id, user_for, type) => {
   return request({
     url: '/api/add/attention',
     method: 'POST',
@@ -38,20 +38,23 @@ const attentionApi = (user_id, user_for, type) => {
 }
 
 // 用户增删收藏
-const collectApi = (user_id, object_id, type) => {
+// type add less
+// object_type user dynamic bookshelf
+export const collectApi = (user_id, object_id, type, object_type) => {
   return request({
     url: '/api/add/collect',
     method: 'POST',
     data: {
       user_id: user_id,
       object_id: object_id,
-      type: type
+      type: type,
+      object_type: object_type
     }
   })
 }
 
 // 创建专栏
-const createSpecialApi = (data) => {
+export const createSpecialApi = (data) => {
   return request({
     url: '/api/special',
     method: 'POST',
@@ -75,7 +78,7 @@ const createSpecialApi = (data) => {
  * id：创建该专栏的用户id
  * special_id：在哪个专栏下，就返回该专栏的id
  * */
-const createSpecialEssayApi = (data) => {
+export const createSpecialEssayApi = (data) => {
   return request({
     url: '/api/SpDy',
     method: 'POST',
@@ -112,3 +115,15 @@ export const createDynamicApi = (data) => {
     }
   })
 }
+
+// 查询某个书架的文章列表
+export const columnListApi = (object_id) => {
+  return request({
+    url: '/api/show/bookshelf',
+    data: {
+      object_id: object_id
+    }
+  })
+}
+
+// 查询用户的历史行为记录

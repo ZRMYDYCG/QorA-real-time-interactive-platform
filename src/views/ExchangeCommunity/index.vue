@@ -2,6 +2,7 @@
 import { ref, watch } from 'vue'
 
 // import { onMounted } from 'vue'
+import { textBtn } from '@/service/test/index.js'
 
 import { useExchangeCommunityStore } from '@/stores/modules/ExchangeCommunity/index.js'
 
@@ -108,6 +109,13 @@ const text = '体验官社区'
 
 const typedText = ref('')
 
+// 测试
+const handleTest = () => {
+  textBtn().then((res) => {
+    console.log(res)
+  })
+}
+
 watch(
   () => typedText.value,
   (newValue) => {
@@ -197,6 +205,7 @@ watch(
             </el-icon>
             换一批推荐
           </el-button>
+          <el-button @click="handleTest">测试</el-button>
         </div>
       </div>
       <router-view></router-view>

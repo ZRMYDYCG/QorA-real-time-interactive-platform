@@ -1,5 +1,7 @@
 <script setup>
+import { onMounted } from 'vue'
 import ExchangeItem from '@/views/ExchangeCommunity/components/exchange-item/index.vue'
+import { fetchAllRecommendApi } from '@/service/ExchangeCommunity/index.js'
 
 const dataArray = [
   [
@@ -118,6 +120,15 @@ const dataArray = [
     }
   ]
 ]
+
+const fetchAllRecommend = async () => {
+  const res = await fetchAllRecommendApi()
+  console.log(res)
+}
+
+onMounted(() => {
+  fetchAllRecommend()
+})
 </script>
 
 <template>
