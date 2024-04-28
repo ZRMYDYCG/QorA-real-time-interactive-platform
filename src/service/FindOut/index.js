@@ -50,5 +50,3 @@ export const adoptionIssuesApi = (question_id, review_id, review_user_id) => {
     }
   })
 }
-
-//

@@ -3,8 +3,8 @@ import YsScroll from '@/components/base/ys-scroll/src/ys-scroll.vue'
 import { More } from '@element-plus/icons-vue'
 import { useExchangeCommunityStore } from '@/stores/modules/ExchangeCommunity/index.js'
 import { useLoginStore } from '@/stores/modules/Login/index.js'
-import { ElMessage } from 'element-plus'
-import 'element-plus/theme-chalk/el-message.css'
+import { blackListApi } from '@/service/UserHome/index.js'
+import { getLocalStorage } from '@/utils/index.js'
 
 const loginStore = useLoginStore()
 
@@ -30,6 +30,22 @@ const handleAttentionApi = (user_for, is_attention, dynamic_id) => {
   let type = is_attention ? 'less' : 'add'
   console.log(user_id, user_for, is_attention, type)
   exchangeCommunityStore.handleAttentionApi(user_id, user_for, type, dynamic_id)
+}
+
+// TODO: 用户添加黑名单
+let dialogVisible = ref(false)
+const blackListData = {}
+const openDialog = (blacklist_id) => {
+  console.log(blacklist_id)
+  dialogVisible.value = true
+  blackListData.user_id = getLocalStorage('userInfo').value.user_id
+  blackListData.type = 'add'
+  blackListData.blacklist_id = blacklist_id
+}
+const handleBlackListApi = () => {
+  console.log(blackListData)
+  blackListApi(blackListData.user_id, blackListData.type, blackListData.blacklist_id)
+  dialogVisible.value = false
 }
 
 onMounted(() => {
@@ -125,7 +141,9 @@ onMounted(() => {
                       </el-button>
                       <template #dropdown>
                         <el-dropdown-menu>
-                          <el-dropdown-item>拉黑该用户</el-dropdown-item>
+                          <el-dropdown-item @click="openDialog(dynamicDetail.dynamic_user)"
+                            >拉黑该用户
+                          </el-dropdown-item>
                           <el-dropdown-item>举报</el-dropdown-item>
                         </el-dropdown-menu>
                       </template>
@@ -175,6 +193,16 @@ onMounted(() => {
       </div>
     </template>
   </el-skeleton>
+
+  <el-dialog v-model="dialogVisible" title="Tips" width="500">
+    <span>确定将该用户添加黑名单，添加黑名单后将看不到该用用户的动态了。</span>
+    <template #footer>
+      <div class="dialog-footer">
+        <el-button @click="dialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="handleBlackListApi"> 确定</el-button>
+      </div>
+    </template>
+  </el-dialog>
 </template>
 
 <style scoped lang="scss">
@@ -244,6 +272,8 @@ onMounted(() => {
 
 .exchange-item {
   width: 100%;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #ccc;
 
   .item-header {
     display: flex;

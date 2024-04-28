@@ -12,10 +12,11 @@ export const modifyUserInformationApi = (user_id, user_introduce) => {
   })
 }
 
-// 用户增删黑名单
+// 用户增删黑名单 ✅
 export const blackListApi = (user_id, type, blacklist_id) => {
   return request({
     url: '/api/add/blacklist',
+    method: 'POST',
     data: {
       user_id: user_id,
       type: type,
@@ -24,7 +25,7 @@ export const blackListApi = (user_id, type, blacklist_id) => {
   })
 }
 
-// 用户增删关注和粉丝
+// 用户增删关注和粉丝 ✅
 export const attentionApi = (user_id, user_for, type) => {
   return request({
     url: '/api/add/attention',
