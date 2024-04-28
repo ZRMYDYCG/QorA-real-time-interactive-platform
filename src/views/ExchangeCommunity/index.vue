@@ -1,6 +1,5 @@
 <script setup>
 import { ref, watch } from 'vue'
-
 // import { onMounted } from 'vue'
 import { textBtn } from '@/service/test/index.js'
 
@@ -205,7 +204,6 @@ watch(
             </el-icon>
             换一批推荐
           </el-button>
-          <el-button @click="handleTest">测试</el-button>
         </div>
       </div>
       <router-view></router-view>

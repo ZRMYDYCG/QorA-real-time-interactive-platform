@@ -61,7 +61,9 @@
             :before-upload="beforeAvatarUpload"
           >
             <img v-if="imageUrl" :src="imageUrl" class="avatar" />
-            <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
+            <el-icon v-else class="avatar-uploader-icon">
+              <Plus />
+            </el-icon>
           </el-upload>
         </el-form-item>
         <el-form-item label="简介：">
@@ -152,7 +154,7 @@
       <template #footer>
         <div class="dialog-footer">
           <el-button style="margin-left: 280px" @click="addAddressDialog = false">取消</el-button>
-          <el-button type="primary" @click="addAddressDialog = false"> 确认 </el-button>
+          <el-button type="primary" @click="addAddressDialog = false"> 确认</el-button>
         </div>
       </template>
     </el-dialog>
@@ -175,6 +177,7 @@ const activeTabIndex = 0
 const isVertical = false
 
 import { onMounted, ref } from 'vue'
+
 const dialogTableVisible = ref(false)
 const openEdit = () => {
   dialogTableVisible.value = !dialogTableVisible.value
@@ -205,6 +208,7 @@ const userAddresses = ref([
 
 const mapOptions = ref([])
 import axios from 'axios'
+
 const province = ref([])
 const getMapData = async () => {
   const res = await axios.get(
@@ -244,12 +248,14 @@ onMounted(() => {
   display: flex;
   justify-content: center;
   margin-top: 50px;
+
   span {
     cursor: pointer;
     padding: 15px 100px;
     border: 1px solid #8d65c5;
     transition: all 0.4s linear;
     font-size: 16px;
+
     &:hover {
       color: #8d65c5;
       background-color: #f4effe;
@@ -263,10 +269,12 @@ onMounted(() => {
   // background-color: pink;
   padding: 10px 10px;
   border: 1px solid #ccc;
+
   .title {
     font-size: 16px;
     margin-bottom: 20px;
   }
+
   .user-info,
   .contact,
   .address-detail {
@@ -274,6 +282,7 @@ onMounted(() => {
     margin-bottom: 10px;
   }
 }
+
 .edit-title {
   text-align: center;
   font-size: 22px;
@@ -283,17 +292,20 @@ onMounted(() => {
 
 .edit-address-box {
   margin-top: 30px;
+
   .address-edit,
   .add-address {
     padding: 10px 20px;
     border: 1px solid #8d65c5;
     cursor: pointer;
     transition: all 0.3s linear;
+
     &:hover {
       color: #8d65c5;
       background-color: #f4effe;
     }
   }
+
   .add-address {
     margin-left: 30px;
   }
@@ -357,6 +369,7 @@ onMounted(() => {
   height: 178px;
   display: block;
 }
+
 .userHome {
   width: 80vw;
   margin: 0 auto;

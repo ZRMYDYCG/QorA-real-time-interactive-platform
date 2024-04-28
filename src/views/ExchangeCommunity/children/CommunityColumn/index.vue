@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue'
+
 const phoneImgDate = ref([
   {
     url: 'https://ts1.cn.mm.bing.net/th/id/R-C.603d67ddb3a001fd901e8601596e5b1a?rik=VzQ9nU0DqF9hWQ&riu=http%3a%2f%2fimg1.mydrivers.com%2fimg%2f20200324%2ffaa4430588f9440893058f8afddc9bb7.jpg&ehk=6tjp1wUgdDA84Ed6TjaLETH%2bCVgJbmFytHaq0rjSMWY%3d&risl=1&pid=ImgRaw&r=0'
@@ -150,44 +151,54 @@ const phoneImgDate = ref([
   flex-direction: column;
   align-items: center;
   width: 100%;
+
   .user-info {
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 100%;
+
     .user-private {
       display: flex;
       flex-direction: column;
       align-items: center;
       width: 100%;
+
       .username {
         font-weight: 550;
         font-size: 18px;
       }
+
       .level {
         display: flex;
         margin-top: 10px;
+
         .name {
           font-size: 16px;
           margin-right: 10px;
         }
       }
     }
+
     .about-user {
       font-size: 15px;
       margin-top: 10px;
       color: #999;
+
       .focus {
       }
+
       .fans {
         margin-left: 20px;
       }
     }
+
     .action {
       display: flex;
       width: 100%;
       justify-content: space-between;
       margin-top: 10px;
+
       .to-focus,
       .leave-word,
       .enter-user-home {
@@ -203,12 +214,14 @@ const phoneImgDate = ref([
   font-size: 20px;
   font-weight: 550;
 }
+
 .common-box {
   .item-container {
     width: 100%;
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
+
     .common-items {
       width: 31.5%;
       // width: 300px;
@@ -219,26 +232,31 @@ const phoneImgDate = ref([
       transition: all 0.3s linear;
       cursor: pointer;
       margin-bottom: 20px;
+
       &:hover {
         border-color: #9a6df9;
         transform: translateY(-3px);
       }
+
       .img-box {
         position: relative;
         overflow: hidden;
         border-radius: 5px;
         height: 57%;
         width: 100%;
+
         img {
           height: 100%;
           width: 100%;
           object-fit: cover;
           border-radius: 5px;
           transition: all 0.3s ease;
+
           &:hover {
             transform: scale(1.1);
           }
         }
+
         .mask {
           position: absolute;
           top: 0;
@@ -248,6 +266,7 @@ const phoneImgDate = ref([
           // background-color: pink;
           transition: all 0.5s linear;
           background-color: rgba(0, 0, 0, 0.4);
+
           &:hover {
             background-color: rgba(0, 0, 0, 0);
           }
@@ -259,6 +278,7 @@ const phoneImgDate = ref([
         font-weight: 550;
         font-size: 20px;
       }
+
       .detail {
         margin: 0 15px;
         font-size: 14px;
@@ -268,18 +288,22 @@ const phoneImgDate = ref([
         display: -webkit-box;
         -webkit-box-orient: vertical;
         transition: all 0.3s linear;
+
         &:hover {
           color: #9a6df9;
         }
       }
+
       .user-info {
         display: flex;
         align-items: center;
         justify-content: space-between;
         margin: 20px 20px 0;
+
         .about-user {
           display: flex;
           align-items: center;
+
           .user-avatar {
             height: 35px;
             width: 35px;
@@ -293,10 +317,12 @@ const phoneImgDate = ref([
               height: 100%;
             }
           }
+
           .username {
             margin-left: 5px;
             font-size: 14px;
             transition: all 0.3s linear;
+
             &:hover {
               color: #9a6df9;
             }
@@ -310,41 +336,50 @@ const phoneImgDate = ref([
           border: 1px solid #ccc;
           color: #9a6df9;
           transition: all 0.3s linear;
+
           &:hover {
             background-color: #996df969;
             color: white;
           }
         }
       }
+
       .about-common {
         display: flex;
         margin: 23px 20px 10px 20px;
         align-items: center;
         justify-content: space-between;
+
         .action {
           display: flex;
           align-items: center;
+
           .views {
             transition: all 0.3s linear;
             font-size: 14px;
+
             .iconfont {
               margin-right: 7px;
               font-size: 14px;
               color: #999;
             }
+
             &:hover {
               color: #9a6df9;
             }
           }
+
           .reply {
             margin-left: 15px;
             font-size: 15px;
             transition: all 0.3s linear;
+
             .iconfont {
               margin-right: 7px;
               font-size: 16px;
               color: #999;
             }
+
             &:hover {
               color: #9a6df9;
             }
@@ -361,6 +396,7 @@ const phoneImgDate = ref([
 
 .cate-box {
   margin-top: 30px;
+
   .same-theme-container {
     .same-theme-item {
       margin-left: 20px;
@@ -368,52 +404,64 @@ const phoneImgDate = ref([
       margin-bottom: 40px;
       padding-bottom: 30px;
       border-bottom: 1px solid #ccc;
+
       .left-img {
         height: 100px;
         width: 100px;
         border-radius: 5px;
         overflow: hidden;
+
         img {
           height: 100%;
           width: 100%;
         }
       }
+
       .right-content {
         margin-left: 20px;
         margin-top: 15px;
         width: 80%;
         cursor: pointer;
+
         .content {
           margin-bottom: 20px;
+
           .title {
             font-size: 18px;
             font-weight: 550;
             transition: all 0.3s linear;
             margin-bottom: 15px;
           }
+
           &:hover {
             color: #9a6df9;
           }
         }
+
         .creator {
           display: flex;
+
           .username {
             cursor: pointer;
             font-size: 15px;
             color: #999;
             transition: all 0.3s linear;
+
             &:hover {
               color: #9a6df9;
             }
           }
+
           .views {
             margin-left: 30px;
             cursor: pointer;
             color: #999;
             transition: all 0.3s linear;
+
             .iconfont {
               padding-right: 10px;
             }
+
             &:hover {
               color: #9a6df9;
             }

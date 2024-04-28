@@ -2,6 +2,11 @@
 import YsScroll from '@/components/base/ys-scroll/src/ys-scroll.vue'
 import { More } from '@element-plus/icons-vue'
 import { useExchangeCommunityStore } from '@/stores/modules/ExchangeCommunity/index.js'
+import { useLoginStore } from '@/stores/modules/Login/index.js'
+import { ElMessage } from 'element-plus'
+import 'element-plus/theme-chalk/el-message.css'
+
+const loginStore = useLoginStore()
 
 const exchangeCommunityStore = useExchangeCommunityStore()
 const openDrawer = () => {
@@ -11,13 +16,21 @@ const openDrawer = () => {
 import { ref, onMounted } from 'vue'
 
 defineProps({
-  dataArray: {
-    type: Array,
-    default: () => []
+  dynamicDetail: {
+    type: Object,
+    default: () => {}
   }
 })
 
 const loading = ref(true)
+
+// TODO: 用户关注和取消关注
+const handleAttentionApi = (user_for, is_attention, dynamic_id) => {
+  let user_id = loginStore.userInfo.value.user_id
+  let type = is_attention ? 'less' : 'add'
+  console.log(user_id, user_for, is_attention, type)
+  exchangeCommunityStore.handleAttentionApi(user_id, user_for, type, dynamic_id)
+}
 
 onMounted(() => {
   setInterval(() => {
@@ -67,19 +80,16 @@ onMounted(() => {
             <el-popover width="300" placement="bottom" trigger="hover">
               <template #default>
                 <div class="info-popup">
-                  <img
-                    class="popup--img"
-                    src="https://pic3.zhimg.com/v2-220c2500a5c33e693f946c4e40dac00a_r.jpg"
-                    alt=""
-                  />
-                  <p class="popup--name">可目十</p>
+                  <img class="popup--img" :src="dynamicDetail?.for_pic" alt="" />
+                  <p class="popup--name">{{ dynamicDetail?.user_name }}</p>
                   <div class="popup--grade">
-                    <span class="title">体验官等级</span><span class="num">LV.8</span>
+                    <span class="title">体验官等级</span
+                    ><span class="num">LV.{{ dynamicDetail?.user_grade }}</span>
                   </div>
                   <div class="info-social">
                     <div class="follow">
                       <span>关注</span>
-                      <span>{{ 933 }}</span>
+                      <span>{{ 111 }}</span>
                     </div>
                     <div class="fans">
                       <span>粉丝</span>
@@ -87,10 +97,28 @@ onMounted(() => {
                     </div>
                   </div>
                   <div class="btn">
-                    <el-button round>关注</el-button>
-                    <el-button round>留言</el-button>
+                    <el-button
+                      @click="
+                        handleAttentionApi(
+                          dynamicDetail.dynamic_user,
+                          dynamicDetail.is_attention,
+                          dynamicDetail.dynamic_id
+                        )
+                      "
+                      round
+                      v-if="loginStore?.userInfo?.value?.user_id !== dynamicDetail?.dynamic_user"
+                      >{{ dynamicDetail.is_attention ? '取消关注' : '关注' }}
+                    </el-button>
+                    <el-button
+                      round
+                      v-if="loginStore?.userInfo?.value?.user_id !== dynamicDetail?.dynamic_user"
+                      >留言
+                    </el-button>
                     <el-dropdown>
-                      <el-button round>
+                      <el-button
+                        round
+                        v-if="loginStore?.userInfo?.value?.user_id !== dynamicDetail?.dynamic_user"
+                      >
                         <el-icon>
                           <More />
                         </el-icon>
@@ -106,40 +134,43 @@ onMounted(() => {
                 </div>
               </template>
               <template #reference>
-                <img
-                  class="userInfo--avatar"
-                  src="https://pic3.zhimg.com/v2-220c2500a5c33e693f946c4e40dac00a_r.jpg"
-                  alt=""
-                />
+                <img class="userInfo--avatar" :src="dynamicDetail.for_pic" alt="" />
               </template>
             </el-popover>
             <div class="userInfo--detail">
               <div class="detail--a">
-                <span class="name">可目十</span>
-                <span class="grade">LV.8</span>
+                <span class="name">{{ dynamicDetail.user_name }}</span>
+                <span class="grade">LV.{{ dynamicDetail?.user_grade }}</span>
               </div>
               <div class="detail--b">
-                <span class="address">江西 共青城</span>
-                <span class="time">2024-4-7</span>
+                <span class="address">地区 {{ dynamicDetail.user_city }}</span>
+                <span class="time" v-if="dynamicDetail?.dynamic_time">{{
+                  dynamicDetail?.dynamic_time.replace(/ GMT$/, '')
+                }}</span>
               </div>
             </div>
           </div>
           <div class="header-btn">
-            <el-button @click="openDrawer">私信</el-button>
+            <el-button
+              @click="openDrawer"
+              v-if="dynamicDetail.dynamic_user !== loginStore?.userInfo?.value?.user_id"
+            >
+              私信
+            </el-button>
           </div>
         </div>
-        <div class="item-content">
-          “阳春布德泽，万物生光辉”，希望之光照亮了生命。胸怀希望，才能走出“飘如陌上尘”“天地一沙鸥”的慨叹，“今朝试卷孤篷看，依旧青山绿树多”。拥有希望，你就能打开更多的窗户，“雁引愁心去，山衔好月来。”无论面对怎样的艰难，我们“依然一笑作春温”
-        </div>
-        <div class="image-carousel">
-          <ys-scroll :datas="dataArray" direction="left" circle>
+        <div v-html="dynamicDetail?.dynamic_text" class="item-content"></div>
+        <div v-if="dynamicDetail?.dynamic_pic_list.length > 0" class="image-carousel">
+          <ys-scroll :datas="dynamicDetail?.dynamic_pic_list" direction="left" circle>
             <template #default="slotProps">
               <img v-for="item in slotProps.datas" :src="item.url" alt="" :key="item" />
             </template>
           </ys-scroll>
         </div>
         <div class="item-footer">
-          <el-button>Click To Look It</el-button>
+          <template v-for="item in dynamicDetail.tag_list">
+            <el-tag class="mr-5px mb-3px">{{ item }}</el-tag>
+          </template>
         </div>
       </div>
     </template>
@@ -223,8 +254,8 @@ onMounted(() => {
       display: flex;
 
       .userInfo--avatar {
-        width: 80px;
-        height: 80px;
+        width: 60px;
+        height: 60px;
         border-radius: 50%;
         margin-right: 20px;
         transition: all 0.3s;
@@ -295,7 +326,7 @@ onMounted(() => {
   }
 
   .item-content {
-    padding: 30px;
+    padding: 10px 10px;
   }
 
   .item-footer {

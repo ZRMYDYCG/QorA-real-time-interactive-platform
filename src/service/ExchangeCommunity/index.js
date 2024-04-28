@@ -1,7 +1,5 @@
 import request from '../config/index.js'
-import { useLoginStore } from '@/stores/modules/Login/index.js'
-
-const loginStore = useLoginStore()
+import { getLocalStorage } from '@/utils/index.js'
 
 // 查询推荐的文章列表
 export const fetchAllRecommendApi = () => {
@@ -9,7 +7,7 @@ export const fetchAllRecommendApi = () => {
     url: '/api/index/dynamic',
     method: 'POST',
     data: {
-      id: loginStore?.userInfo?.value?.user_id
+      id: getLocalStorage('userInfo').value.user_id
     }
   })
 }
@@ -26,7 +24,6 @@ export const fetchEssayDetail = (object_id) => {
 }
 
 // 将文章收藏进入书架
-
 // dylist 文章id列表
 export const addEassayToColumn = (id, bookshelf_id, dylist) => {
   return request({
@@ -36,5 +33,26 @@ export const addEassayToColumn = (id, bookshelf_id, dylist) => {
       bookshelf_id: bookshelf_id,
       dylist: dylist
     }
+  })
+}
+
+// 根据标签查询所有的文章列表
+export const fetchTagDetail = (tag_name, id) => {
+  return request({
+    url: '/api/tag/content',
+    method: 'POST',
+    data: {
+      tag_name: tag_name,
+      id: id
+    }
+  })
+}
+
+// tag 标签名的模糊搜索 支持分页 page page_name 支持分页
+export const searchTags = (search) => {
+  return request({
+    url: '/api/search/tag',
+    method: 'POST',
+    search: search
   })
 }

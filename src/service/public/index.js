@@ -67,3 +67,15 @@ export const publicAddViews = (object_type, object_id) => {
     }
   })
 }
+
+// 查询用户是否收藏该文章和问题
+export const publicCartItem = (user_id, object_id, object_type) => {
+  return request({
+    url: '/api/search/favorite',
+    data: {
+      user_id: user_id,
+      object_id: object_id,
+      object_type: object_type
+    }
+  })
+}
