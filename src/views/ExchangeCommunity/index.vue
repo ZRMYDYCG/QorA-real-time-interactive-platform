@@ -108,13 +108,6 @@ const text = '体验官社区'
 
 const typedText = ref('')
 
-// 测试
-const handleTest = () => {
-  textBtn().then((res) => {
-    console.log(res)
-  })
-}
-
 watch(
   () => typedText.value,
   (newValue) => {

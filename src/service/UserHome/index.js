@@ -1,6 +1,6 @@
 import request from '../config/index.js'
 
-// 用户修改个人简介
+// 用户修改个人简介 ✅
 export const modifyUserInformationApi = (user_id, user_introduce) => {
   return request({
     url: '/api/change_introduce',
@@ -106,6 +106,7 @@ export const createSpecialEssayApi = (data) => {
 export const createDynamicApi = (data) => {
   return request({
     url: 'api/dynamic',
+    method: 'POST',
     data: {
       title: data.title,
       TagList: data.TagList,
@@ -121,6 +122,7 @@ export const createDynamicApi = (data) => {
 export const columnListApi = (object_id) => {
   return request({
     url: '/api/show/bookshelf',
+    method: 'POST',
     data: {
       object_id: object_id
     }
@@ -131,6 +133,7 @@ export const columnListApi = (object_id) => {
 export const fetchPersonalHomepage = (user_id) => {
   return request({
     url: '/api/show/user',
+    method: 'POST',
     data: {
       user_id: user_id
     }
@@ -142,6 +145,7 @@ export const fetchPersonalHomepage = (user_id) => {
 export const fetchPersonDetail = (user_id, type) => {
   return request({
     url: '/api/attention',
+    method: 'POST',
     data: {
       user_id: user_id,
       type: type
@@ -196,6 +200,7 @@ export const changeColumnApi = (user_id, bag_name, type) => {
 export const fetchColumnDetail = (user_id) => {
   return request({
     url: '/api/render/favorite/bag',
+    method: 'POST',
     data: {
       user_id: user_id
     }

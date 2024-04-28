@@ -9,16 +9,13 @@ defineProps({
 
 <template>
   <el-card>
-    <!--  这里就是传入一个标签  -->
-    <div class="header">
-      <el-tag>{{ tagInfo.tagName }}</el-tag>
+    <div class="header mb-5">
+      <el-tag>{{ tagInfo.tag_name }}</el-tag>
     </div>
-    <!--    <div class="main">-->
-    <!--      {{ tagInfo.content }}-->
-    <!--    </div>-->
     <div class="footer">
-      <span>{{ tagInfo.total }} 份体验分享</span>
-      <el-text>关注标签</el-text>
+      <span class="mr-5px">{{ tagInfo.dym_num }} 份体验分享</span>
+      <span>{{ tagInfo.pro_num }} 个问答求助</span>
+      <el-text style="cursor: pointer" size="small">关注标签</el-text>
     </div>
   </el-card>
 </template>

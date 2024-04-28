@@ -1,9 +1,14 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import { fetchAllRecommendApi } from '@/service/ExchangeCommunity/index.js'
+import {
+  fetchAllRecommendApi,
+  viewAllTagsApi,
+  searchTagsApi
+} from '@/service/ExchangeCommunity/index.js'
 import { attentionApi } from '@/service/UserHome/index.js'
 import { ElMessage } from 'element-plus'
 import { toggleAttentionStatus } from '@/utils/filterdynamic.js'
+import { setLocalStorage } from '@/utils/index.js'
 
 export const useExchangeCommunityStore = defineStore('exchangeCommunityStore', () => {
   // 控制用户私信弹窗是否弹出
@@ -32,11 +37,40 @@ export const useExchangeCommunityStore = defineStore('exchangeCommunityStore', (
       }
     })
   }
+
+  // 标签页面的分页查询
+  let pageTotal = ref(0)
+  let currentTags = ref([])
+  let total = ref(0)
+  const handleViewAllTagsApi = async (page_num = 12, page = 1) => {
+    const res = await viewAllTagsApi(page_num, page)
+    console.log(res)
+    currentTags.value = res.data.tags_data
+    total.value = res.data.num
+    pageTotal.value = res.data.total_page
+    setLocalStorage('pageTotal', pageTotal.value)
+  }
+
+  // 标签模糊搜索后的的分页查询
+  const handleSearchTagsApi = async (search, page_num, page = 1) => {
+    const res = await searchTagsApi(search, page_num, page)
+    console.log(res)
+    currentTags.value = res.data.tag_search_data
+    total.value = res.data.total_num
+    pageTotal.value = res.data.total_page
+    setLocalStorage('pageTotal', pageTotal.value)
+  }
+
   return {
     DrawerState,
     openDrawer,
     dynamicDetail,
     fetchAllRecommend,
-    handleAttentionApi
+    handleAttentionApi,
+    handleViewAllTagsApi,
+    currentTags,
+    total,
+    pageTotal,
+    handleSearchTagsApi
   }
 })
