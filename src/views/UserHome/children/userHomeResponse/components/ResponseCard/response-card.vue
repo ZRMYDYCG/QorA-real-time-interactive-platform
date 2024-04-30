@@ -24,7 +24,7 @@ const handleUpdateIsExpanded = (itemId, value) => {
       v-for="item in items"
       :title="item.title"
       :key="item.id"
-      :is-expanded.sync="item.isExpanded"
+      v-model:is-expanded="item.isExpanded"
       @update:isExpanded="(value) => handleUpdateIsExpanded(item.id, value)"
       :is-delete="false"
       showDropdown

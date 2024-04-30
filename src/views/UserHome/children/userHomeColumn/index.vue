@@ -1,7 +1,10 @@
 <script setup>
-import { ref, reactive } from 'vue'
+import { ref, reactive, onMounted } from 'vue'
 import draggable from 'vuedraggable'
-import { Plus, Delete, Edit } from '@element-plus/icons-vue'
+import { createSpecialApi } from '@/service/UserHome/index.js'
+import { publicFetch, publicDelete } from '@/service/public/index.js'
+import { useRoute } from 'vue-router'
+const route = useRoute()
 /*
   draggable 对CSS样式没有什么要求万物皆可拖拽
   :list="state.list"         //需要绑定的数组
@@ -31,12 +34,44 @@ const onEnd = () => {
 }
 
 const centerDialogVisible = ref(false)
+
+// TODO:创建专栏
+const columnInfo = ref({})
+columnInfo.value.title = ''
+columnInfo.value.TagList = []
+columnInfo.value.ImgList = []
+columnInfo.value.type = 'bookshelf'
+columnInfo.value.id = route.query.user_id
+const handleCreateSpecialApi = async () => {
+  centerDialogVisible.value = true
+  const res = await createSpecialApi(columnInfo)
+  console.log(res)
+  fetchDataAction()
+}
+
+// TODO:渲染专栏列表
+const fetchDataAction = async () => {
+  const res = await publicFetch(route.query.user_id, 'bookshelf')
+  console.log(res)
+}
+onMounted(async () => {
+  fetchDataAction()
+})
+
+// TODO:删除某一个专栏
+let deletDialogVisible = ref(false)
+const handleDeleteColumn = async (type = 'bookshelf', object_id) => {
+  await publicDelete(type, object_id)
+  deletDialogVisible.value = false
+}
 </script>
 
 <template>
   <div class="user-home-column">
     <div class="add-columns">
-      <el-button :icon="Plus" @click="centerDialogVisible = true">点击创建专栏</el-button>
+      <el-button @click="handleCreateSpecialApi"
+        ><el-icon><CirclePlus /></el-icon>点击创建专栏</el-button
+      >
     </div>
     <div class="itxst">
       <div>
@@ -55,8 +90,12 @@ const centerDialogVisible = ref(false)
                 <span class="create-time">创建时间 2004-12-12</span>
               </div>
               <div class="edit-del-column">
-                <el-button type="primary" size="default" :icon="Edit" circle />
-                <el-button type="danger" :icon="Delete" circle />
+                <el-button type="primary" size="default" circle>
+                  <el-icon><Edit /></el-icon>
+                </el-button>
+                <el-button type="danger" @click="deletDialogVisible = true" :icon="Delete" circle>
+                  <el-icon><Delete /></el-icon>
+                </el-button>
               </div>
             </div>
           </template>
@@ -74,7 +113,7 @@ const centerDialogVisible = ref(false)
     >
       <el-form status-icon>
         <el-form-item label="请输入专栏名" required="true">
-          <el-input></el-input>
+          <el-input v-model="columnInfo.title"></el-input>
         </el-form-item>
       </el-form>
       <template #footer>
@@ -83,6 +122,11 @@ const centerDialogVisible = ref(false)
           <el-button type="primary" @click="centerDialogVisible = false"> 确认创建 </el-button>
         </div>
       </template>
+    </el-dialog>
+
+    <el-dialog title="确定删除该专栏吗？" v-model="deletDialogVisible">
+      <el-button @click="deletDialogVisible = false">取消</el-button>
+      <el-button @click="handleDeleteColumn">删除</el-button>
     </el-dialog>
   </div>
 </template>

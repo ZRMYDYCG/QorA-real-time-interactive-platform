@@ -62,9 +62,9 @@ defineProps({
   }
 })
 // 处理操作菜单的点击事件
-const handleActionClick = (actionType) => {
+const handleActionClick = (actionType, id) => {
   // 调用emit发出事件
-  emit('action-click', actionType)
+  emit('action-click', actionType, id)
 }
 </script>
 
@@ -91,7 +91,7 @@ const handleActionClick = (actionType) => {
                 <el-dropdown-item
                   v-for="(item, index) in action"
                   :key="index"
-                  @click="handleActionClick(item)"
+                  @click="handleActionClick(item, 1)"
                 >
                   {{ item }}
                 </el-dropdown-item>

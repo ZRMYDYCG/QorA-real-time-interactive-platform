@@ -1,6 +1,6 @@
 import request from '../config/index.js'
 
-// 用户登录
+// 用户登录 ✅
 export const adminLogin = (accountInfo) => {
   return request.post('/api/login', {
     user_number: accountInfo.user_number,
@@ -8,7 +8,7 @@ export const adminLogin = (accountInfo) => {
   })
 }
 
-// 用户注册
+// 用户注册 ✅
 export const enrollAccount = (accountInfo) => {
   return request.post('/api/enroll', {
     user_number: accountInfo.user_number,
@@ -16,7 +16,7 @@ export const enrollAccount = (accountInfo) => {
   })
 }
 
-// 用户下线
+// 用户下线 ✅
 export const loginOutApi = (user_id) => {
   return request({
     url: '/logout',

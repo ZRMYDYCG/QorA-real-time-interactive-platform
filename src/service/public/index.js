@@ -1,10 +1,10 @@
 import request from '../config/index.js'
 
-// 1. 查询某个用户所有发布过的问题 type="questions"
-// 2. 查询某个用户创建的所有专栏 type="special"
-// 3. 查询某个用户的所有文章 type="dynamic"
-// 4. 查询某个用户的所有书架 type="bookshelf"
-// 5. 查询某个用户的关注粉丝列表以及自己的信息 type="user"
+// 1. 查询某个用户所有发布过的问题 type="questions" ✅
+// 2. 查询某个用户创建的所有专栏 type="special" ⚠️
+// 3. 查询某个用户的所有文章 type="dynamic" ✅
+// 4. 查询某个用户的所有书架 type="bookshelf" ✅
+// 5. 查询某个用户的关注粉丝列表以及自己的信息 type="user" ⚠️
 export const publicFetch = (id, type) => {
   return request({
     url: '/api/user/type',
@@ -16,11 +16,11 @@ export const publicFetch = (id, type) => {
   })
 }
 
-// 1. 删除某一个问题 type="question" 再传问题id
-// 2. 删除某一个专栏 type="special" 专栏 id
-// 3. 删除专栏下的某一个动态 type="spdy" 对应id
-// 4. 删除某一个书架 type="bookshelf" 对应id
-// 5. 删除某一篇文章 type="dynamic" 对应id
+// 1. 删除某一个问题 type="question" 再传问题id ✅
+// 2. 删除某一个专栏 type="special" 专栏 id ⚠️
+// 3. 删除专栏下的某一个动态 type="spdy" 对应id ⚠️
+// 4. 删除某一个书架 type="bookshelf" 对应id ✅
+// 5. 删除某一篇文章 type="dynamic" 对应id ✅
 // 6. 删除某一条评论 type="review" 对应评论id
 export const publicDelete = (type, object_id) => {
   return request({

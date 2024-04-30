@@ -1,20 +1,54 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
+import { fetchColumnDetail, changeColumnApi, moveFavoriteApi } from '@/service/UserHome/index.js'
 
+const route = useRoute()
+let user_id = route.query.user_id
+
+// TODO:收藏夹的激活状态
 const activeNames = ref(['1'])
 const handleChange = (val) => {
   console.log(val)
 }
 
-const collectionDialogVisible = ref(false)
-
-const innerCollectionDialogVisible = ref(false)
-
-const handleNewCollection = () => {
+// TODO:创建新的收藏夹
+let collectionDialogVisible = ref(false)
+const handleNewCollection = async (bag_name, type = 'add') => {
   innerCollectionDialogVisible.value = true
+  const res = await changeColumnApi(user_id, bag_name, type)
+  console.log(res)
+  await fetchColumnDetail(user_id)
 }
 
+// TODO:删除收藏夹
+let innerCollectionDialogVisible = ref(false)
+const handleDeleteCollection = async (bag_name, type = 'less') => {
+  const res = await changeColumnApi(user_id, bag_name, type)
+  console.log(res)
+  await fetchColumnDetail(user_id)
+}
+
+// TODO:将收藏项移入或移出收藏夹
+let deleteDialogVisible = ref(false)
+const handlemMoveFavoriteApi = (bag_name, favorite_id_list, type = 'less') => {
+  deleteDialogVisible.value = true
+  confirm(user_id, bag_name, favorite_id_list, type)
+}
+
+const confirm = (user_id, bag_name, favorite_id_list, type) => {
+  moveFavoriteApi(user_id, bag_name, favorite_id_list, type)
+}
+
+// TODO:是否私密或公开
 let radio = ref('1')
+
+// TODO:渲染收藏夹
+onMounted(async () => {
+  const { user_id } = route.query
+  const res = await fetchColumnDetail(user_id)
+  console.log(res)
+})
 </script>
 
 <template>
@@ -31,8 +65,17 @@ let radio = ref('1')
         <!--    收藏夹内容    -->
         <template v-for="(item, index) in 10" :key="index">
           <div class="collection-item">
-            <el-tag>体验分享</el-tag>
-            <div class="title">为什么超威电池会更加好用呢？</div>
+            <div class="item-left">
+              <el-tag>体验分享</el-tag>
+              <div class="title">为什么超威电池会更加好用呢？</div>
+            </div>
+            <div class="item-right">
+              <el-button circle @click="handlemMoveFavoriteApi">
+                <el-icon>
+                  <Delete />
+                </el-icon>
+              </el-button>
+            </div>
           </div>
         </template>
       </el-collapse-item>
@@ -67,7 +110,7 @@ let radio = ref('1')
                     <EditPen />
                   </el-icon>
                 </el-button>
-                <el-button circle>
+                <el-button circle @click="handleDeleteCollection">
                   <el-icon>
                     <Delete />
                   </el-icon>
@@ -96,6 +139,11 @@ let radio = ref('1')
       </el-form-item>
     </el-form>
   </el-dialog>
+
+  <el-dialog v-model="deleteDialogVisible" title="确定删除该收藏项？">
+    <el-button @click="confirm">确定</el-button>
+    <el-button @click="deleteDialogVisible = false">取消</el-button>
+  </el-dialog>
 </template>
 
 <style scoped lang="scss">
@@ -107,6 +155,7 @@ let radio = ref('1')
   .collection-item {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     padding: 10px 10px;
     transition: all 0.3s;
 

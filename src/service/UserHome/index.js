@@ -38,7 +38,7 @@ export const attentionApi = (user_id, user_for, type) => {
   })
 }
 
-// 用户增删收藏
+// 专栏 - 用户增删收藏
 // type add less
 // object_type user dynamic bookshelf
 export const collectApi = (user_id, object_id, type, object_type) => {
@@ -54,7 +54,7 @@ export const collectApi = (user_id, object_id, type, object_type) => {
   })
 }
 
-// 创建专栏
+// 创建专栏 ✅
 export const createSpecialApi = (data) => {
   return request({
     url: '/api/special',
@@ -129,8 +129,8 @@ export const columnListApi = (object_id) => {
   })
 }
 
-// 渲染用户个人主页
-export const fetchPersonalHomepage = (user_id) => {
+// 渲染用户个人主页 ✅
+export const fetchPersonalHomepageApi = (user_id) => {
   return request({
     url: '/api/show/user',
     method: 'POST',
@@ -140,7 +140,7 @@ export const fetchPersonalHomepage = (user_id) => {
   })
 }
 
-// 渲染粉丝 关注列表详细信息
+// 渲染粉丝 关注列表详细信息 ✅
 // type = "fan" type="attention"
 export const fetchPersonDetail = (user_id, type) => {
   return request({
@@ -168,7 +168,7 @@ export const removeBookShelfApi = (user_id, bookshelf_id, dylist) => {
   })
 }
 
-// 将收藏项移入或移出收藏夹
+// 将收藏项移入或移出收藏夹 ✅
 // type add less
 export const moveFavoriteApi = (user_id, bag_name, favorite_id_list, type) => {
   return request({
@@ -183,7 +183,8 @@ export const moveFavoriteApi = (user_id, bag_name, favorite_id_list, type) => {
   })
 }
 
-// 创建或删除收藏夹
+// 创建或删除收藏夹 ✅
+// bag_name 收藏夹名
 export const changeColumnApi = (user_id, bag_name, type) => {
   return request({
     url: '/api/create/favorite/bag',
@@ -196,7 +197,7 @@ export const changeColumnApi = (user_id, bag_name, type) => {
   })
 }
 
-// 渲染收藏夹
+// 渲染收藏夹 ✅
 export const fetchColumnDetail = (user_id) => {
   return request({
     url: '/api/render/favorite/bag',

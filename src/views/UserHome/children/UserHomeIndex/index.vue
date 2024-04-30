@@ -3,6 +3,8 @@ import AppreciationLevel from '@/components/function/UserHomeIndex/AppreciationL
 import BiographyBoard from '@/components/function/UserHomeIndex/BiographyBoard.vue'
 import ContributionList from '@/components/function/UserHomeIndex/ContributionList/index.vue'
 import BehaviorBoard from '@/components/function/UserHomeIndex/BehaviorBoard.vue'
+import { useUserHomeStore } from '@/stores/modules/UserHome/index.js'
+const userHomeStore = useUserHomeStore()
 </script>
 
 <template>
@@ -21,7 +23,7 @@ import BehaviorBoard from '@/components/function/UserHomeIndex/BehaviorBoard.vue
 
   <el-row>
     <h3 style="margin-bottom: 20px; color: darkkhaki">
-      2024年为体验者社区共贡献 {{ 123 }} 次体验感受
+      2024年为体验者社区共贡献 {{ userHomeStore.userHomeHistoryList.length }} 次体验感受
     </h3>
     <!-- 贡献列表始终全宽展示 -->
     <el-col :span="24">

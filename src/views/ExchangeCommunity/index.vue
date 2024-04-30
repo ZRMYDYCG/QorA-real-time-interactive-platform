@@ -1,7 +1,7 @@
 <script setup>
 import { ref, watch } from 'vue'
 // import { onMounted } from 'vue'
-import { textBtn } from '@/service/test/index.js'
+// import { textBtn } from '@/service/test/index.js'
 
 import { useExchangeCommunityStore } from '@/stores/modules/ExchangeCommunity/index.js'
 

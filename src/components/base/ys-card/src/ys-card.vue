@@ -55,7 +55,7 @@ const props = defineProps({
     default: false
   }
 })
-const emit = defineEmits(['update:isExpanded'])
+const emit = defineEmits(['update:isExpanded', 'delete-action'])
 
 const cardStyle = computed(() => ({
   with: props.width,
@@ -74,6 +74,8 @@ const toggleExpand = () => {
     emit('update:isExpanded', localIsExpanded.value)
   }
 }
+
+// const deleteAction () => {}
 </script>
 
 <style scoped>

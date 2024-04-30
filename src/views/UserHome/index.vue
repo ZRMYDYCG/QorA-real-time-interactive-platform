@@ -2,27 +2,32 @@
   <div class="userHome">
     <div class="header--userInfo">
       <div class="userInfo--pic">
-        <img src="https://pic.imgdb.cn/item/660e1fa89f345e8d03525df8.png" alt="" />
+        <img :src="userHomeStore.userHomeInfoDetail.user_pic" alt="用户头像" />
       </div>
       <div class="userInfo--other">
         <div class="name">
-          <span>一小池勺</span>
+          <span>{{ userHomeStore.userHomeInfoDetail.user_name }}</span>
           <el-icon @click="openEdit" style="cursor: pointer; font-size: 20px">
             <Edit />
           </el-icon>
         </div>
         <div class="grade">
-          <span style="font-size: 14px">鉴赏等级</span>
-          <span class="num">Lv.8</span>
+          <span style="font-size: 14px">鉴赏等级 </span>
+          <span class="num">Lv.{{ userHomeStore.userHomeInfoDetail.user_grade }}</span>
         </div>
         <div class="following">
-          <div class="concern" @click="$router.push('/socializingDetail')">
-            <span style="font-size: 17px">关注</span>
-            <span style="font-size: 17px"> 9</span>
+          <div
+            class="concern"
+            @click="$router.push(`/socializingDetail?user_id=${id}&type=attention`)"
+          >
+            <span style="font-size: 17px">关注 </span>
+            <span style="font-size: 17px">
+              {{ userHomeStore.userHomeInfoDetail.user_attention }}</span
+            >
           </div>
-          <div class="fan" @click="$router.push('/socializingDetail')">
-            <span style="font-size: 17px">粉丝</span>
-            <span style="font-size: 17px"> 10</span>
+          <div class="fan" @click="$router.push(`/socializingDetail?user_id=${id}&type=fan`)">
+            <span style="font-size: 17px">粉丝 </span>
+            <span style="font-size: 17px"> {{ userHomeStore.userHomeInfoDetail.user_fan }}</span>
           </div>
         </div>
       </div>
@@ -30,7 +35,7 @@
     <div class="nav--options">
       <YsTabs
         class="ys-tabs"
-        :tabs="tabConfig"
+        :tabs="rewritePathsPanelList"
         :activeIndex="activeTabIndex"
         :isVertical="isVertical"
       >
@@ -162,8 +167,14 @@
 </template>
 
 <script setup>
+import { useRoute } from 'vue-router'
 import YsTabs from '@/components/base/ys-tabs/src/ys-tabs.vue'
+import { useUserHomeStore } from '@/stores/modules/UserHome/index.js'
+const userHomeStore = useUserHomeStore()
+const route = useRoute()
+import { rewritePaths } from '@/utils/index.js'
 
+// TODO:重写路径
 const tabConfig = [
   { name: '主页面板', path: '/userHome/index' },
   { name: '体验分享', path: '/userHome/dynamic' },
@@ -172,6 +183,9 @@ const tabConfig = [
   { name: '我的收藏', path: '/userHome/collection' },
   { name: '我的专栏', path: '/userHome/column' }
 ]
+
+let user_id = route.query.user_id
+const rewritePathsPanelList = rewritePaths(tabConfig, 1)
 
 const activeTabIndex = 0
 const isVertical = false
@@ -241,6 +255,14 @@ const addAddressDialog = ref(false)
 onMounted(() => {
   getMapData()
 })
+
+// TODO: 渲染用户主页信息
+onMounted(() => {
+  userHomeStore.handleFetchPersonalHomepageApi(user_id)
+})
+
+// TODO: 跳转渲染关注、粉丝列表
+let id = route.query.user_id
 </script>
 
 <style lang="scss">

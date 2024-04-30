@@ -36,7 +36,7 @@ export const addEassayToColumn = (id, bookshelf_id, dylist) => {
   })
 }
 
-// 查看标签
+// 查看标签 ✅
 // page_num 每一页的偏移量
 // page 第几页
 export const viewAllTagsApi = (page_num, page) => {
@@ -62,7 +62,7 @@ export const fetchTagDetail = (tag_name, id) => {
   })
 }
 
-// tag 标签名的模糊搜索 支持分页 page page_name
+// tag 标签名的模糊搜索 支持分页 page page_name ✅
 export const searchTagsApi = (search, page_num, page = 1) => {
   return request({
     url: '/api/search/tag',

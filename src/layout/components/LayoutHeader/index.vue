@@ -74,9 +74,7 @@
             <img :src="loginStore?.userInfo.value?.picture_address" alt="" />
             <template #dropdown>
               <el-dropdown-menu>
-                <el-dropdown-item>
-                  <router-link to="/userHome">个人主页</router-link>
-                </el-dropdown-item>
+                <el-dropdown-item @click="navigateToUserHome">个人主页 </el-dropdown-item>
                 <el-dropdown-item>我的提问</el-dropdown-item>
                 <el-dropdown-item>我的回答</el-dropdown-item>
                 <el-dropdown-item @click="loginOut">退出登录</el-dropdown-item>
@@ -103,12 +101,13 @@
 
 <script setup>
 import { ref, watch } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
+import { useRouter } from 'vue-router'
 import themeSwitch from './theme-switch.vue'
 import messageItem from './message-item.vue'
 import { useLoginStore } from '@/stores/modules/Login/index.js'
 import { loginOutApi } from '@/service/Login/index.js'
 import { removeLocalStorage } from '@/utils/index.js'
+import { getLocalStorage } from '@/utils/index.js'
 
 const loginStore = useLoginStore()
 
@@ -144,6 +143,17 @@ const loginOut = async () => {
     await router.push('/login')
     removeLocalStorage('userInfo')
     removeLocalStorage('token')
+  }
+}
+
+// 跳转到个人主页
+const navigateToUserHome = async () => {
+  try {
+    const userInfo = await getLocalStorage('userInfo')
+    const userId = userInfo.value.user_id
+    router.push(`/userHome/index?user_id=${userId}`)
+  } catch (error) {
+    console.error(error)
   }
 }
 </script>
