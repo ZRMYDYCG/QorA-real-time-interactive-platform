@@ -1,5 +1,6 @@
 <script setup>
-import YsScroll from '@/components/base/ys-scroll/src/ys-scroll.vue'
+// import YsScroll from '@/components/base/ys-scroll/src/ys-scroll.vue'
+import collapse from '@/components/base/collapse/index.vue'
 import { More } from '@element-plus/icons-vue'
 import { useExchangeCommunityStore } from '@/stores/modules/ExchangeCommunity/index.js'
 import { useLoginStore } from '@/stores/modules/Login/index.js'
@@ -177,16 +178,18 @@ onMounted(() => {
             </el-button>
           </div>
         </div>
-        <div v-html="dynamicDetail?.dynamic_text" class="item-content"></div>
-        <div v-if="dynamicDetail?.dynamic_pic_list.length > 0" class="image-carousel">
-          <ys-scroll :datas="dynamicDetail?.dynamic_pic_list" direction="left" circle>
-            <template #default="slotProps">
-              <img v-for="item in slotProps.datas" :src="item.url" alt="" :key="item" />
-            </template>
-          </ys-scroll>
+        <div style="width: 90%">
+          <collapse :default-height="125">
+            <div
+              v-html="dynamicDetail?.dynamic_text"
+              class="item-content"
+              @click="$router.push(`/topicDetail/${dynamicDetail.dynamic_id}`)"
+            ></div>
+          </collapse>
         </div>
+
         <div class="item-footer">
-          <template v-for="item in dynamicDetail.tag_list">
+          <template v-for="item in dynamicDetail.tag_list" :key="item">
             <el-tag class="mr-5px mb-3px">{{ item }}</el-tag>
           </template>
         </div>

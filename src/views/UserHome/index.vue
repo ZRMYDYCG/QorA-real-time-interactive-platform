@@ -71,6 +71,7 @@
               <Plus />
             </el-icon>
           </el-upload> -->
+
           <!-- <el-upload
             action="#"
             :http-request="handleUploadFilesApi"
@@ -81,7 +82,7 @@
             <el-icon><Plus /></el-icon>
             <template #file="{ file }">
               <div>
-                <img class="el-upload-list__item-thumbnail" :src="backImgUrl" alt="" />
+                <img class="el-upload-list__item-thumbnail" :src="imageUrl" alt="" />
                 <span class="el-upload-list__item-actions">
                   <span
                     class="el-upload-list__item-preview"

@@ -4,10 +4,12 @@ import { submitArtAPI } from '@/service/PublishArticle/index.js'
 import { useLoginStore } from '@/stores/modules/Login/index.js'
 import RichText from '@/components/base/rich-text/index.vue'
 import { ElMessage } from 'element-plus'
+import { Delete, Download, Plus, ZoomIn } from '@element-plus/icons-vue'
 import 'element-plus/theme-chalk/el-message.css'
 // TODO: 文章发布
 const content = ref('')
 const title = ref('')
+let imgList = ref([])
 const getContent = (data) => {
   content.value = data
 }
@@ -74,20 +76,73 @@ const onSubmit = async () => {
   console.log('send')
   const res = await submitArtAPI({
     title: title.value,
-    imgList: [
-      'https://p1.music.126.net/D-1BJmN0aqcwgh8F1AuyPA==/109951169341847902.jpg',
-      'https://p1.music.126.net/fAzUfd4CUeEsyHvui0Unhg==/109951169440246524.jpg',
-      'https://p1.music.126.net/lpgtc9vtrfrJwwm819XVgQ==/109951169478526448.jpg',
-      'https://b.zol-img.com.cn/sjbizhi/images/11/1080x1920/1592967802496.jpg',
-      'https://p1.music.126.net/CmDnOvSU7aIArdeL4CROMA==/109951169329849875.jpg'
-    ],
+    ImgList: imgList.value,
     content: content.value,
     type: 'dynamic',
+    TagList: dynamicTags.value,
     id: userStore.userInfo.value.user_id
   })
   console.log(res)
 }
 // TODO:文章封面图片上传
+const dialogImageUrl = ref('')
+const dialogVisible = ref(false)
+const disabled = ref(false)
+
+const handleRemove = (file) => {
+  console.log(file)
+}
+
+const handlePictureCardPreview = (file) => {
+  dialogImageUrl.value = file.url
+  dialogVisible.value = true
+}
+
+const handleDownload = (file) => {
+  console.log(file)
+}
+
+let files = []
+const handleUploadFilesApi = async (file) => {
+  console.log('自定义上传')
+  console.log(file)
+  files.push(file.file)
+  await uploadFiles(files)
+}
+
+const uploadFiles = async (files) => {
+  console.log('sdfhusd:', files)
+  if (!files.length) {
+    console.error('没有文件被选中')
+    return
+  }
+
+  const formData = new FormData()
+  for (let i = 0; i < files.length; i++) {
+    console.log(files[i])
+    formData.append('image0', files[i])
+  }
+
+  try {
+    const response = await fetch('http://127.0.0.1:5000/api/upload/pics', {
+      method: 'POST',
+      body: formData
+    })
+
+    if (response.ok) {
+      const data = await response.json()
+      console.log('aaa', data)
+      imgList.value = data.imageUrl.url
+      files = []
+
+      ElMessage.success('封面上传成功')
+    } else {
+      console.error(response.status)
+    }
+  } catch (err) {
+    console.error(err)
+  }
+}
 </script>
 
 <template>
@@ -101,7 +156,7 @@ const onSubmit = async () => {
     </div>
   </div>
 
-  <el-dialog width="40%" style="height: 400px" v-model="submitVisible">
+  <el-dialog width="40%" style="height: auto" v-model="submitVisible">
     <el-form>
       <el-form-item style="margin-top: 20px" label="文章标题">
         <el-input v-model="title" placeholder="请输入文章标题"></el-input>
@@ -126,16 +181,17 @@ const onSubmit = async () => {
               v-if="inputVisible"
               ref="InputRef"
               v-model="tagInputValue"
-              class="w-20"
+              class="w-20 h-5 mt--1"
               @keyup.enter="handleInputConfirm"
             />
             <el-button
               v-else-if="dynamicTags.length <= 5"
-              class="button-new-tag"
-              size="small"
+              class="button-new-tag mt--1"
+              type="text"
               @click="showInput(dynamicTags.length)"
             >
-              + 自定义标签
+              <el-icon><EditPen /></el-icon>
+              自定义标签
               <div :class="dynamicTextColor">{{ dynamicTags.length }}<span>&nbsp</span></div>
               / 5
             </el-button>
@@ -144,16 +200,12 @@ const onSubmit = async () => {
       </el-form-item>
       <el-form-item label="添加封面">
         <!-- 多图上传 -->
-        <el-upload
-          action="#"
-          :http-request="handleUploadFilesApi"
-          list-type="picture-card"
-          multiple
-        >
+        <el-upload :http-request="handleUploadFilesApi" action="#" list-type="picture-card">
           <el-icon><Plus /></el-icon>
+
           <template #file="{ file }">
             <div>
-              <img class="el-upload-list__item-thumbnail" :src="backImgUrl" alt="" />
+              <img class="el-upload-list__item-thumbnail" :src="file.url" alt="" />
               <span class="el-upload-list__item-actions">
                 <span class="el-upload-list__item-preview" @click="handlePictureCardPreview(file)">
                   <el-icon><zoom-in /></el-icon>
@@ -176,8 +228,16 @@ const onSubmit = async () => {
             </div>
           </template>
         </el-upload>
+
+        <el-dialog v-model="dialogVisible">
+          <img w-full :src="dialogImageUrl" alt="Preview Image" />
+        </el-dialog>
       </el-form-item>
     </el-form>
+    <div style="display: flex; justify-content: center">
+      <el-button @click="onSubmit">发布文章</el-button>
+      <el-button>保存草稿箱</el-button>
+    </div>
   </el-dialog>
 </template>
 

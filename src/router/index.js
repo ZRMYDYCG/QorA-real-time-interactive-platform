@@ -144,7 +144,7 @@ export const constantRoutes = [
         ]
       },
       {
-        path: '/topicDetail',
+        path: '/topicDetail/:id',
         component: () => import('@/views/TopicDetail/index.vue')
       },
       {

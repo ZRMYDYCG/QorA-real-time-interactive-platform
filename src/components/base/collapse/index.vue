@@ -172,7 +172,7 @@ export default {
   right: 8px;
   font-size: 14px;
   font-weight: 400;
-  color: #6abcff;
+  color: #ccc;
   cursor: pointer;
 }
 .collapse-controll-icon {
