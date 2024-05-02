@@ -22,11 +22,13 @@ const handleUpdateIsExpanded = (itemId, value) => {
 }
 
 // 获取某用户的所有求助
+const helpListData = ref([])
 let id = route.query.user_id
 const handlePublicFetchResponse = async () => {
   const res = await publicFetch(id, 'questions')
-  console.log(res)
+  console.log('Result is:', res)
 }
+
 onMounted(() => {
   handlePublicFetchResponse()
 })

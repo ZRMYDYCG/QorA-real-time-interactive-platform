@@ -171,21 +171,34 @@ import { useRoute } from 'vue-router'
 import YsTabs from '@/components/base/ys-tabs/src/ys-tabs.vue'
 import { useUserHomeStore } from '@/stores/modules/UserHome/index.js'
 const userHomeStore = useUserHomeStore()
+// import { getLocalStorage } from '@/utils/index.js'
 const route = useRoute()
 import { rewritePaths } from '@/utils/index.js'
 
 // TODO:重写路径
-const tabConfig = [
+const tabConfig = ref([
   { name: '主页面板', path: '/userHome/index' },
   { name: '体验分享', path: '/userHome/dynamic' },
-  { name: '我的回答', path: '/userHome/response' },
-  { name: '我的求助', path: '/userHome/help' },
-  { name: '我的收藏', path: '/userHome/collection' },
-  { name: '我的专栏', path: '/userHome/column' }
-]
+  {
+    name: '回答',
+    path: '/userHome/response'
+  },
+  {
+    name: '求助',
+    path: '/userHome/help'
+  },
+  {
+    name: '收藏',
+    path: '/userHome/collection'
+  },
+  {
+    name: '专栏',
+    path: '/userHome/column'
+  }
+])
 
 let user_id = route.query.user_id
-const rewritePathsPanelList = rewritePaths(tabConfig, 1)
+const rewritePathsPanelList = rewritePaths(tabConfig.value, 1)
 
 const activeTabIndex = 0
 const isVertical = false
@@ -255,7 +268,6 @@ const addAddressDialog = ref(false)
 onMounted(() => {
   getMapData()
 })
-
 // TODO: 渲染用户主页信息
 onMounted(() => {
   userHomeStore.handleFetchPersonalHomepageApi(user_id)

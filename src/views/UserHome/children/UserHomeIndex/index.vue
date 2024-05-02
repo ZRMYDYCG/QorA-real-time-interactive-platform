@@ -1,10 +1,22 @@
 <script setup>
+import { ref } from 'vue'
 import AppreciationLevel from '@/components/function/UserHomeIndex/AppreciationLevel.vue'
 import BiographyBoard from '@/components/function/UserHomeIndex/BiographyBoard.vue'
 import ContributionList from '@/components/function/UserHomeIndex/ContributionList/index.vue'
 import BehaviorBoard from '@/components/function/UserHomeIndex/BehaviorBoard.vue'
 import { useUserHomeStore } from '@/stores/modules/UserHome/index.js'
 const userHomeStore = useUserHomeStore()
+
+// 父组件维护的贡献数据
+const contributions = ref({
+  '2024-4-40': true
+})
+
+// 处理子组件发来的贡献变更事件
+function handleContributionChange(newContributions) {
+  // 更新父组件的贡献数据
+  contributions.value = newContributions
+}
 </script>
 
 <template>
@@ -27,7 +39,10 @@ const userHomeStore = useUserHomeStore()
     </h3>
     <!-- 贡献列表始终全宽展示 -->
     <el-col :span="24">
-      <ContributionList></ContributionList>
+      <ContributionList
+        :contributions="contributions"
+        @contribution-change="handleContributionChange"
+      ></ContributionList>
     </el-col>
   </el-row>
 </template>

@@ -14,14 +14,14 @@ const route = useRoute()
   @start="onStart"           //拖拽开始的事件
   @end="onEnd"               //拖拽结束的事件
   */
-const state = reactive({
-  //需要拖拽的数据，拖拽后数据的顺序也会变化
-  list: [
-    { name: 'www.itxst.com', id: 0 },
-    { name: 'www.baidu.com', id: 1 },
-    { name: 'www.google.com', id: 2 }
-  ]
-})
+// const state = reactive({
+//   //需要拖拽的数据，拖拽后数据的顺序也会变化
+//   list: [
+//     { name: 'www.itxst.com', id: 0 },
+//     { name: 'www.baidu.com', id: 1 },
+//     { name: 'www.google.com', id: 2 }
+//   ]
+// })
 
 //拖拽开始的事件
 const onStart = () => {
@@ -41,17 +41,19 @@ columnInfo.value.title = ''
 columnInfo.value.TagList = []
 columnInfo.value.ImgList = []
 columnInfo.value.type = 'bookshelf'
-columnInfo.value.id = route.query.user_id
+columnInfo.value.id = parseInt(route.query.user_id)
 const handleCreateSpecialApi = async () => {
-  centerDialogVisible.value = true
-  const res = await createSpecialApi(columnInfo)
+  const res = await createSpecialApi(columnInfo.value)
+  centerDialogVisible.value = false
   console.log(res)
   fetchDataAction()
 }
 
 // TODO:渲染专栏列表
+const columnListData = ref([])
 const fetchDataAction = async () => {
   const res = await publicFetch(route.query.user_id, 'bookshelf')
+  columnListData.value = res.data.bookshelf_data
   console.log(res)
 }
 onMounted(async () => {
@@ -69,14 +71,14 @@ const handleDeleteColumn = async (type = 'bookshelf', object_id) => {
 <template>
   <div class="user-home-column">
     <div class="add-columns">
-      <el-button @click="handleCreateSpecialApi"
-        ><el-icon><CirclePlus /></el-icon>点击创建专栏</el-button
+      <el-button @click="centerDialogVisible = true"
+        ><el-icon><CirclePlus /></el-icon> 点击创建专栏</el-button
       >
     </div>
     <div class="itxst">
       <div>
         <draggable
-          :list="state.list"
+          :list="columnListData"
           ghost-class="ghost"
           chosen-class="chosenClass"
           animation="300"
@@ -86,8 +88,10 @@ const handleDeleteColumn = async (type = 'bookshelf', object_id) => {
           <template #item="{ element }">
             <div class="column-items">
               <div class="about-column">
-                <span class="column-title">专栏名称：地球为什么是圆的</span>
-                <span class="create-time">创建时间 2004-12-12</span>
+                <span class="column-title">专栏名称：{{ element.bookshelf_title }}</span>
+                <span class="create-time"
+                  >创建时间：{{ element.bookshelf_time.replace(/\s*GMT/, '') }}</span
+                >
               </div>
               <div class="edit-del-column">
                 <el-button type="primary" size="default" circle>
@@ -101,7 +105,6 @@ const handleDeleteColumn = async (type = 'bookshelf', object_id) => {
           </template>
         </draggable>
       </div>
-      <div>{{ state.list }}</div>
     </div>
     <!-- 打开对话框 -->
     <el-dialog
@@ -119,7 +122,7 @@ const handleDeleteColumn = async (type = 'bookshelf', object_id) => {
       <template #footer>
         <div class="dialog-footer">
           <el-button @click="centerDialogVisible = false">取消</el-button>
-          <el-button type="primary" @click="centerDialogVisible = false"> 确认创建 </el-button>
+          <el-button type="primary" @click="handleCreateSpecialApi"> 确认创建 </el-button>
         </div>
       </template>
     </el-dialog>

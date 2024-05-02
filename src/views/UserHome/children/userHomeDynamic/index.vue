@@ -7,10 +7,12 @@ import { useRoute } from 'vue-router'
 const route = useRoute()
 
 // TODO:渲染该用户的所有的文章
+const dynamicList = ref([])
 const fetchAllData = async () => {
   let user_id = route.query.user_id
   const res = await publicFetch(user_id, 'dynamic')
-  console.log(res)
+  dynamicList.value = res.data.dynamics_data
+  console.log(dynamicList.value)
 }
 
 // 删除某一篇文章
@@ -31,7 +33,9 @@ onMounted(() => {
 
 <template>
   <div class="user-home-dynamic">
-    <dynamic-card @action-click="actionClick"></dynamic-card>
+    <template v-for="(item, index) in dynamicList" :key="index">
+      <dynamic-card v-bind="item" @action-click="actionClick"></dynamic-card>
+    </template>
   </div>
 </template>
 

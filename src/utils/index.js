@@ -5,3 +5,5 @@ export * from './cache.js'
 export * from './timeFilter.js'
 
 export * from './mapTabConfig.js'
+
+export * from './formateCommentList.js'

@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useLoginStore } from '@/stores/modules/Login/index.js'
 import { useUserHomeStore } from '@/stores/modules/UserHome/index.js'
 import { modifyUserInformationApi } from '@/service/UserHome/index.js'
@@ -7,12 +7,13 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 import 'element-plus/theme-chalk/el-message.css'
 import 'element-plus/theme-chalk/el-message-box.css'
 import { useRoute } from 'vue-router'
+import { getLocalStorage } from '@/utils/cache.js'
 const loginStore = useLoginStore()
 const userHomeStore = useUserHomeStore()
 const route = useRoute()
 
 // 修改用户个人简介
-const text = ref('')
+let text = ref('')
 const visibleDialog = ref(false)
 const modifyUserInformation = async () => {
   // 清空个人简介
@@ -50,15 +51,24 @@ const modifyUserInformation = async () => {
   visibleDialog.value = false
 }
 
+const openEdit = () => {
+  visibleDialog.value = true
+  text.value = getLocalStorage('user_introduce')
+}
+
 const closeDialog = () => {
   text.value = ''
 }
+
+onMounted(() => {
+  text.value = getLocalStorage('user_introduce')
+})
 </script>
 
 <template>
   <el-card>
     <div class="header">
-      <el-icon @click="visibleDialog = true">
+      <el-icon @click="openEdit">
         <Edit />
       </el-icon>
     </div>

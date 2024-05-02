@@ -1,13 +1,15 @@
 <script setup>
 import { onMounted, nextTick } from 'vue'
 import * as echarts from 'echarts'
+import { useUserHomeStore } from '@/stores/modules/UserHome/index.js'
+const userHomeStore = useUserHomeStore()
 
 const init = () => {
   const option = {
     legend: {
       orient: 'vertical',
       x: 'left',
-      data: ['A', 'B', 'C', 'D', 'E']
+      data: ['点赞', '评论', '收藏', '标签', '分享']
     },
     series: [
       {
@@ -29,11 +31,11 @@ const init = () => {
           }
         },
         data: [
-          { value: 335, name: 'A' },
-          { value: 310, name: 'B' },
-          { value: 234, name: 'C' },
-          { value: 135, name: 'D' },
-          { value: 1548, name: 'E' }
+          { value: 335, name: '点赞' },
+          { value: 310, name: '评论' },
+          { value: 234, name: '收藏' },
+          { value: 135, name: '标签' },
+          { value: 1548, name: '分享' }
         ]
       }
     ]
@@ -56,9 +58,10 @@ onMounted(() => {
       <div class="card-header">
         <span class="title">体验官等级</span>
         <span class="line"> | </span>
-        <span class="level">Lv.8</span>
+        <span class="level">Lv.{{ userHomeStore.userHomeInfoDetail.user_grade }}</span>
       </div>
     </template>
+    <p style="text-align: center; font-weight: 100">成长方式</p>
     <div id="main" class="card-content"></div>
   </el-card>
 </template>

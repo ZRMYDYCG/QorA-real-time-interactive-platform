@@ -197,7 +197,7 @@ export const changeColumnApi = (user_id, bag_name, type) => {
   })
 }
 
-// 渲染收藏夹 ✅
+// 渲染收藏夹 ✅ 问题 渲染收藏夹的时候 一直渲染为空 但是数据库中已经是有创建了的收藏夹 可就是没有渲染出来
 export const fetchColumnDetail = (user_id) => {
   return request({
     url: '/api/render/favorite/bag',

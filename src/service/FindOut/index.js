@@ -32,6 +32,7 @@ export const createQuestionApi = (questionDetail) => {
 export const questionDetailApi = (object_id) => {
   return request({
     url: '/api/show/question',
+    method: 'POST',
     data: {
       object_id: object_id
     }

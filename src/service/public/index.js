@@ -8,7 +8,7 @@ import request from '../config/index.js'
 export const publicFetch = (id, type) => {
   return request({
     url: '/api/user/type',
-    method: 'post',
+    method: 'POST',
     data: {
       id: id,
       type: type
@@ -25,6 +25,7 @@ export const publicFetch = (id, type) => {
 export const publicDelete = (type, object_id) => {
   return request({
     url: '/api/del',
+    method: 'POST',
     data: {
       type: type,
       object_id: object_id
@@ -74,6 +75,69 @@ export const publicCartItem = (user_id, object_id, object_type) => {
     url: '/api/search/favorite',
     data: {
       user_id: user_id,
+      object_id: object_id,
+      object_type: object_type
+    }
+  })
+}
+
+// 发布评论以及发布回答
+/**
+ * object_type该项目的类型
+ * object_id该项目的id
+ * 服务端会返回所有该项目下的id存入data中
+ * review_id为该评论的id
+ * review_object_type为该评论所属的项目的类型
+ * review_object_id为该评论所属的项目的id
+ * review_grade_top：为项目所属的一级评论的用户的id，如果为空，则该评论为一级评论
+ * 'review_top_id'为该评论所属的一级评论的id，如果为空，则该评论为一级评论
+ * review_user：发表该评论的用户的id
+ * review_text：该评论的内容
+ * review_backer：该评论的回复对象的用户id
+ * */
+export const publicCommentsApi = (
+  review_object_type,
+  review_user,
+  review_object_id,
+  content,
+  backer,
+  review_grade_top,
+  review_top_id
+) => {
+  return request({
+    url: '/api/review',
+    method: 'POST',
+    data: {
+      review_object_type: review_object_type,
+      review_user: review_user,
+      review_object_id: review_object_id,
+      content: content,
+      backer: backer,
+      review_grade_top: review_grade_top,
+      review_top_id: review_top_id
+    }
+  })
+}
+
+// 渲染评论区
+/**
+ * object_type 该项目的类型
+ * object_id 该项目的id
+ * 服务端会返回所有该项目下的id存入data中
+ * review_id为该评论的id
+ * review_object_type为该评论所属的项目的类型
+ * review_object_id为该评论所属的项目的id
+ * review_grade_top：为项目所属的一级评论的用户的id，如果为空，则该评论为一级评论
+ * review_top_id: 为该评论所属的一级评论的id，如果为空，则该评论为一级评论
+ * review_user：发表该评论的用户的id
+ * review_text：该评论的内容
+ * review_backer：该评论的回复对象的用户id
+ * */
+export const publicShowReviewApi = (object_id, object_type) => {
+  return request({
+    url: '/api/show/review',
+    method: 'POST',
+    data: {
       object_id: object_id,
       object_type: object_type
     }

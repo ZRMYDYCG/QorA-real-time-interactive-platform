@@ -1,9 +1,9 @@
 import { fetchPersonalHomepageApi } from '@/service/UserHome/index.js'
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import { ElMessage } from 'element-plus'
+// import { ElMessage } from 'element-plus'
 import 'element-plus/theme-chalk/el-message.css'
-import { setLocalStorage, getLocalStorage } from '@/utils/index.js'
+import { setLocalStorage } from '@/utils/index.js'
 
 export const useUserHomeStore = defineStore('userHomeStore', () => {
   // 展示用户的主页:用户的所有信息，头像，历史记录，粉丝数，关注数
@@ -14,6 +14,7 @@ export const useUserHomeStore = defineStore('userHomeStore', () => {
     console.log(res)
     userHomeInfoDetail.value = res.data.user_now
     userHomeHistoryList.value = res.data.history_list
+    setLocalStorage('user_introduce', userHomeInfoDetail.value.user_introduce)
   }
 
   return {

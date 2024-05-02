@@ -7,7 +7,9 @@
 
 // 评论 https://pic.imgdb.cn/item/662273300ea9cb1403c02a59.png
 import { ref } from 'vue'
+import { useUserHomeStore } from '@/stores/modules/UserHome/index.js'
 import YsImagePreview from '@/components/base/ys-imge-preview/src/ys-image-preview.vue'
+const userHomeStore = useUserHomeStore()
 
 const YsImagePreviewRef = ref()
 const openPreview = (image) => {
@@ -16,17 +18,17 @@ const openPreview = (image) => {
 
 const emit = defineEmits(['action-click'])
 defineProps({
-  title: {
+  dynamic_title: {
     type: String,
-    default: '一小池勺'
+    default: ''
   },
-  time: {
+  dynamic_time: {
     type: String,
-    default: '2024-4-5'
+    default: ''
   },
   avatar: {
     type: String,
-    default: 'https://pic.imgdb.cn/item/660e1fa89f345e8d03525df8.png'
+    default: ''
   },
   action: {
     type: Array,
@@ -43,22 +45,21 @@ defineProps({
       'https://pic4.zhimg.com/v2-23ff06c4e69dace67b5097acdd2b5bcb_b.jpg'
     ]
   },
-  likesCount: {
+  like_count: {
     type: Number,
     default: 0
   },
-  sharesCount: {
+  collect_count: {
     type: Number,
     default: 0
   },
-  commentsCount: {
+  review_count: {
     type: Number,
     default: 0
   },
-  dynamicText: {
+  dynamic_text: {
     type: String,
-    default: () =>
-      '当你走过漫长的岁月，回首往事，你会发现，正是这些瞬间，成就了今天的你。那些快乐的时刻、悲伤的时刻、困惑的时刻、觉悟的时刻，都是你人生中独一无二的瑰宝。在这一刻，用我们的产品，定格时间。让我们携手，重温那些触动心弦的瞬间。'
+    default: () => ''
   }
 })
 // 处理操作菜单的点击事件
@@ -74,10 +75,10 @@ const handleActionClick = (actionType, id) => {
     <slot name="header">
       <div class="header-content">
         <div class="header-content--left">
-          <img :src="avatar" class="avatar" />
+          <img :src="userHomeStore.userHomeInfoDetail.user_pic" class="avatar" />
           <div class="info">
-            <span class="title">{{ title }}</span>
-            <span class="time">{{ time }}</span>
+            <span class="title">{{ dynamic_title }}</span>
+            <span class="time">{{ dynamic_time.replace(/\s*GMT/, '') }}</span>
           </div>
         </div>
         <div class="header-content--right">
@@ -106,7 +107,7 @@ const handleActionClick = (actionType, id) => {
     <div class="card-content">
       <!-- 动态文本 -->
       <div class="text-content">
-        {{ dynamicText }}
+        {{ dynamic_text }}
       </div>
 
       <!-- 九宫格图片展示 -->
@@ -130,15 +131,15 @@ const handleActionClick = (actionType, id) => {
       <div class="counts">
         <span class="count like-count">
           <img src="https://pic.imgdb.cn/item/662272270ea9cb1403be0c8f.png" alt="" />
-          {{ likesCount }}
+          {{ like_count }}
         </span>
         <span class="count share-count">
           <img src="https://pic.imgdb.cn/item/662272f10ea9cb1403bfb26a.png" alt="" />
-          {{ sharesCount }}
+          {{ collect_count }}
         </span>
         <span class="count comment-count">
           <img src="https://pic.imgdb.cn/item/662273300ea9cb1403c02a59.png" alt="" />
-          {{ commentsCount }}
+          {{ review_count }}
         </span>
       </div>
     </div>

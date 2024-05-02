@@ -3,20 +3,21 @@
     <ul v-for="(month, index) in monthBar" :key="index" class="month-container">
       <span class="month">{{ month }}</span>
       <ul class="graph">
+        <!-- 遍历每个月的每一天 -->
         <el-tooltip
-          v-for="(item, itemIndex) in infos.filter((info) => info.month === index + 1)"
-          :key="itemIndex"
+          v-for="(day, dayIndex) in infos[index]"
+          :key="dayIndex"
           class="item"
           effect="dark"
-          :content="item.year + '-' + item.month + '-' + item.date"
+          :content="day.year + '-' + day.month + '-' + day.date"
           placement="top-start"
           :open-delay="500"
         >
           <li
-            :data-level="item.level"
+            :data-level="day.level"
             class="li-day"
-            :isToday="item.isToday"
-            @click="handleClick(item)"
+            :class="{ active: day.isActive }"
+            @click="handleClick(day)"
           ></li>
         </el-tooltip>
       </ul>
@@ -25,7 +26,18 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, defineProps, watchEffect } from 'vue'
+
+const props = defineProps({
+  contributions: {
+    type: Object,
+    default: () => ({})
+  },
+  onContributionChange: {
+    type: Function,
+    default: () => {}
+  }
+})
 
 const infos = ref([])
 const current = ref({
@@ -35,37 +47,51 @@ const current = ref({
 })
 const monthBar = ref(Array.from({ length: 12 }, (_, i) => i + 1).map((month) => `${month}月`))
 
-onMounted(() => {
-  const d = new Date()
+// 初始化 infos 数组并监听当前年份的变化
+watchEffect(
+  onMounted(() => {
+    const d = new Date()
 
-  current.value = {
-    year: d.getFullYear(),
-    month: d.getMonth() + 1,
-    date: d.getDate()
-  }
+    current.value = {
+      year: d.getFullYear(),
+      month: d.getMonth() + 1,
+      date: d.getDate()
+    }
 
+    infos.value = []
+    initInfos()
+  })
+)
+
+function initInfos() {
   for (let i = 0; i < 12; i++) {
     const daysInMonth = new Date(current.value.year, i + 1, 0).getDate()
+    const monthInfos = []
 
     for (let j = 1; j <= daysInMonth; j++) {
-      let level = Math.floor(Math.random() * 2)
+      const dateStr = `${current.value.year}-${String(i + 1).padStart(2, '0')}-${String(j).padStart(2, '0')}` // 构造日期字符串
+      const isActive = !!props.contributions[dateStr] // 检查该日期是否有贡献
 
-      const item = {
+      monthInfos.push({
         year: current.value.year,
         month: i + 1,
         date: j,
-        number: 10,
-        level: level,
-        isToday: i + 1 === current.value.month && j === current.value.date
-      }
-
-      infos.value.push(item)
+        level: 1, // 假设所有日期的 level 都是 1
+        isActive: isActive
+      })
     }
-  }
-})
 
-function handleClick(item) {
-  console.log(item.year + '-' + item.month + '-' + item.date)
+    infos.value[i] = monthInfos
+  }
+}
+
+function handleClick(day) {
+  // 切换激活状态并通知父组件
+  const newContributions = {
+    ...props.contributions,
+    [`${day.year}-${day.month}-${day.date}`]: !day.isActive
+  }
+  props.onContributionChange(newContributions)
 }
 </script>
 
@@ -127,5 +153,9 @@ function handleClick(item) {
 
 .graph li[data-level='3'] {
   background-color: #7e57c2;
+}
+
+.li-day.active {
+  background-color: #7e57c2 !important; /* 激活状态下的背景色 */
 }
 </style>

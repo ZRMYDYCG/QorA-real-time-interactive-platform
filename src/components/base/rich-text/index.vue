@@ -19,7 +19,6 @@
 </template>
 
 <script setup>
-// vue
 import { reactive, shallowRef, onMounted, onBeforeUnmount } from 'vue'
 
 // 富文本相关
@@ -32,9 +31,9 @@ const emits = defineEmits(['update'])
 
 // data数据
 const _data = reactive({
-  html: '', //当前富文本内容(双向绑定)
-  toolbarConfig: {}, //工具栏配置,详见文档
-  editorConfig: { placeholder: '写点东西吧...' }, //编辑器配置,详见文档
+  html: '', // 当前富文本内容(双向绑定)
+  toolbarConfig: {}, // 工具栏配置,详见文档
+  editorConfig: { placeholder: '写点东西吧...' }, // 编辑器配置,详见文档
   mode: 'default' // or 'simple'
 })
 

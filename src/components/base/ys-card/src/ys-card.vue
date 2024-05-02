@@ -3,9 +3,7 @@
     <div class="card-header">
       <h3>{{ title }}</h3>
       <div v-if="isDelete" style="cursor: pointer">
-        <el-icon>
-          <DeleteFilled />
-        </el-icon>
+        <slot name="isDelete"></slot>
       </div>
     </div>
     <div class="subTitle">

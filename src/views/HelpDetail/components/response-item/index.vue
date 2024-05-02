@@ -1,6 +1,10 @@
 <script setup>
+import { getLocalStorage } from '@/utils/index.js'
+import { onMounted, ref } from 'vue'
+
+let userId = ref(getLocalStorage('userInfo')?.value.user_id)
 // TODO: 属性接收
-defineProps({
+const props = defineProps({
   responseDetail: {
     type: Object,
     required: true,
@@ -13,6 +17,11 @@ const handleConcern = () => {}
 
 // TODO: 用户采纳问题
 const handleAdopt = () => {}
+
+onMounted(() => {
+  console.log(props.responseDetail)
+  console.log('打印：', userId.value)
+})
 </script>
 
 <template>
@@ -25,40 +34,36 @@ const handleAdopt = () => {}
           alt="#"
         />
         <div class="desc">
-          <p class="nickName">{{ responseDetail.nickName }}</p>
-          <p class="signature">{{ responseDetail.signature }}</p>
+          <p class="nickName">一小池勺</p>
+          <p class="signature">我可以看见更远的地方</p>
         </div>
         <img
           class="isAgreeImg"
-          v-if="responseDetail.isAgree"
+          v-if="true"
           src="https://pic.imgdb.cn/item/6620aef30ea9cb1403d34cfe.png"
           alt="#"
         />
       </div>
-      <div v-if="responseDetail.userId === 1" class="item-header--dynamicBtn">
+      <div v-if="!responseDetail.review_user === userId" class="item-header--dynamicBtn">
         <el-button @click="handleConcern">关注</el-button>
       </div>
     </div>
-    <div class="item-main">
-      {{ responseDetail.content }}
-    </div>
+    <div class="item-main" v-html="responseDetail.review_text"></div>
     <div class="item-footer">
       <div class="item-footer--time"></div>
       <div class="item-footer--options">
         <div class="left">
-          <!--     便于识别该回答属于哪一个用户     -->
+          <!-- 便于识别该回答属于哪一个用户  -->
           <slot name="optionsBtn" :responseDetail="responseDetail"></slot>
         </div>
         <div class="right">
-          <el-button v-if="!responseDetail.isAgree" type="text" @click="handleAdopt"
-            >是否采纳该回答？
+          <el-button v-if="!responseDetail.review_user === userId" type="text" @click="handleAdopt"
+            >是否采纳？
           </el-button>
         </div>
       </div>
     </div>
-    <div v-if="responseDetail.isFold">
-      {{ 2 }}
-    </div>
+    <div></div>
   </div>
 </template>
 
@@ -81,8 +86,8 @@ const handleAdopt = () => {}
       }
 
       .isAgreeImg {
-        width: 65px;
-        height: 65px;
+        width: 35px;
+        height: 35px;
         margin-left: 15px;
       }
 
