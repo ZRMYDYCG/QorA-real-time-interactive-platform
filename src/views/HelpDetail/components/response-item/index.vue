@@ -109,6 +109,7 @@ onMounted(() => {
 
   .item-main {
     padding: 30px 0;
+    font-size: 20px;
   }
 
   .item-footer {

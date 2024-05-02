@@ -55,12 +55,12 @@
       <div class="edit-title">个人信息编辑</div>
       <el-form>
         <el-form-item label="昵称：">
-          <el-input style="width: 280px"></el-input>
+          <el-input v-model="user_name" style="width: 280px"></el-input>
         </el-form-item>
         <el-form-item label="头像：">
           <el-upload
             class="avatar-uploader"
-            action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15"
+            action="http://192.168.31.86:5000/api/upload/pics"
             :show-file-list="false"
             :on-success="handleAvatarSuccess"
             :before-upload="beforeAvatarUpload"
@@ -73,29 +73,23 @@
         </el-form-item>
         <el-form-item label="简介：">
           <el-input
-            v-model="textarea2"
+            v-model="user_textarea"
             style="width: 240px"
-            :autosize="{ minRows: 2, maxRows: 4 }"
             type="textarea"
             placeholder="用简短得话描述一下自己吧..."
           />
         </el-form-item>
-        <el-form-item label="性别：">
-          <el-radio-group v-model="radio">
-            <el-radio :value="3">🚹</el-radio>
-            <el-radio :value="6">🚺</el-radio>
-          </el-radio-group>
-        </el-form-item>
         <el-form-item label="生日：">
           <el-date-picker
-            v-model="value1"
+            v-model="user_borithday"
             type="date"
-            placeholder="Pick a Date"
+            placeholder="选择出生日期"
             format="YYYY/MM/DD"
           />
         </el-form-item>
         <el-form-item label="所在地区：" style="margin-bottom: 30px; margin-top: 20px">
-          <el-cascader :options="mapOptions" clearable />
+          <!-- <el-cascader :options="mapOptions" clearable /> -->
+          <el-input style="width: 300px" v-model="value" />
         </el-form-item>
       </el-form>
       <div class="cur-address">
@@ -109,7 +103,7 @@
         <span class="add-address" @click="addAddressDialog = true">新增收获地址</span>
       </div>
       <div class="submit-edit">
-        <span>提交修改</span>
+        <span @click="uploadUserInfo">提交修改</span>
       </div>
     </el-dialog>
 
@@ -170,6 +164,7 @@
 import { useRoute } from 'vue-router'
 import YsTabs from '@/components/base/ys-tabs/src/ys-tabs.vue'
 import { useUserHomeStore } from '@/stores/modules/UserHome/index.js'
+import { modyUserInfoApi } from '@/service/UserHome/index.js'
 const userHomeStore = useUserHomeStore()
 // import { getLocalStorage } from '@/utils/index.js'
 const route = useRoute()
@@ -208,6 +203,7 @@ import { onMounted, ref } from 'vue'
 const dialogTableVisible = ref(false)
 const openEdit = () => {
   dialogTableVisible.value = !dialogTableVisible.value
+  backFormData()
 }
 
 const activeAddIndex = ref(0)
@@ -275,6 +271,39 @@ onMounted(() => {
 
 // TODO: 跳转渲染关注、粉丝列表
 let id = route.query.user_id
+
+// TODO: 修改个人信息
+let user_name = ref('')
+let user_textarea = ref('')
+let user_borithday = ref('')
+let value = ref([])
+let user_pic = ref('https://pic3.zhimg.com/v2-8c74cc20d070005ba8b1e1153438d87e_r.jpg')
+
+const uploadUserInfo = async () => {
+  let userInfo = {}
+
+  userInfo.user_id = id
+  userInfo.user_pic = user_pic.value
+  userInfo.user_introduce = user_textarea.value
+  userInfo.user_name = user_name.value
+  userInfo.user_birthday = user_borithday.value
+  userInfo.user_city = value.value[0]
+
+  console.log(value.value)
+
+  await modyUserInfoApi(userInfo)
+
+  userHomeStore.handleFetchPersonalHomepageApi(id)
+}
+
+// 表单数据回显
+const backFormData = () => {
+  user_name.value = userHomeStore.userHomeInfoDetail.user_name
+  value.value = userHomeStore.userHomeInfoDetail.user_city
+  user_borithday.value = userHomeStore.userHomeInfoDetail.user_birthday
+  user_pic.value = userHomeStore.userHomeInfoDetail.user_pic
+  user_textarea.value = userHomeStore.userHomeInfoDetail.user_introduce
+}
 </script>
 
 <style lang="scss">

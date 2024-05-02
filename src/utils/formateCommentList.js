@@ -36,5 +36,6 @@ export const reorganizeData = (data) => {
     }
   }
 
+  console.log('hhhh', primaryReviews)
   return primaryReviews
 }

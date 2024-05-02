@@ -4,7 +4,9 @@ import { ref, onMounted } from 'vue'
 // import YsImagePreview from '@/components/base/ys-imge-preview/src/ys-image-preview.vue'
 // import Vue3EmojiPicker from 'vue3-emoji-picker'
 // import 'vue3-emoji-picker/css'
-import { reorganizeData } from '@/utils/index.js'
+import { ElLoading } from 'element-plus'
+import 'element-plus/theme-chalk/el-loading.css'
+import { reorganizeData, sortReviewsBySecondaryReviewsLength } from '@/utils/index.js'
 import responseItem from './components/response-item/index.vue'
 import RichText from '@/components/base/rich-text/index.vue'
 import { questionDetailApi } from '@/service/FindOut/index.js'
@@ -135,7 +137,7 @@ const setItemRef = (el, key) => {
 const fetchCommontData = async () => {
   const res = await publicShowReviewApi(route.params.id, review_object_type)
   // responseDetailList.value = res.data.data
-  responseDetailList.value = reorganizeData(res.data.data)
+  responseDetailList.value = reorganizeData(res.data.data.reverse())
   console.log('111:', responseDetailList.value)
 }
 
@@ -147,11 +149,43 @@ onMounted(() => {
 let backReviewVisible = ref(false)
 let rebackDetail = ref({})
 let bodyDetail = ref([])
+let userDetailTwo = ref({})
 const openBackReviewVisible = (slotScops) => {
   console.log(slotScops)
   backReviewVisible.value = true
-  rebackDetail.value = slotScops.rebackDetail
-  bodyDetail.value = slotScops.secondaryReviews
+  rebackDetail.value = slotScops.responseDetail
+  bodyDetail.value = slotScops.responseDetail.secondaryReviews
+  fetchPersonalHomepageApi(slotScops.responseDetail.review_user).then((res) => {
+    userDetailTwo.value = res.data.user_now
+    console.log(userDetailTwo.value)
+    console.log(rebackDetail.value)
+  })
+}
+
+// TODO:切换最新最热评论
+let activeTab = ref('最新')
+const switchTab = (tab) => {
+  activeTab.value = tab
+  if (tab === '最热') {
+    openFullScreen()
+    responseDetailList.value = sortReviewsBySecondaryReviewsLength(responseDetailList.value)
+    console.log(responseDetailList.value)
+  } else {
+    openFullScreen()
+    fetchCommontData()
+  }
+}
+
+// TODO: 加载动画
+const openFullScreen = () => {
+  const loading = ElLoading.service({
+    lock: true,
+    text: 'Loading',
+    background: 'rgba(0, 0, 0, 0.7)'
+  })
+  setTimeout(() => {
+    loading.close()
+  }, 200)
 }
 </script>
 
@@ -240,7 +274,7 @@ const openBackReviewVisible = (slotScops) => {
     </el-button>
   </div>
 
-  <div class="help-response">
+  <div v-if="responseDetailList.length > 0" class="help-response">
     <template> </template>
     <el-card class="response--detail">
       <template #default>
@@ -251,9 +285,23 @@ const openBackReviewVisible = (slotScops) => {
             <el-tag @click="featured">{{ 0 }} 个采纳</el-tag>
           </div>
           <div class="header--right">
-            {{ responseDetailList }}
-            <el-button size="small">最新</el-button>
-            <el-button size="small">最热</el-button>
+            <!-- {{ responseDetailList }} -->
+            <div>
+              <el-button
+                size="small"
+                :class="{ 'is-active': activeTab === '最新' }"
+                @click="switchTab('最新')"
+              >
+                最新
+              </el-button>
+              <el-button
+                size="small"
+                :class="{ 'is-active': activeTab === '最热' }"
+                @click="switchTab('最热')"
+              >
+                最热
+              </el-button>
+            </div>
           </div>
         </div>
         <!-- 回答项 -->
@@ -274,10 +322,12 @@ const openBackReviewVisible = (slotScops) => {
                       )
                     "
                   >
-                    <el-icon>
-                      <ChatDotRound />
-                    </el-icon>
-                    <span>{{ 0 }} 条回复</span>
+                    <img
+                      style="width: 28px"
+                      src="https://pic.imgdb.cn/item/663337c80ea9cb1403584dcb.png"
+                      alt=""
+                    />
+                    <span>{{ slotScops.responseDetail.secondaryReviews.length }} 条回复</span>
                   </div>
                   <div @click="openBackReviewVisible(slotScops)">
                     <el-button type="text">查看回复详情</el-button>
@@ -291,8 +341,13 @@ const openBackReviewVisible = (slotScops) => {
     </el-card>
   </div>
 
+  <div class="empty" v-else>
+    <img src="https://pic.imgdb.cn/item/663335090ea9cb14035220e9.png" alt="#" />
+    <div style="margin-top: 40px; font-size: 25px">快来占楼吧</div>
+  </div>
+
   <!-- 发布回答模态框 -->
-  <el-dialog v-model="RichTextVisible">
+  <el-dialog style="height: 700px" v-model="RichTextVisible">
     <template #title>
       <h3>回答</h3>
     </template>
@@ -327,8 +382,40 @@ const openBackReviewVisible = (slotScops) => {
   <!-- 二级评论详情展示框 -->
   <el-dialog title="回复详情" width="50%" style="height: 700px" v-model="backReviewVisible">
     <template #default>
-      <div class="oneReview"></div>
-      <div class="twoReview"></div>
+      <div class="oneReview">
+        <div class="userInfo">
+          <img :src="userDetailTwo.user_pic" alt="#" />
+          <div class="desc">
+            <div class="name">{{ userDetailTwo.user_name }}</div>
+            <div class="intro">{{ userDetailTwo.user_introduce }}</div>
+          </div>
+        </div>
+        <div class="comment-detail" v-html="rebackDetail.review_text"></div>
+      </div>
+      <div v-if="bodyDetail.length > 0" class="twoReview">
+        <template v-for="item in bodyDetail" :key="item">
+          <div class="userInfo">
+            <img src="https://pic4.zhimg.com/v2-6185f5c82b27bb2dbe2a151b3418137b_r.jpg" alt="#" />
+            <div class="right">
+              <div class="name">体验官-0000001</div>
+              <div class="desc">
+                热爱之所以有力量，就在于你就坚守他就好，永远不要去想它会有什么。
+              </div>
+            </div>
+          </div>
+          <div class="review_text">{{ item.review_text }}</div>
+        </template>
+      </div>
+      <div class="empty" v-else>
+        <img src="https://pic.imgdb.cn/item/663335090ea9cb14035220e9.png" alt="#" />
+        <div>快来占楼吧</div>
+      </div>
+    </template>
+    <template #footer>
+      <!-- <el-button size="small" @click="openReviewBackVisible = true">回复</el-button> -->
+      <el-button size="small" @click="backReviewVisible = false" v-if="bodyDetail.length > 0"
+        >关闭</el-button
+      >
     </template>
   </el-dialog>
 </template>
@@ -530,5 +617,81 @@ const openBackReviewVisible = (slotScops) => {
 .rebtn {
   display: flex;
   justify-content: flex-end;
+}
+
+.oneReview {
+  border-bottom: 1px solid #ccc;
+  .userInfo {
+    display: flex;
+    img {
+      width: 50px;
+      height: 50px;
+      margin-right: 15px;
+      border-radius: 5px;
+    }
+    .desc {
+      .name {
+        font-family: '楷体';
+        font-size: 16px;
+        margin-bottom: 10px;
+      }
+      .intro {
+        font-size: 13px;
+        color: #ccc;
+      }
+    }
+  }
+  .comment-detail {
+    padding: 30px 0;
+    font-size: 19px;
+  }
+}
+
+.twoReview {
+  height: 400px;
+  overflow: auto;
+  padding: 20px 5px;
+  .userInfo {
+    display: flex;
+    margin-top: 20px;
+    img {
+      width: 50px;
+      height: 50px;
+      margin-right: 15px;
+      border-radius: 5px;
+    }
+    .right {
+      .name {
+        font-family: '楷体';
+        font-size: 16px;
+        margin-bottom: 10px;
+      }
+      .desc {
+        font-size: 13px;
+        color: #ccc;
+      }
+    }
+  }
+  .review_text {
+    padding: 20px 0 20px 10px;
+    border-bottom: 1px solid #ccc;
+  }
+}
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  img {
+    width: 300px;
+    height: 300px;
+    margin-top: 100px;
+  }
+}
+
+.is-active {
+  background-color: #f5f7fa; /* 激活时的背景色，可以根据需要自定义 */
+  color: #f396e1;
 }
 </style>

@@ -207,3 +207,19 @@ export const fetchColumnDetail = (user_id) => {
     }
   })
 }
+
+// 用户提交个人信息的修改 ✅
+export const modyUserInfoApi = (data) => {
+  return request({
+    url: '/api/change/user/all',
+    method: 'POST',
+    data: {
+      user_id: data.user_id,
+      user_pic: data.user_pic,
+      user_introduce: data.user_introduce,
+      user_name: data.user_name,
+      user_birthday: data.user_birthday,
+      user_city: data.user_city
+    }
+  })
+}
