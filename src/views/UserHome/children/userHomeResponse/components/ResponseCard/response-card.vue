@@ -35,29 +35,7 @@ const handleUpdateIsExpanded = (itemId, value) => {
         </div>
       </template>
       <template #extraContent>
-        <div v-if="item.isExpanded">
-          <div>1</div>
-          <div>1</div>
-          <div>1</div>
-          <div>1</div>
-          <div>1</div>
-          <div>1</div>
-          <div>1</div>
-          <div>1</div>
-          <div>1</div>
-          <div>1</div>
-          <div>1</div>
-          <div>1</div>
-          <div>1</div>
-          <div>1</div>
-          <div>1</div>
-          <div>1</div>
-          <div>1</div>
-          <div>1</div>
-          <div>1</div>
-          <div>1</div>
-          <div>1</div>
-        </div>
+        <div v-if="item.isExpanded"></div>
       </template>
     </ys-card>
   </div>

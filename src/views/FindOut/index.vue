@@ -184,6 +184,7 @@ const files = ref([])
 const previewImages = ref([])
 
 const handleFileChange = (e) => {
+  console.log(e.target.files)
   if (e.target.files.length > 9) {
     alert('最多只能选择9张图片')
     return
@@ -205,7 +206,7 @@ const uploadFiles = async () => {
   }
 
   try {
-    const response = await fetch('http://192.168.31.86:5000/api/upload/pics', {
+    const response = await fetch('http://127.0.0.1:5000/api/upload/pics', {
       method: 'POST',
       body: formData
     })
@@ -216,14 +217,12 @@ const uploadFiles = async () => {
 
       files.value = []
       previewImages.value = []
-      alert('图片上传成功')
+      alert('上传成功')
     } else {
-      console.error('Server responded with an error:', response.status)
-      alert('图片上传失败')
+      console.error(response.status)
     }
   } catch (err) {
-    console.error('Error uploading files:', err)
-    alert('图片上传异常')
+    console.error(err)
   } finally {
     fileInput.value.value = null
   }

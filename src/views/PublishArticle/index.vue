@@ -1,117 +1,79 @@
 <script setup>
-import { ref, nextTick } from 'vue'
+import { ref, nextTick, watch, computed } from 'vue'
 import { submitArtAPI } from '@/service/PublishArticle/index.js'
 import { useLoginStore } from '@/stores/modules/Login/index.js'
 import RichText from '@/components/base/rich-text/index.vue'
-import { column } from 'element-plus/es/components/table-v2/src/common'
-
-// 富文本内容
+import { ElMessage } from 'element-plus'
+import 'element-plus/theme-chalk/el-message.css'
+// TODO: 文章发布
 const content = ref('')
-
-// 获取富文本内容
+const title = ref('')
 const getContent = (data) => {
   content.value = data
 }
+const userStore = useLoginStore()
 
-//获取标题
-const title = ref('')
-//专栏名称
-const columnValue = ref('')
-
-const fileList = ref([
-  {
-    name: 'food.jpeg',
-    url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
-  },
-  {
-    name: 'plant-1.png',
-    url: '/images/plant-1.png'
-  },
-  {
-    name: 'food.jpeg',
-    url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
-  },
-  {
-    name: 'plant-2.png',
-    url: '/images/plant-2.png'
-  },
-  {
-    name: 'food.jpeg',
-    url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
-  },
-  {
-    name: 'figure-1.png',
-    url: '/images/figure-1.png'
-  },
-  {
-    name: 'food.jpeg',
-    url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
-  },
-  {
-    name: 'figure-2.png',
-    url: '/images/figure-2.png'
-  }
-])
-
-const dialogImageUrl = ref('')
-const dialogVisible = ref(false)
-
-//处理图片移除
-const handleRemove = (uploadFile, uploadFiles) => {
-  console.log(uploadFile, uploadFiles)
-  console.log('图片移除')
+const submitVisible = ref(false)
+const openSubmitVisible = () => {
+  submitVisible.value = true
 }
 
-//处理图片预览
-const handlePictureCardPreview = (uploadFile) => {
-  dialogImageUrl.value = uploadFile.url
-  dialogVisible.value = true
-}
-
-//处理文件成功上传
-const handleFileUp = () => {
-  console.log('success')
-}
-
-//tag标签
-const tagInpValue = ref('') //输入框输入值
-const tags = ref([]) //添加的标签列表
+// 添加标签
+const tagInputValue = ref('')
+const dynamicTags = ref([])
 const inputVisible = ref(false)
-const TagInputRef = ref(null)
+const InputRef = ref()
 
-//关闭标签触发函数
 const handleClose = (tag) => {
-  const index = tags.value.indexOf(tag)
-  if (index !== -1) {
-    tags.value.splice(index, 1)
-  }
+  dynamicTags.value.splice(dynamicTags.value.indexOf(tag), 1)
 }
 
-const showInput = () => {
+const showInput = (value) => {
+  if (value === 5) {
+    inputVisible.value = false
+    ElMessage.error('最多添加 5 个标签')
+    return
+  }
   inputVisible.value = true
+  // 等 DOM 加载完毕后再自动获取焦点
   nextTick(() => {
-    if (TagInputRef.value && TagInputRef.value.input) {
-      TagInputRef.value.input.focus()
-    }
+    InputRef.value.input.focus()
   })
 }
 
-//标签输入回车触发
 const handleInputConfirm = () => {
-  if (tagInpValue.value) {
-    tags.value.push(tagInpValue.value)
-    tagInpValue.value = ''
+  if (tagInputValue.value) {
+    dynamicTags.value.push(tagInputValue.value)
   }
   inputVisible.value = false
+  tagInputValue.value = ''
 }
 
-const userStore = useLoginStore()
-//发布文章触发函数
+// 处理文字变红
+let isTextRed = ref(false)
+watch(
+  dynamicTags,
+  (newValue) => {
+    console.log(newValue)
+    isTextRed.value = newValue.length >= 5
+  },
+  {
+    deep: true
+  }
+)
+
+const dynamicTextColor = computed(() => {
+  if (isTextRed.value) {
+    return 'text-red-500 ml-1'
+  } else {
+    return 'ml-1'
+  }
+})
+
 const onSubmit = async () => {
   console.log('send')
   const res = await submitArtAPI({
     title: title.value,
-    TagList: tags.value,
     imgList: [
       'https://p1.music.126.net/D-1BJmN0aqcwgh8F1AuyPA==/109951169341847902.jpg',
       'https://p1.music.126.net/fAzUfd4CUeEsyHvui0Unhg==/109951169440246524.jpg',
@@ -125,56 +87,34 @@ const onSubmit = async () => {
   })
   console.log(res)
 }
+// TODO:文章封面图片上传
 </script>
 
 <template>
   <div class="publish-container">
-    <div class="intro-container">文章发布</div>
-    <div class="publish-content">
-      <div class="publish-title">
-        <el-form label-width="180">
-          <!-- 标题 -->
-          <el-form-item label="请输入标题 (必填) :">
-            <el-input
-              v-model="title"
-              style="width: 300px; height: 40px"
-              maxlength="20"
-              placeholder="标题"
-              show-word-limit
-              type="text"
-            />
-          </el-form-item>
-          <!-- 专栏 -->
-          <el-form-item label="选择专栏 (可选) :">
-            <el-select
-              v-model="columnValue"
-              multiple
-              filterable
-              remote
-              reserve-keyword
-              placeholder="请输入专栏关键字"
-              :remote-method="remoteMethod"
-              :loading="loading"
-              style="width: 300px"
-              :size="'large'"
-            >
-              <el-option
-                v-for="item in options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              />
-              <template #loading>
-                <svg class="circular" viewBox="0 0 50 50">
-                  <circle class="path" cx="25" cy="25" r="20" fill="none" />
-                </svg>
-              </template>
-            </el-select>
-          </el-form-item>
-          <!-- 标签 -->
-          <el-form-item label="选择标签 (可选) :">
+    <div class="left">
+      <div class="intro-container">文章发布</div>
+      <RichText @update="getContent" />
+      <div class="submit">
+        <el-button @click="openSubmitVisible">发布</el-button>
+      </div>
+    </div>
+  </div>
+
+  <el-dialog width="40%" style="height: 400px" v-model="submitVisible">
+    <el-form>
+      <el-form-item style="margin-top: 20px" label="文章标题">
+        <el-input v-model="title" placeholder="请输入文章标题"></el-input>
+      </el-form-item>
+      <el-form-item label="选择专栏">
+        <el-select></el-select>
+        <el-button type="text">新建一个？</el-button>
+      </el-form-item>
+      <el-form-item label="添加标签">
+        <div class="tags" style="margin-top: 10px">
+          <div class="flex gap-2">
             <el-tag
-              v-for="tag in tags"
+              v-for="tag in dynamicTags"
               :key="tag"
               closable
               :disable-transitions="false"
@@ -184,43 +124,61 @@ const onSubmit = async () => {
             </el-tag>
             <el-input
               v-if="inputVisible"
-              ref="TagInputRef"
-              v-model="tagInpValue"
+              ref="InputRef"
+              v-model="tagInputValue"
               class="w-20"
-              size="small"
               @keyup.enter="handleInputConfirm"
-              @blur="handleInputConfirm"
             />
-            <el-button v-else class="button-new-tag" size="large" @click="showInput">
-              + New Tag
-            </el-button>
-          </el-form-item>
-          <!-- 图片 -->
-          <el-form-item label="选择图片 (可选) :">
-            <el-upload
-              v-model:file-list="fileList"
-              action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15"
-              list-type="picture-card"
-              :on-preview="handlePictureCardPreview"
-              :on-remove="handleRemove"
-              :drag="true"
-              :on-success="handleFileUp"
+            <el-button
+              v-else-if="dynamicTags.length <= 5"
+              class="button-new-tag"
+              size="small"
+              @click="showInput(dynamicTags.length)"
             >
-              <el-icon><Plus /></el-icon>
-            </el-upload>
-            <el-dialog v-model="dialogVisible">
-              <img w-full :src="dialogImageUrl" alt="Preview Image" />
-            </el-dialog>
-          </el-form-item>
-        </el-form>
-      </div>
-    </div>
-    <!-- 富文本 -->
-    <RichText @update="getContent" />
-    <div class="submit">
-      <el-button @click="onSubmit">发布</el-button>
-    </div>
-  </div>
+              + 自定义标签
+              <div :class="dynamicTextColor">{{ dynamicTags.length }}<span>&nbsp</span></div>
+              / 5
+            </el-button>
+          </div>
+        </div>
+      </el-form-item>
+      <el-form-item label="添加封面">
+        <!-- 多图上传 -->
+        <el-upload
+          action="#"
+          :http-request="handleUploadFilesApi"
+          list-type="picture-card"
+          multiple
+        >
+          <el-icon><Plus /></el-icon>
+          <template #file="{ file }">
+            <div>
+              <img class="el-upload-list__item-thumbnail" :src="backImgUrl" alt="" />
+              <span class="el-upload-list__item-actions">
+                <span class="el-upload-list__item-preview" @click="handlePictureCardPreview(file)">
+                  <el-icon><zoom-in /></el-icon>
+                </span>
+                <span
+                  v-if="!disabled"
+                  class="el-upload-list__item-delete"
+                  @click="handleDownload(file)"
+                >
+                  <el-icon><Download /></el-icon>
+                </span>
+                <span
+                  v-if="!disabled"
+                  class="el-upload-list__item-delete"
+                  @click="handleRemove(file)"
+                >
+                  <el-icon><Delete /></el-icon>
+                </span>
+              </span>
+            </div>
+          </template>
+        </el-upload>
+      </el-form-item>
+    </el-form>
+  </el-dialog>
 </template>
 
 <style scoped lang="scss">
@@ -299,5 +257,80 @@ const onSubmit = async () => {
 /* 对文本框进行设置 */
 ::v-deep .content {
   height: 500px !important;
+}
+
+.images-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 150px); /* 固定三列网格布局，每列宽度为120px */
+  gap: 10px; /* 网格项之间的空间为10 */
+}
+
+.image-item {
+  width: 150px;
+  height: 150px;
+  overflow: hidden;
+  border-radius: 10px;
+}
+
+.image-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* 图片覆盖整个容器，不失真 */
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.upload-wrap {
+  width: 122px;
+  height: 122px;
+  position: relative;
+  border: 1px dotted #dfe5ec;
+  border-radius: 5px;
+}
+.upload-wrap input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  filter: alpha(opacity=0); /* 兼容IE */
+  z-index: 9;
+}
+.upload-wrap .avatar-uploader-icon {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  font-size: 28px;
+  color: #8c939d;
+  width: 120px;
+  height: 120px;
+  line-height: 120px;
+  text-align: center;
+  z-index: 1;
+}
+.upload-wrap .avatar {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 120px;
+  height: 120px;
+  display: block;
+  z-index: 1;
+  border-radius: 5px;
+}
+.upload-wrap .el-upload__tip {
+  position: absolute;
+  width: 100%;
+  height: 40px;
+  left: 0;
+  bottom: 0;
+  padding: 4px 15px 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  color: #fff;
+  z-index: 1;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
 }
 </style>

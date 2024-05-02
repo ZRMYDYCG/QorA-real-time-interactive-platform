@@ -143,3 +143,11 @@ export const publicShowReviewApi = (object_id, object_type) => {
     }
   })
 }
+
+export const upLoadFileApi = (data) => {
+  request({
+    url: '/api/upload/pics',
+    method: 'POST',
+    data: data
+  })
+}

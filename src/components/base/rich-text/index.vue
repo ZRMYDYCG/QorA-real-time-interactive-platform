@@ -34,17 +34,35 @@ const _data = reactive({
   html: '', // 当前富文本内容(双向绑定)
   toolbarConfig: {}, // 工具栏配置,详见文档
   editorConfig: { placeholder: '写点东西吧...' }, // 编辑器配置,详见文档
-  mode: 'default' // or 'simple'
+  mode: 'simple' // or 'simple'
 })
 
 // onMounted
 onMounted(() => {
   // 模拟 ajax 请求，异步渲染编辑器(通常是编辑富文本时传入过来的默认内容)
-  setTimeout(() => {
-    _data.html = '<p>模拟 Ajax 异步设置内容 HTML</p>'
-  }, 1500)
+  // setTimeout(() => {
+  //   _data.html = '<p>模拟 Ajax 异步设置内容 HTML</p>'
+  // }, 1500)
 })
 
+// TODO:富文本内图片上传
+_data.editorConfig.MENU_CONF = {}
+_data.editorConfig.MENU_CONF['uploadImage'] = {
+  server: 'http://127.0.0.1:5000/api/upload/pics', // => 完整服务端地址
+  base64LimitSize: 10 * 1024, // 10kb
+  fieldName: 'image0'
+}
+
+// => 插入图片之前会执行的函数
+_data.editorConfig.MENU_CONF['insertImage'] = {
+  parseImageSrc: (src) => {
+    console.log(src)
+    if (src.indexOf('http') !== 0) {
+      return `http://localhost:5173${src}`
+    }
+    return src
+  }
+}
 /**
  * [回调函数] 富文本加载完毕
  * @description 创建实例

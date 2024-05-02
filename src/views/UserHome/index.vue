@@ -58,18 +58,71 @@
           <el-input v-model="user_name" style="width: 280px"></el-input>
         </el-form-item>
         <el-form-item label="头像：">
-          <el-upload
+          <!-- <el-upload
             class="avatar-uploader"
-            action="http://192.168.31.86:5000/api/upload/pics"
+            action="http://127.0.0.1:5000/api/upload/pics"
             :show-file-list="false"
             :on-success="handleAvatarSuccess"
             :before-upload="beforeAvatarUpload"
+            :multiple="true"
           >
             <img v-if="imageUrl" :src="imageUrl" class="avatar" />
             <el-icon v-else class="avatar-uploader-icon">
               <Plus />
             </el-icon>
+          </el-upload> -->
+          <!-- <el-upload
+            action="#"
+            :http-request="handleUploadFilesApi"
+            list-type="picture-card"
+            multiple
+            :limit="1"
+          >
+            <el-icon><Plus /></el-icon>
+            <template #file="{ file }">
+              <div>
+                <img class="el-upload-list__item-thumbnail" :src="backImgUrl" alt="" />
+                <span class="el-upload-list__item-actions">
+                  <span
+                    class="el-upload-list__item-preview"
+                    @click="handlePictureCardPreview(file)"
+                  >
+                    <el-icon><zoom-in /></el-icon>
+                  </span>
+                  <span
+                    v-if="!disabled"
+                    class="el-upload-list__item-delete"
+                    @click="handleDownload(file)"
+                  >
+                    <el-icon><Download /></el-icon>
+                  </span>
+                  <span
+                    v-if="!disabled"
+                    class="el-upload-list__item-delete"
+                    @click="handleRemove(file)"
+                  >
+                    <el-icon><Delete /></el-icon>
+                  </span>
+                </span>
+              </div>
+            </template>
+          </el-upload> -->
+
+          // 单图上传
+          <el-upload
+            action="#"
+            :http-request="handleUploadFilesApi"
+            list-type="picture-card"
+            multiple
+            :show-file-list="false"
+          >
+            <img style="width: 100%" v-if="backImgUrl" :src="backImgUrl" class="avatar" />
+            <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
           </el-upload>
+
+          <el-dialog v-model="dialogVisible">
+            <img w-full :src="dialogImageUrl" alt="Preview Image" />
+          </el-dialog>
         </el-form-item>
         <el-form-item label="简介：">
           <el-input
@@ -165,10 +218,13 @@ import { useRoute } from 'vue-router'
 import YsTabs from '@/components/base/ys-tabs/src/ys-tabs.vue'
 import { useUserHomeStore } from '@/stores/modules/UserHome/index.js'
 import { modyUserInfoApi } from '@/service/UserHome/index.js'
+// import { ElMessage } from 'element-plus'
+import 'element-plus/theme-chalk/el-message.css'
 const userHomeStore = useUserHomeStore()
 // import { getLocalStorage } from '@/utils/index.js'
 const route = useRoute()
 import { rewritePaths } from '@/utils/index.js'
+// import { Delete, Download, Plus, ZoomIn } from '@element-plus/icons-vue'
 
 // TODO:重写路径
 const tabConfig = ref([
@@ -231,6 +287,7 @@ const userAddresses = ref([
 
 const mapOptions = ref([])
 import axios from 'axios'
+import { ElMessage } from 'element-plus'
 
 const province = ref([])
 const getMapData = async () => {
@@ -277,7 +334,7 @@ let user_name = ref('')
 let user_textarea = ref('')
 let user_borithday = ref('')
 let value = ref([])
-let user_pic = ref('https://pic3.zhimg.com/v2-8c74cc20d070005ba8b1e1153438d87e_r.jpg')
+let user_pic = ref('')
 
 const uploadUserInfo = async () => {
   let userInfo = {}
@@ -293,16 +350,82 @@ const uploadUserInfo = async () => {
 
   await modyUserInfoApi(userInfo)
 
+  dialogTableVisible.value = false
+
   userHomeStore.handleFetchPersonalHomepageApi(id)
 }
 
 // 表单数据回显
+let backImgUrl = ref('')
 const backFormData = () => {
   user_name.value = userHomeStore.userHomeInfoDetail.user_name
   value.value = userHomeStore.userHomeInfoDetail.user_city
   user_borithday.value = userHomeStore.userHomeInfoDetail.user_birthday
-  user_pic.value = userHomeStore.userHomeInfoDetail.user_pic
+  backImgUrl.value = userHomeStore.userHomeInfoDetail.user_pic
   user_textarea.value = userHomeStore.userHomeInfoDetail.user_introduce
+}
+
+// 头像上传
+// const handleAvatarSuccess = (response) => {
+//   console.log(response.data.url)
+// }
+const dialogImageUrl = ref('')
+const dialogVisible = ref(false)
+// const disabled = ref(false)
+
+// const handleRemove = (file) => {
+//   console.log(file)
+// }
+
+// const handlePictureCardPreview = (file) => {
+//   dialogImageUrl.value = file.url
+//   dialogVisible.value = true
+// }
+
+// const handleDownload = (file) => {
+//   console.log(file)
+// }
+
+let files = []
+const handleUploadFilesApi = async (file) => {
+  console.log('自定义上传')
+  console.log(file)
+  files.push(file.file)
+  await uploadFiles(files)
+}
+
+const uploadFiles = async (files) => {
+  console.log('sdfhusd:', files)
+  if (!files.length) {
+    console.error('没有文件被选中')
+    return
+  }
+
+  const formData = new FormData()
+  for (let i = 0; i < files.length; i++) {
+    console.log(files[i])
+    formData.append('image0', files[i])
+  }
+
+  try {
+    const response = await fetch('http://127.0.0.1:5000/api/upload/pics', {
+      method: 'POST',
+      body: formData
+    })
+
+    if (response.ok) {
+      const data = await response.json()
+      console.log(data)
+      backImgUrl.value = data.imageUrl[data.imageUrl.length - 1].url
+      user_pic.value = data.imageUrl[data.imageUrl.length - 1].url
+      files = []
+      ElMessage.success('上传头像成功')
+    } else {
+      console.error(response.status)
+    }
+  } catch (err) {
+    console.error(err)
+  }
 }
 </script>
 
