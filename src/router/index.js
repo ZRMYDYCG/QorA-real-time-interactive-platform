@@ -130,7 +130,7 @@ export const constantRoutes = [
             component: () => import('@/views/ChatRoom/children/BlacklistUser/index.vue')
           },
           {
-            path: '/chatRoom/chatDetail',
+            path: '/chatRoom/chatDetail/:id',
             component: () => import('@/views/ChatRoom/children/ChatDetail/index.vue')
           },
           {

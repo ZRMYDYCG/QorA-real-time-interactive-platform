@@ -1,12 +1,19 @@
 <template>
   <div class="right-text">
-    <span class="title">我是标题哦标题</span>
-    <span class="content">
-      我是占位文本我是占位文本我是占位文本我是占位文本我是占位文本我是占位文本我是占位文本
-      我是占位文本我是占位文本我是占位文本我是占位文本我是占位文本我是占位文本我是占位文本
-    </span>
+    <span class="title">{{ itemDetail.dynamic_title }}</span>
+    <span class="content" v-html="itemDetail.dynamic_text"> </span>
   </div>
 </template>
+
+<script setup>
+defineProps({
+  itemDetail: {
+    type: Object,
+    default: () => {}
+  }
+})
+</script>
+
 <style lang="scss" scoped>
 .right-text {
   display: flex;

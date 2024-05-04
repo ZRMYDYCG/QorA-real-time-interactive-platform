@@ -2,11 +2,15 @@
 import { onMounted } from 'vue'
 import ExchangeItem from '@/views/ExchangeCommunity/components/exchange-item/index.vue'
 import { useExchangeCommunityStore } from '@/stores/modules/ExchangeCommunity/index.js'
+import { useLoginStore } from '@/stores/modules/Login/index.js'
+
+const loginStore = useLoginStore()
 
 const exchangeCommunityStore = useExchangeCommunityStore()
 
 onMounted(() => {
-  exchangeCommunityStore.fetchAllRecommend()
+  console.log(loginStore.user_id)
+  exchangeCommunityStore.fetchAllRecommend(loginStore.user_id)
 })
 </script>
 

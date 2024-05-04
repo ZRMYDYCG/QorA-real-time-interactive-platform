@@ -1,26 +1,41 @@
 <script setup>
+import { watch, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useSocketStore } from '@/stores/modules/ChartRoom/index.js'
-
+import { fetchPersonalHomepageApi } from '@/service/UserHome/index.js'
+const props = defineProps({
+  itemData: {
+    type: Object,
+    default: () => {}
+  }
+})
 const router = useRouter()
 const socketStore = useSocketStore()
 const toChatWindow = async () => {
-  socketStore.chatUserMessageList()
-  await router.push('/chatRoom/chatDetail')
+  socketStore.chatUserMessageList(props.itemData?.fans_id)
+  await router.push(`/chatRoom/chatDetail/${props.itemData?.fans_id}`)
 }
-</script>
+
+let user_name = ref('')
+watch(
+  props.itemData,
+  () => {
+    fetchPersonalHomepageApi(props.itemData?.fans_id).then((res) => {
+      console.log('监视聊天列表的用户信息:', res)
+      user_name.value = res.data.user_now.user_name
+    })
+  },
+  { deep: true, immediate: true }
 )
+</script>
+
 <template>
   <div class="contact-item">
-    <el-menu-item @click.native="toChatWindow">
+    <el-menu-item @click="toChatWindow">
       <div class="contact-item">
-        <img
-          class="user-pic"
-          src="https://pic4.zhimg.com/v2-a5a7764bd68b23c65aecd923b275128f_r.jpg"
-          alt=""
-        />
+        <img class="user-pic" :src="itemData?.picture" alt="" />
         <div class="item-right">
-          <span class="nickName">小明</span>
+          <span class="nickName">{{ user_name }}</span>
         </div>
         <div class="icon">
           <el-icon>

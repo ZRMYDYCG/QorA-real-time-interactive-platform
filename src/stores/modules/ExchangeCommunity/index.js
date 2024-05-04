@@ -9,6 +9,8 @@ import { attentionApi } from '@/service/UserHome/index.js'
 import { ElMessage } from 'element-plus'
 import { toggleAttentionStatus } from '@/utils/filterdynamic.js'
 import { setLocalStorage } from '@/utils/index.js'
+// import { useLoginStore } from '../Login/index.js'
+// const loginStore = useLoginStore()
 
 export const useExchangeCommunityStore = defineStore('exchangeCommunityStore', () => {
   // 控制用户私信弹窗是否弹出
@@ -19,8 +21,8 @@ export const useExchangeCommunityStore = defineStore('exchangeCommunityStore', (
 
   // 首页推荐的所有数据
   let dynamicDetail = ref([])
-  const fetchAllRecommend = async () => {
-    const res = await fetchAllRecommendApi()
+  const fetchAllRecommend = async (id) => {
+    const res = await fetchAllRecommendApi(id)
     console.log(res.data.data)
     dynamicDetail.value = res.data.data
   }

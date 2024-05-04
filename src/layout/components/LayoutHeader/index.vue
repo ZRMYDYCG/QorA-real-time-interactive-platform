@@ -28,7 +28,7 @@
             <template #reference>
               <el-input
                 prefix-icon="Search"
-                @keydown.enter.native="searchAction"
+                @keydown.enter="searchAction"
                 placeholder="快来输入你要搜索的内容吧"
                 v-model="searchQuery"
               ></el-input>
@@ -49,19 +49,14 @@
                 <el-icon>
                   <Connection />
                 </el-icon>
-                <span> 私信 </span>
+                <span style="cursor: pointer"> 私信 </span>
               </div>
             </template>
             <template #default>
               <div class="message-main">
-                <message-item></message-item>
-                <message-item></message-item>
-                <message-item></message-item>
-                <message-item></message-item>
-                <message-item></message-item>
-                <message-item></message-item>
-                <message-item></message-item>
-                <message-item></message-item>
+                <template v-for="(item, index) in socketStore.discord_data" :key="index">
+                  <PersonItem :itemData="item"></PersonItem>
+                </template>
               </div>
               <div class="message-footer">
                 <div class="footer-right" @click="$router.push('/chatRoom')">查看全部私信</div>
@@ -100,14 +95,19 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue'
+import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import themeSwitch from './theme-switch.vue'
-import messageItem from './message-item.vue'
+// import messageItem from './message-item.vue'
 import { useLoginStore } from '@/stores/modules/Login/index.js'
-import { loginOutApi } from '@/service/Login/index.js'
+// import { loginOutApi } from '@/service/Login/index.js'
 import { removeLocalStorage } from '@/utils/index.js'
 import { getLocalStorage } from '@/utils/index.js'
+import PersonItem from '@/views/ChatRoom/components/person-item/index.vue'
+
+import { useSocketStore } from '@/stores/modules/ChartRoom/index.js'
+
+const socketStore = useSocketStore()
 
 const loginStore = useLoginStore()
 
@@ -138,12 +138,8 @@ const searchAction = ($event) => {
 
 // 下线
 const loginOut = async () => {
-  const res = loginOutApi(loginStore?.userInfo?.value?.user_id)
-  if (res.status === 200) {
-    await router.push('/login')
-    removeLocalStorage('userInfo')
-    removeLocalStorage('token')
-  }
+  removeLocalStorage('token')
+  await router.push('/login')
 }
 
 // 跳转到个人主页

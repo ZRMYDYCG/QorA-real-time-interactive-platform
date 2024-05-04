@@ -27,7 +27,7 @@ const loading = ref(true)
 
 // TODO: 用户关注和取消关注
 const handleAttentionApi = (user_for, is_attention, dynamic_id) => {
-  let user_id = loginStore.userInfo.value.user_id
+  let user_id = loginStore.user_id
   let type = is_attention ? 'less' : 'add'
   console.log(user_id, user_for, is_attention, type)
   exchangeCommunityStore.handleAttentionApi(user_id, user_for, type, dynamic_id)

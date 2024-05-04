@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import SearchUser from './components/SearchUser/index.vue'
 import SearchColumn from './components/SearchColumn/index.vue'
 import SearchDiscuss from './components/SearchDiscuss/index.vue'
@@ -159,6 +159,8 @@ const itemList = [
 ]
 
 const userList = ref([{ name: 1 }, {}, {}])
+
+onMounted(() => {})
 </script>
 
 <template>

@@ -1,18 +1,17 @@
 import request from '../config/index.js'
-import { getLocalStorage } from '@/utils/index.js'
 
 // 查询推荐的文章列表
-export const fetchAllRecommendApi = () => {
+export const fetchAllRecommendApi = (id) => {
   return request({
     url: '/api/index/dynamic',
     method: 'POST',
     data: {
-      id: getLocalStorage('userInfo').value.user_id
+      id: id
     }
   })
 }
 
-// 查询某篇文章的详情
+// 查询某篇文章的详情 ✅
 export const fetchEssayDetail = (object_id) => {
   return request({
     url: '/api/show/dynamic',

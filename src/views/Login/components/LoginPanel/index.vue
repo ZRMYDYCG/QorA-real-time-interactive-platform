@@ -38,6 +38,8 @@ import { ref } from 'vue'
 import PanelAccount from './components/PanelAccount/index.vue'
 import PanelEmail from './components/PanelEmail/index.vue'
 import { useSocketStore } from '@/stores/modules/ChartRoom/index.js'
+import { useLoginStore } from '@/stores/modules/Login/index.js'
+const loginStore = useLoginStore()
 
 const socketStore = useSocketStore()
 
@@ -48,7 +50,11 @@ const accountRef = ref()
 const loginAction = async () => {
   await accountRef.value.loginAction()
 
-  await socketStore.initSocket()
+  setInterval(() => {
+    let user_id = loginStore.user_id
+    console.log('尝试初始化 socket', user_id)
+    socketStore.initSocket(user_id)
+  }, 4000)
 }
 </script>
 

@@ -1,15 +1,40 @@
 <script setup>
-const handleClick = () => {}
+import { fetchPersonalHomepageApi } from '@/service/UserHome/index'
+import { ref, watch } from 'vue'
+const props = defineProps({
+  itemData: {
+    type: Object,
+    default: () => {}
+  }
+})
+
+console.log(props)
+let user_name = ref('')
+let user_pic = ref('')
+watch(
+  props.itemData,
+  () => {
+    fetchPersonalHomepageApi(props.itemData?.discord_reception).then((res) => {
+      console.log('监视聊天列表的用户信息:', res)
+      user_name.value = res.data.user_now.user_name
+      user_pic.value = res.data.user_now.user_pic
+    })
+  },
+  { deep: true, immediate: true }
+)
 </script>
 
 <template>
-  <div class="person-item" @click="handleClick">
-    <div class="item-left">
-      <img src="https://pic1.zhimg.com/v2-da5ff9fb7766a97d036c155b07b60ef8_b.jpg" alt="" />
+  <div
+    class="person-item"
+    @click="$router.push(`/chatRoom/chatDetail/${itemData.discord_reception}`)"
+  >
+    <div class="item-left" v-if="itemData.user_pic !== ''">
+      <img v-if="itemData.user_pic !== ''" :src="user_pic" alt="" />
     </div>
     <div class="item-right">
-      <div class="nickName">一小池勺</div>
-      <div class="con">你在吗？你在吗？你在吗？</div>
+      <div class="nickName">{{ user_name }}</div>
+      <div class="con">{{ itemData.discord_text }}</div>
     </div>
   </div>
 </template>

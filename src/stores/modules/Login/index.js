@@ -10,15 +10,18 @@ export const useLoginStore = defineStore('loginStore', () => {
   const token = getLocalStorage('token') ? getLocalStorage('token') : ''
   const userInfo = token ? getLocalStorage('userInfo') : {}
   const loginAccountInfo = ref({})
+  let user_id = ref(null)
   const accountLoginAction = async (userInfo) => {
     console.log(userInfo)
     const res = await adminLogin(userInfo)
     console.log(res)
+    user_id.value = res.data.user_id
     if (res.data.message === '登录成功') {
       setLocalStorage(
         'token',
         'skhfiasgf324324aw324324324henceforward72384723847283748324732847328'
       )
+      console.log('用户 id', user_id)
       await router.push('/').then(() => {
         ElMessage({
           message: '登录成功',
@@ -41,6 +44,7 @@ export const useLoginStore = defineStore('loginStore', () => {
   return {
     token,
     userInfo,
+    user_id,
     loginAccountInfo,
     accountLoginAction,
     enrollLoginAccount

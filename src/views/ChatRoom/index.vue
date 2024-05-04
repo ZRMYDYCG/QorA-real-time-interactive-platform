@@ -7,10 +7,6 @@ import { useSocketStore } from '@/stores/modules/ChartRoom/index.js'
 
 const socketStore = useSocketStore()
 
-const fullscreenElement = () => {
-  return document.fullscreenElement
-}
-
 const activeTab = ref(1)
 
 onMounted(() => {
@@ -66,44 +62,40 @@ onMounted(() => {
       </div>
       <div class="menu">
         <el-menu>
-          <el-sub-menu index="1">
+          <!-- <el-sub-menu index="1">
             <template #title>
               <el-icon>
                 <Ship color="#AEEE44" />
               </el-icon>
               <span>互相关注</span>
             </template>
-          </el-sub-menu>
-          <el-sub-menu index="2">
+            <template v-for="(item, index) in socketStore.mutual_ids_data" :key="index">
+              <contact-item :itemData="item"></contact-item>
+            </template>
+          </el-sub-menu> -->
+          <el-sub-menu index="1">
             <template #title>
               <el-icon>
                 <Star color="#DCEE44" />
               </el-icon>
               <span>粉丝列表</span>
             </template>
-            <contact-item></contact-item>
+            <template v-for="(item, index) in socketStore.fans_data" :key="index">
+              <contact-item :itemData="item"></contact-item>
+            </template>
           </el-sub-menu>
-          <el-sub-menu index="3">
+          <el-sub-menu index="2">
             <template #title>
               <el-icon>
                 <Operation color="#ccc" />
               </el-icon>
               <span>我的关注</span>
             </template>
-            <contact-item></contact-item>
-            <contact-item></contact-item>
-            <contact-item></contact-item>
+            <template v-for="(item, index) in socketStore.my_like" :key="index">
+              <contact-item :itemData="item"></contact-item>
+            </template>
           </el-sub-menu>
-          <el-menu-item-group title="自定义列表">
-            <el-sub-menu index="4">
-              <template #title>
-                <span>背包客</span>
-              </template>
-              <contact-item></contact-item>
-              <contact-item></contact-item>
-              <contact-item></contact-item>
-            </el-sub-menu>
-          </el-menu-item-group>
+          <el-menu-item-group title="自定义列表"> </el-menu-item-group>
         </el-menu>
       </div>
     </div>
@@ -112,10 +104,9 @@ onMounted(() => {
         <el-input suffix-icon="Search" placeholder="搜索"></el-input>
       </div>
       <div class="list">
-        <person-item></person-item>
-        <person-item></person-item>
-        <person-item></person-item>
-        <person-item></person-item>
+        <template v-for="(item, index) in socketStore.discord_data" :key="index">
+          <PersonItem :itemData="item"></PersonItem>
+        </template>
       </div>
     </div>
     <div class="room-view">

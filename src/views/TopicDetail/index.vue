@@ -1,36 +1,80 @@
 <script setup>
+// 点赞失活 https://pic.imgdb.cn/item/662272270ea9cb1403be0c8f.png
+// 点赞激活 https://pic.imgdb.cn/item/662272a80ea9cb1403bf08b0.png
+
+// 收藏失活 https://pic.imgdb.cn/item/662272f10ea9cb1403bfb26a.png
+// 收藏激活 https://pic.imgdb.cn/item/662273060ea9cb1403bfd8c8.png
+
+// 评论 https://pic.imgdb.cn/item/662273300ea9cb1403c02a59.png
+import { computed, onMounted, reactive, ref } from 'vue'
+import { useRoute } from 'vue-router'
+import { fetchEssayDetail } from '@/service/ExchangeCommunity/index.js'
+import { fetchPersonalHomepageApi } from '@/service/UserHome/index.js'
 import ArticleMsg from './components/UserInfo/ArticleMsg.vue'
 import AtricleContent from './components/UserInfo/AtricleContent.vue'
 import Comment from './components/Comment/index.vue'
+import { getLocalStorage } from '@/utils/index.js'
+import { usePublishArticleStore } from '@/stores/modules/PublishArticle/index.js'
+import { publicFetch } from '@/service/public/index.js'
+const route = useRoute()
+const publishArticleStore = usePublishArticleStore()
 
-const url = 'https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg'
-const srcList = [
-  'https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg',
-  'https://fuss10.elemecdn.com/1/34/19aa98b1fcb2781c4fba33d850549jpeg.jpeg',
-  'https://fuss10.elemecdn.com/0/6f/e35ff375812e6b0020b6b4e8f9583jpeg.jpeg',
-  'https://fuss10.elemecdn.com/9/bb/e27858e973f5d7d3904835f46abbdjpeg.jpeg',
-  'https://fuss10.elemecdn.com/d/e6/c4d93a3805b3ce3f323f7974e6f78jpeg.jpeg',
-  'https://fuss10.elemecdn.com/3/28/bbf893f792f03a54408b3b7a7ebf0jpeg.jpeg',
-  'https://fuss10.elemecdn.com/2/11/6535bcfb26e4c79b48ddde44f4b6fjpeg.jpeg'
-]
+let srcList = ref([])
+
+// TODO:渲染文章详情
+let articalDetail = ref({})
+let userNowInfo = ref({})
+let userOtherArticle = ref([])
+onMounted(() => {
+  fetchEssayDetail(route.params.id).then((res) => {
+    console.log('动态详情信息:', res)
+    articalDetail.value = res.data
+
+    srcList.value = res.data.pics_list
+    console.log(srcList.value)
+    fetchPersonalHomepageApi(res.data.dynamic_now.dynamic_user).then((res) => {
+      console.log('用户详情信息:', res)
+      userNowInfo.value = res.data.user_now
+      publicFetch(res.data.user_now.user_id, 'dynamic').then((res) => {
+        console.log('用户其它文章：', res)
+        userOtherArticle.value = res.data.dynamics_data
+      })
+    })
+  })
+})
+
+// TODO:渲染文章的评论区
+let commentList = ref([])
+let articleMessage = reactive({})
+// 点赞 收藏  评论 浏览量
+articleMessage.like = 1
+articleMessage.collect = 0
+articleMessage.comementNum = commentList.value.length
+articleMessage.seeNum = articalDetail.value?.dynamic_now?.dynamic_see
+onMounted(async () => {
+  publishArticleStore.handlePublicShowReviewApi(route.params.id)
+  commentList.value = publishArticleStore.commentList
+})
+// 按钮权限
+let user_id = getLocalStorage('userInfo').value.user_id
+let relateVisible = computed(() => {
+  return !articalDetail.value?.dynamic_now?.dynamic_user === user_id
+})
 </script>
 
 <template>
   <link rel="stylesheet" href="//at.alicdn.com/t/c/font_4498745_nn0qtah5kp.css" />
   <div class="user-aticle-container">
-    <el-card style="max-width: 480px" shadow="hover">
+    <el-card style="min-width: 480px" shadow="hover">
       <div class="userInfo">
         <div class="img-box">
-          <img
-            src="https://p1.music.126.net/iN1QCBDd9wxCy2CB0RLW3g==/109951169424112014.jpg"
-            alt=""
-          />
+          <img :src="articalDetail.user_pics" alt="" />
         </div>
         <div class="about-user">
-          <div class="username">猪是的念来过倒</div>
+          <div class="username">{{ userNowInfo.user_name }}</div>
           <div class="experiencer-level">
             <span>体验官等级</span>
-            <el-tag type="warning">LV 8</el-tag>
+            <el-tag type="warning">LV.{{ userNowInfo.user_grade }}</el-tag>
           </div>
         </div>
       </div>
@@ -42,7 +86,7 @@ const srcList = [
         </div>
 
         <div class="fans">
-          <span class="fans-num">2222</span>
+          <span class="fans-num">{{ userNowInfo.user_fan }}</span>
           <span class="fans-title">粉丝</span>
         </div>
         <div class="rank">
@@ -50,8 +94,8 @@ const srcList = [
           <span class="rank-title">排名</span>
         </div>
         <div class="score">
-          <span class="score-num">120</span>
-          <span class="score-title">积分</span>
+          <span class="score-num">{{ userNowInfo.user_attention }}</span>
+          <span class="score-title">关注</span>
         </div>
       </div>
 
@@ -70,42 +114,42 @@ const srcList = [
           <span class="comment-title">评论</span>
         </div>
         <div class="views">
-          <span class="views-num">120</span>
+          <span class="views-num">{{ articalDetail?.dynamic_now?.dynamic_see }}</span>
           <span class="views-title">浏览</span>
         </div>
       </div>
 
       <!-- 用户相关文章 -->
       <div class="user-relative-title">其他文章</div>
-      <div class="user-relative-article" v-if="true">
+      <div class="user-relative-article" v-if="userOtherArticle.length > 0">
         <div class="animate-box">
           <!-- 1.展示有图片的文章 -->
-          <div class="container-img" v-for="(item, index) in 3" :key="index" v-if="true">
-            <div class="article">
-              <div class="left-box">
-                <img
-                  src="https://tse3-mm.cn.bing.net/th/id/OIP-C.-tzTaX_rJ3XOQd1RMrezTAHaE8?w=224&h=180&c=7&r=0&o=5&dpr=1.5&pid=1.7"
-                  alt=""
-                />
+          <!-- <div class="container-img" v-if="userOtherArticle.imgList.length > 0">
+            <template v-for="(item, index) in userOtherArticle" :key="index">
+              <div class="article">
+                <div class="left-box">
+                  <img :src="item.imgList[0]" alt="" />
+                </div>
+                <AtricleContent :itemDetail="item"></AtricleContent>
               </div>
-              <AtricleContent></AtricleContent>
-            </div>
-            <!-- 文章点赞等详情 -->
-            <ArticleMsg></ArticleMsg>
-          </div>
+            </template>
+          </div> -->
 
           <!-- 2.展示无图片照片 -->
-          <div class="container-text" v-if="false" v-for="item in 3">
-            <AtricleContent></AtricleContent>
-            <ArticleMsg></ArticleMsg>
+          <div class="container-text">
+            <template v-for="(item, index) in userOtherArticle" :key="index">
+              <AtricleContent :itemDetail="item"></AtricleContent>
+            </template>
           </div>
         </div>
       </div>
       <!-- 3.最后一种情况：什么文章都没有 -->
       <div class="container-none" v-else>
-        <el-empty description="该用户还未发布文章" :image-size="100" />
+        <el-empty description="该用户还未发布其它文章" :image-size="100" />
       </div>
-      <div class="relate-user">
+
+      <!-- 区分是否是自己还是其它用户 -->
+      <div class="relate-user" v-if="relateVisible">
         <div class="send-msg">私信</div>
         <div class="care-user">关注</div>
         <div class="enter-home">进入主页</div>
@@ -119,9 +163,10 @@ const srcList = [
         </div>
       </template>
       <div class="aritcle-detail-container">
-        <div class="article-title">我是标题</div>
+        <div class="article-title">{{ articalDetail?.dynamic_now?.dynamic_title }}</div>
         <div class="article-content">
-          <div class="left-img-container">
+          <!-- 左侧预览图是否显示 -->
+          <div :class="srcList.length > 0 ? 'left-img-container' : ''" v-if="srcList.length > 0">
             <div class="img-items" v-for="(item, index) in srcList" :key="index">
               <el-image
                 :src="item"
@@ -135,19 +180,16 @@ const srcList = [
             </div>
           </div>
           <div class="right-text-container">
-            <div class="text-content">
-              手机的CPU（中央处理器）是一种微处理器，是手机中最重要的芯片之一，主要负责处理手机的各种计算任务和指令。手机的CPU通常由多个核心组成，每个核心可以独立执行任务。CPU的性能直接影响手机的运行速度和响应能力。
-              手机CPU的架构通常采用ARM架构，常见的手机CPU厂商包括高通（Qualcomm）、联发科（MediaTek）、苹果（Apple）和三星（Samsung）等。这些厂商生产的手机CPU在设计上有一定差异，包括核心数量、核心频率、制程工艺、功耗控制等方面。
-            </div>
+            <div class="text-content" v-html="articalDetail?.dynamic_now?.dynamic_text"></div>
           </div>
         </div>
         <div class="article-bottom">
-          <ArticleMsg :size="19"></ArticleMsg>
+          <ArticleMsg @update-article="u" v-bind="articleMessage"></ArticleMsg>
         </div>
       </div>
     </el-card>
   </div>
-  <Comment></Comment>
+  <Comment :articleId="articalDetail?.dynamic_now?.dynamic_id"></Comment>
 </template>
 
 <style lang="scss" scoped>
@@ -203,6 +245,9 @@ const srcList = [
         font-size: 17px;
         // padding: 0 0 0 20px;
         padding: 10px;
+        :deep(img) {
+          width: 100%;
+        }
       }
     }
   }

@@ -1,9 +1,21 @@
 <script setup>
 import commentContent from './components/comment-content.vue'
+import { getLocalStorage } from '@/utils/index.js'
 import Vue3EmojiPicker from 'vue3-emoji-picker'
 import 'vue3-emoji-picker/css'
-import { ref } from 'vue'
-
+import { useRoute } from 'vue-router'
+import { ref, watch, nextTick } from 'vue'
+import { usePublishArticleStore } from '@/stores/modules/PublishArticle/index.js'
+import { fetchPersonalHomepageApi } from '@/service/UserHome/index.js'
+import { findItemIndexWithZeroLikeCount } from '@/utils/index.js'
+let user_pic = getLocalStorage('userInfo').value.picture_address
+const route = useRoute()
+const publishArticleStore = usePublishArticleStore()
+const props = defineProps({
+  articleId: {
+    type: Number
+  }
+})
 const defaultSort = ref('hot')
 const toggleSort = (val) => {
   if (val == 'hot') {
@@ -11,18 +23,6 @@ const toggleSort = (val) => {
   } else if (val == 'new') {
     defaultSort.value = 'new'
   }
-}
-
-// const isLike = ref(false)
-// const onHandLike = () => {
-//   isLike.value = !isLike.value
-// }
-
-const drawer = ref(false)
-//是否打开弹窗组件
-const openDraw = () => {
-  drawer.value = !drawer.value
-  console.log(drawer)
 }
 
 // TODO: 评论输入框
@@ -39,10 +39,6 @@ function onEmojiSelect(emoji) {
     inputRef.value.value += emoji.i
   }
   selectedEmoji.value = ''
-}
-
-const send = () => {
-  console.log(inputRef.value.value)
 }
 
 let isChangeHeight = ref(false)
@@ -70,13 +66,88 @@ const onCloseText = (e) => {
   }
 }
 
-//鼠标离开输入框之后，text高度下降
-// const onLeaveMouse = () => {
-//   isChangeHeight.value = false
-//   console.log(111)
-// }
+// TODO:发布评论
+const commentVisible = ref(false)
+const commentInput = ref(null)
+let textareaContent = ref('')
+const user_id = getLocalStorage('userInfo').value.user_id // 本人 id
+const review_object_id = route.params.id // 该评论的文章 id
+
+const handleCommentVisible = () => {
+  commentVisible.value = true
+}
+
+// 发布一级、二级评论
+const handlePublicCommentsApi = (review_id, review_grade_top, review_top_id) => {
+  console.log(inputRef.value.value)
+  if (drawer.value) {
+    publishArticleStore.handlePublicCommentsApi(
+      'dynamic',
+      user_id,
+      review_object_id,
+      inputRef.value.value,
+      review_id, // 该条评论的 id
+      review_grade_top, // 该一级评论用户的 id
+      review_top_id // 该一级评论的 id
+    )
+
+    commentVisible.value = false
+    textareaContent.value = ''
+  } else {
+    publishArticleStore.handlePublicCommentsApi(
+      'dynamic',
+      user_id,
+      review_object_id,
+      textareaContent.value,
+      props.articleId
+    )
+
+    commentVisible.value = false
+    textareaContent.value = ''
+
+    inputRef.value.value = ''
+  }
+}
+
+// TODO:二级评论的回显问题
+const drawer = ref(false)
+let floorCommentDetail = ref({})
+let index = ref(null)
+let backUserName = ref('')
+// 是否打开弹窗组件
+const openDraw = (commentItemDetail) => {
+  console.log(commentItemDetail)
+
+  fetchPersonalHomepageApi(commentItemDetail.review_user).then((res) => {
+    console.log(res)
+    backUserName.value = '回复给:  ' + res.data?.user_now?.user_name
+  })
+
+  floorCommentDetail.value = commentItemDetail
+
+  index.value = findItemIndexWithZeroLikeCount(publishArticleStore.commentList, commentItemDetail)
+
+  // 打开聊天抽屉
+  drawer.value = !drawer.value
+}
+
+// TODO:主评论框回显自己的评论
+
+// TODO:聚焦
+watch(commentVisible, (newValue) => {
+  if (newValue) {
+    nextTick(() => {
+      if (commentInput.value) {
+        commentInput.value.focus()
+      }
+    })
+  }
+})
 </script>
 <template>
+  <el-button @click="handleCommentVisible" type="text" class="mt-10" size="small">
+    <el-icon class="mr-2"><EditPen /></el-icon>发布评论</el-button
+  >
   <link rel="stylesheet" href="//at.alicdn.com/t/c/font_4498745_5f449up5pic.css" />
   <div class="comment-box">
     <div class="left-comment">
@@ -84,7 +155,7 @@ const onCloseText = (e) => {
         <div class="comment-container">
           <div class="comment-title">
             <!-- 标题 -->
-            <span class="total-num">全部评论（12312）</span>
+            <span class="total-num">全部评论({{ publishArticleStore.commentList.length }})</span>
             <!-- 排序 -->
             <div class="sort-type">
               <i class="iconfont icon-paixu" @click="toggleSort('way')"></i>
@@ -92,22 +163,25 @@ const onCloseText = (e) => {
                 class="hot"
                 @click="toggleSort('hot')"
                 :class="{ activeColor: defaultSort === 'hot' }"
-                >最热</span
+                >最新</span
               >
               <span
                 class="new"
                 @click="toggleSort('new')"
                 :class="{ activeColor: defaultSort === 'new' }"
-                >最新</span
+                >最热</span
               >
             </div>
           </div>
-          <commentContent
-            v-for="(item, index) in 6"
-            :isOpenDraw="drawer"
-            :key="index"
-            @open-draw="openDraw"
-          ></commentContent>
+          <template v-for="(item, index) in publishArticleStore.commentList" :key="index">
+            <commentContent
+              :floorCommentNum="3"
+              isFold
+              :commentItemDetail="item"
+              :isOpenDraw="drawer"
+              @open-draw="openDraw"
+            ></commentContent>
+          </template>
         </div>
       </el-card>
     </div>
@@ -167,32 +241,47 @@ const onCloseText = (e) => {
     <!-- 回复的对象 -->
     <div class="replyer" @click="onCloseText">
       <div class="reply-title">评论回复</div>
-
-      <commentContent></commentContent>
-      <div class="reply-num">总共8条回复</div>
+      <commentContent
+        :isShowFoldText="false"
+        :commentItemDetail="floorCommentDetail"
+      ></commentContent>
+      <!-- {{ floorCommentDetail }} -->
+      <div class="reply-num">总共{{ floorCommentDetail.secondaryReviews.length }}条回复</div>
       <div class="reply-sum">
-        <commentContent v-for="item in 10" style="margin-bottom: 30px"></commentContent>
+        <commentContent
+          :floorCommentNum="floorCommentDetail.secondaryReviews.length"
+          :isShowTopComment="false"
+          :isFold="true"
+          :isShowFoldText="false"
+          :commentItemDetail="publishArticleStore.commentList[index]"
+        ></commentContent>
       </div>
     </div>
     <div class="reply-box">
       <div class="avatar">
-        <img
-          src="https://p1.music.126.net/D-1BJmN0aqcwgh8F1AuyPA==/109951169341847902.jpg"
-          alt=""
-        />
+        <img :src="user_pic" alt="" />
       </div>
       <div class="textarea">
         <div class="Emo-Popup-box">
           <el-popover :teleported="false" placement="top-start" trigger="click" width="auto">
             <template #reference>
               <div>表情包</div>
-              <el-button size="small" @click="send">发送</el-button>
+              <el-button size="small">发送</el-button>
             </template>
             <template #default>
               <Vue3EmojiPicker v-model="selectedEmoji" @select="onEmojiSelect" />
             </template>
           </el-popover>
-          <div class="publish">
+          <div
+            class="publish"
+            @click="
+              handlePublicCommentsApi(
+                floorCommentDetail.review_id,
+                floorCommentDetail.review_user,
+                floorCommentDetail.review_id
+              )
+            "
+          >
             <i class="iconfont icon-publish"></i>
           </div>
         </div>
@@ -201,12 +290,31 @@ const onCloseText = (e) => {
           :class="{ textareaHeight: isChangeHeight }"
           ref="inputRef"
           @input="handleInput"
-          placeholder="回复 猪是的念来过倒"
+          :placeholder="backUserName"
           @click="onTextClick"
         ></textarea>
       </div>
     </div>
   </el-drawer>
+
+  <!-- 发布评论模态框 -->
+  <el-dialog v-model="commentVisible" width="30%">
+    <template #title>
+      <h4>发布看法</h4>
+    </template>
+    <template #default>
+      <el-input
+        v-model="textareaContent"
+        ref="commentInput"
+        placeholder="良言一句三冬暖，恶语伤人三春寒"
+        type="textarea"
+        autosize
+      ></el-input>
+    </template>
+    <template #footer>
+      <el-button size="small" @click="handlePublicCommentsApi">发布</el-button>
+    </template>
+  </el-dialog>
 </template>
 <style lang="scss" scoped>
 //推荐文章
@@ -540,6 +648,16 @@ textarea::-webkit-input-placeholder {
   }
   .comment-content {
     margin-top: 20px;
+  }
+}
+</style>
+
+<style lang="scss">
+.el-dialog {
+  .el-textarea {
+    .el-textarea__inner {
+      height: 120px !important;
+    }
   }
 }
 </style>

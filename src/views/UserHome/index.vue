@@ -58,57 +58,6 @@
           <el-input v-model="user_name" style="width: 280px"></el-input>
         </el-form-item>
         <el-form-item label="头像：">
-          <!-- <el-upload
-            class="avatar-uploader"
-            action="http://127.0.0.1:5000/api/upload/pics"
-            :show-file-list="false"
-            :on-success="handleAvatarSuccess"
-            :before-upload="beforeAvatarUpload"
-            :multiple="true"
-          >
-            <img v-if="imageUrl" :src="imageUrl" class="avatar" />
-            <el-icon v-else class="avatar-uploader-icon">
-              <Plus />
-            </el-icon>
-          </el-upload> -->
-
-          <!-- <el-upload
-            action="#"
-            :http-request="handleUploadFilesApi"
-            list-type="picture-card"
-            multiple
-            :limit="1"
-          >
-            <el-icon><Plus /></el-icon>
-            <template #file="{ file }">
-              <div>
-                <img class="el-upload-list__item-thumbnail" :src="imageUrl" alt="" />
-                <span class="el-upload-list__item-actions">
-                  <span
-                    class="el-upload-list__item-preview"
-                    @click="handlePictureCardPreview(file)"
-                  >
-                    <el-icon><zoom-in /></el-icon>
-                  </span>
-                  <span
-                    v-if="!disabled"
-                    class="el-upload-list__item-delete"
-                    @click="handleDownload(file)"
-                  >
-                    <el-icon><Download /></el-icon>
-                  </span>
-                  <span
-                    v-if="!disabled"
-                    class="el-upload-list__item-delete"
-                    @click="handleRemove(file)"
-                  >
-                    <el-icon><Delete /></el-icon>
-                  </span>
-                </span>
-              </div>
-            </template>
-          </el-upload> -->
-
           // 单图上传
           <el-upload
             action="#"
