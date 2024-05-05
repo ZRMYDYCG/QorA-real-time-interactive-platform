@@ -300,10 +300,10 @@ watch(
         </div>
       </el-form>
     </div>
-    <!--    <div class="right-bar" v-if="$route.path === '/exchangeCommunity/communityConcern'">2</div>-->
-    <div class="right-bar" v-if="$route.path === '/exchangeCommunity/communityTags'">3</div>
-    <div class="right-bar" v-if="$route.path === '/exchangeCommunity/communityColumn'">4</div>
-    <!--    <div class="right-bar" v-if="$route.path === '/exchangeCommunity/communityTopic'">5</div>-->
+    <!-- <div class="right-bar" v-if="$route.path === '/exchangeCommunity/communityConcern'">2</div>-->
+    <!-- <div class="right-bar" v-if="$route.path === '/exchangeCommunity/communityTags'">3</div> -->
+    <!-- <div class="right-bar" v-if="$route.path === '/exchangeCommunity/communityColumn'">4</div> -->
+    <!-- <div class="right-bar" v-if="$route.path === '/exchangeCommunity/communityTopic'">5</div>-->
   </div>
 </template>
 

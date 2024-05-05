@@ -1,33 +1,39 @@
-<script setup></script>
+<script setup>
+defineProps({
+  itemData: {
+    type: Object,
+    default: () => {}
+  }
+})
+</script>
 
 <template>
   <el-card>
     <template #default>
       <div class="user--left">
         <!-- https://pic.imgdb.cn/item/66148db368eb935713528128.png -->
-        <img src="https://pic.imgdb.cn/item/66148d9368eb9357135256af.png" alt="#" />
+        <img :src="itemData?.user_picture" alt="#" />
       </div>
       <div class="user--right">
         <div class="l">
           <div class="l__name">
-            <h3 class="nickname">可目十</h3>
-            <span class="level">LV.8</span>
+            <h3 class="nickname">{{ itemData?.user_name }}</h3>
+            <span class="level">LV.{{ itemData?.user_upgrade }}</span>
           </div>
-          <div class="l__desc">我看见光，却躲避光。</div>
+          <div class="l__desc">{{ itemData?.user_introduce }}</div>
           <div class="l-tags">
-            <el-tag round size="small">100 回答</el-tag>
-            <el-tag round size="small">200 体验分享</el-tag>
-            <el-tag round size="small">10030 粉丝</el-tag>
+            <el-tag round size="small">{{ itemData?.user_attention }} 关注</el-tag>
+            <el-tag round size="small">{{ itemData?.user_fan }} 粉丝</el-tag>
           </div>
         </div>
         <div class="r">
-          <el-button round>
+          <el-button @click="$router.push(`/userHome/index?user_id=${itemData?.user_id}`)" round>
             <template #icon>
               <el-icon>
                 <Plus />
               </el-icon>
             </template>
-            关注
+            进入主页
           </el-button>
         </div>
       </div>

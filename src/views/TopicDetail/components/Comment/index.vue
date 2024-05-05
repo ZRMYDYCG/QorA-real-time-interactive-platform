@@ -70,7 +70,7 @@ const onCloseText = (e) => {
 const commentVisible = ref(false)
 const commentInput = ref(null)
 let textareaContent = ref('')
-const user_id = getLocalStorage('userInfo').value.user_id // 本人 id
+const user_id = getLocalStorage('userInfo')?.value?.user_id // 本人 id
 const review_object_id = route.params.id // 该评论的文章 id
 
 const handleCommentVisible = () => {
@@ -79,7 +79,7 @@ const handleCommentVisible = () => {
 
 // 发布一级、二级评论
 const handlePublicCommentsApi = (review_id, review_grade_top, review_top_id) => {
-  console.log(inputRef.value.value)
+  // console.log(inputRef.value.value)
   if (drawer.value) {
     publishArticleStore.handlePublicCommentsApi(
       'dynamic',
@@ -93,6 +93,7 @@ const handlePublicCommentsApi = (review_id, review_grade_top, review_top_id) => 
 
     commentVisible.value = false
     textareaContent.value = ''
+    inputRef.value.value = ''
   } else {
     publishArticleStore.handlePublicCommentsApi(
       'dynamic',
@@ -115,20 +116,21 @@ let floorCommentDetail = ref({})
 let index = ref(null)
 let backUserName = ref('')
 // 是否打开弹窗组件
-const openDraw = (commentItemDetail) => {
+const openDraw = async (commentItemDetail) => {
   console.log(commentItemDetail)
 
-  fetchPersonalHomepageApi(commentItemDetail.review_user).then((res) => {
-    console.log(res)
-    backUserName.value = '回复给:  ' + res.data?.user_now?.user_name
-  })
+  const res = await fetchPersonalHomepageApi(commentItemDetail.review_user)
+  console.log(res)
+  backUserName.value = '回复给:  ' + res.data?.user_now?.user_name
 
   floorCommentDetail.value = commentItemDetail
 
   index.value = findItemIndexWithZeroLikeCount(publishArticleStore.commentList, commentItemDetail)
 
   // 打开聊天抽屉
-  drawer.value = !drawer.value
+  setTimeout(() => {
+    drawer.value = !drawer.value
+  }, 500)
 }
 
 // TODO:主评论框回显自己的评论

@@ -2,8 +2,9 @@
 import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { fetchColumnDetail, changeColumnApi, moveFavoriteApi } from '@/service/UserHome/index.js'
-import { ElMessage } from 'element-plus'
+import { ElMessage, ElMessageBox } from 'element-plus'
 import 'element-plus/theme-chalk/el-message.css'
+import 'element-plus/theme-chalk/el-message-box.css'
 
 const route = useRoute()
 let user_id = route.query.user_id
@@ -35,9 +36,29 @@ const handleNewCollection = async () => {
 
 // TODO:删除收藏夹
 const handleDeleteCollection = async (bag_name, type = 'less') => {
-  const res = await changeColumnApi(user_id, bag_name, type)
-  console.log(res)
-  await fetchColumnDetail(user_id)
+  ElMessageBox.confirm('确定删除该求助吗？', 'Warning', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning'
+  })
+    .then(() => {
+      changeColumnApi(user_id, bag_name, type).then(async (res) => {
+        console.log(res)
+        ElMessage({
+          type: 'success',
+          message: '删除成功'
+        })
+        const res3 = await fetchColumnDetail(user_id)
+        favoriteList.value = res3.data.favorite_name_list_now
+        console.log('删除后:', res3)
+      })
+    })
+    .catch(() => {
+      ElMessage({
+        type: 'info',
+        message: '操作取消'
+      })
+    })
 }
 
 // TODO:将收藏项移入或移出收藏夹
@@ -55,10 +76,12 @@ const confirm = (user_id, bag_name, favorite_id_list, type) => {
 let radio = ref('1')
 
 // TODO:渲染收藏夹
+let favoriteList = ref([])
 onMounted(async () => {
   const { user_id } = route.query
   const res = await fetchColumnDetail(user_id)
   console.log(res)
+  favoriteList.value = res.data.favorite_name_list_now
 })
 </script>
 
@@ -71,32 +94,31 @@ onMounted(async () => {
       </el-icon>
     </el-button>
     <el-collapse v-model="activeNames" @change="handleChange">
-      <!--   收藏夹标题   -->
-      <el-collapse-item title="旅行" name="1">
-        <!--    收藏夹内容    -->
-        <template v-for="(item, index) in 10" :key="index">
-          <div class="collection-item">
-            <div class="item-left">
-              <el-tag>体验分享</el-tag>
-              <div class="title">为什么超威电池会更加好用呢？</div>
+      <template v-for="(item, index) in favoriteList" :key="index">
+        <!--   收藏夹标题   -->
+        <el-collapse-item :title="item.bag_name" :name="idnex">
+          <!--    收藏夹内容    -->
+          <template v-for="(item, index) in favoriteList.favorite_id_list" :key="index">
+            <div class="collection-item">
+              <div class="item-left">
+                <el-tag>{{}}</el-tag>
+                <div class="title">{{}}</div>
+              </div>
+              <div class="item-right">
+                <el-button circle @click="handlemMoveFavoriteApi()">
+                  <el-icon>
+                    <Delete />
+                  </el-icon>
+                </el-button>
+              </div>
             </div>
-            <div class="item-right">
-              <el-button circle @click="handlemMoveFavoriteApi">
-                <el-icon>
-                  <Delete />
-                </el-icon>
-              </el-button>
-            </div>
-          </div>
-        </template>
-      </el-collapse-item>
-      <el-collapse-item title="模型" name="2"></el-collapse-item>
-      <el-collapse-item title="电器" name="3"></el-collapse-item>
-      <el-collapse-item title="美食" name="4"></el-collapse-item>
+          </template>
+        </el-collapse-item>
+      </template>
     </el-collapse>
   </div>
 
-  <el-dialog width="550" title="管理收藏夹" v-model="collectionDialogVisible">
+  <el-dialog width="70%" title="管理收藏夹" v-model="collectionDialogVisible">
     <template #default>
       <el-button
         style="margin-bottom: 10px"
@@ -106,16 +128,16 @@ onMounted(async () => {
       </el-button>
 
       <div class="collectionList">
-        <div class="list-item">
+        <template v-for="(item, index) in favoriteList" :key="index">
           <el-card
             body-style="display: flex;justify-content: space-between;width: 100%; align-item: center"
           >
             <template #default>
               <div class="left">
-                <div class="left-header">骑行</div>
+                <div class="left-header">{{ item.bag_name }}</div>
                 <div class="left-footer">
-                  <el-tag>47个收藏</el-tag>
-                  <el-tag>私密</el-tag>
+                  <el-tag>{{ item.favorite_id_list.length }}个收藏</el-tag>
+                  <el-tag>公开</el-tag>
                 </div>
               </div>
               <div class="right">
@@ -124,7 +146,7 @@ onMounted(async () => {
                     <EditPen />
                   </el-icon>
                 </el-button>
-                <el-button circle @click="handleDeleteCollection">
+                <el-button circle @click="handleDeleteCollection(item.bag_name)">
                   <el-icon>
                     <Delete />
                   </el-icon>
@@ -132,7 +154,7 @@ onMounted(async () => {
               </div>
             </template>
           </el-card>
-        </div>
+        </template>
       </div>
     </template>
   </el-dialog>
@@ -189,24 +211,22 @@ onMounted(async () => {
 }
 
 .collectionList {
-  .list-item {
-    .el-card {
-      display: flex;
-
-      .left {
-        .left-header {
-          padding-bottom: 15px;
-        }
-
-        .left-footer {
-          .el-tag {
-            margin-right: 10px;
-          }
-        }
+  .el-card {
+    display: flex;
+    margin-bottom: 10px;
+    .left {
+      .left-header {
+        padding-bottom: 15px;
       }
 
-      .right {
+      .left-footer {
+        .el-tag {
+          margin-right: 10px;
+        }
       }
+    }
+
+    .right {
     }
   }
 }

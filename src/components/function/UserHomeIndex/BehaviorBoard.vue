@@ -18,7 +18,7 @@ const userHomeStore = useUserHomeStore()
         :key="index"
         :timestamp="activity.history_time"
       >
-        {{ activity.history_text }}
+        {{ activity.history_text.slice(1) }}
       </el-timeline-item>
     </el-timeline>
   </el-card>

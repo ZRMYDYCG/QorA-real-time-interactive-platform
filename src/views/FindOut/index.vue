@@ -132,13 +132,8 @@ const createQuestion = () => {
   createQuestionApi(questionDetail)
     .then((res) => {
       console.log(res)
-      if (res.data.message !== '该问题已存在') {
-        ElMessage.error('该问题已存在')
-      } else {
-        synchronous.value++
-        ElMessage.success('发布成功')
-      }
-
+      synchronous.value++
+      ElMessage.success('发布成功')
       dialogVisible.value = false
     })
     .catch((error) => {
@@ -179,54 +174,54 @@ const createQuestion = () => {
 //   }
 // }
 
-const fileInput = ref(null)
-const files = ref([])
-const previewImages = ref([])
+// const fileInput = ref(null)
+// const files = ref([])
+// const previewImages = ref([])
 
-const handleFileChange = (e) => {
-  console.log(e.target.files)
-  if (e.target.files.length > 9) {
-    alert('最多只能选择9张图片')
-    return
-  }
-  const selectedFiles = Array.from(e.target.files)
-  files.value = selectedFiles
-  previewImages.value = selectedFiles.map((file) => URL.createObjectURL(file))
-}
+// const handleFileChange = (e) => {
+//   console.log(e.target.files)
+//   if (e.target.files.length > 9) {
+//     alert('最多只能选择9张图片')
+//     return
+//   }
+//   const selectedFiles = Array.from(e.target.files)
+//   files.value = selectedFiles
+//   previewImages.value = selectedFiles.map((file) => URL.createObjectURL(file))
+// }
 
-const uploadFiles = async () => {
-  if (!files.value.length) {
-    console.error('No files selected.')
-    return
-  }
+// const uploadFiles = async () => {
+//   if (!files.value.length) {
+//     console.error('No files selected.')
+//     return
+//   }
 
-  const formData = new FormData()
-  for (let i = 0; i < files.value.length; i++) {
-    formData.append('image0', files.value[i])
-  }
+//   const formData = new FormData()
+//   for (let i = 0; i < files.value.length; i++) {
+//     formData.append('image0', files.value[i])
+//   }
 
-  try {
-    const response = await fetch('http://127.0.0.1:5000/api/upload/pics', {
-      method: 'POST',
-      body: formData
-    })
+//   try {
+//     const response = await fetch('http://127.0.0.1:5000/api/upload/pics', {
+//       method: 'POST',
+//       body: formData
+//     })
 
-    if (response.ok) {
-      const data = await response.json()
-      console.log(data)
+//     if (response.ok) {
+//       const data = await response.json()
+//       console.log(data)
 
-      files.value = []
-      previewImages.value = []
-      alert('上传成功')
-    } else {
-      console.error(response.status)
-    }
-  } catch (err) {
-    console.error(err)
-  } finally {
-    fileInput.value.value = null
-  }
-}
+//       files.value = []
+//       previewImages.value = []
+//       alert('上传成功')
+//     } else {
+//       console.error(response.status)
+//     }
+//   } catch (err) {
+//     console.error(err)
+//   } finally {
+//     fileInput.value.value = null
+//   }
+// }
 </script>
 
 <template>
@@ -247,7 +242,6 @@ const uploadFiles = async () => {
       <div class="tab">
         <el-tabs v-model="defaultTabItem" @tab-click="handleTabClick">
           <el-tab-pane label="最新" name="latest"></el-tab-pane>
-          <el-tab-pane label="推送" name="commend"></el-tab-pane>
           <el-tab-pane label="未解决" name="unresolved"></el-tab-pane>
           <el-tab-pane label="紧急问题" name="urgent"></el-tab-pane>
         </el-tabs>
@@ -330,8 +324,8 @@ const uploadFiles = async () => {
 
       <div class="multi-image-upload">
         <!-- 图片上传 -->
-        <input type="file" multiple @change="handleFileChange" />
-        <button @click="uploadFiles">Upload</button>
+        <!-- <input type="file" multiple @change="handleFileChange" />
+        <button @click="uploadFiles">Upload</button> -->
 
         <!-- 图片预览九宫格 -->
         <div class="preview-grid">

@@ -8,9 +8,7 @@ import {
 import { attentionApi } from '@/service/UserHome/index.js'
 import { ElMessage } from 'element-plus'
 import { toggleAttentionStatus } from '@/utils/filterdynamic.js'
-import { setLocalStorage } from '@/utils/index.js'
-// import { useLoginStore } from '../Login/index.js'
-// const loginStore = useLoginStore()
+import { setLocalStorage, filterIsAttention } from '@/utils/index.js'
 
 export const useExchangeCommunityStore = defineStore('exchangeCommunityStore', () => {
   // 控制用户私信弹窗是否弹出
@@ -19,12 +17,19 @@ export const useExchangeCommunityStore = defineStore('exchangeCommunityStore', (
     DrawerState.value = !DrawerState.value
   }
 
+  // 首页的关注页的数据推荐
+  let dynamicConcern = ref([])
+
   // 首页推荐的所有数据
   let dynamicDetail = ref([])
+
   const fetchAllRecommend = async (id) => {
     const res = await fetchAllRecommendApi(id)
     console.log(res.data.data)
     dynamicDetail.value = res.data.data
+    dynamicConcern.value = filterIsAttention(res.data.data)
+
+    console.log('qwe', dynamicConcern)
   }
 
   // 用户关注与取消关注
@@ -73,6 +78,7 @@ export const useExchangeCommunityStore = defineStore('exchangeCommunityStore', (
     currentTags,
     total,
     pageTotal,
-    handleSearchTagsApi
+    handleSearchTagsApi,
+    dynamicConcern
   }
 })

@@ -1,4 +1,11 @@
 <script setup>
+// 点赞失活 https://pic.imgdb.cn/item/662272270ea9cb1403be0c8f.png
+// 点赞激活 https://pic.imgdb.cn/item/662272a80ea9cb1403bf08b0.png
+
+// 收藏失活 https://pic.imgdb.cn/item/662272f10ea9cb1403bfb26a.png
+// 收藏激活 https://pic.imgdb.cn/item/662273060ea9cb1403bfd8c8.png
+
+// 评论 https://pic.imgdb.cn/item/662273300ea9cb1403c02a59.png
 import { ref } from 'vue'
 defineProps({
   commentItemDetail: {
@@ -36,29 +43,34 @@ const onOpenDraw = (commentItemDetail) => {
 <template>
   <div class="comment-content">
     <div class="left-user-avatar" v-if="isShowTopComment">
-      <img src="https://p1.music.126.net/1tGaw9UYAkXsqw_GwBIrtw==/109951169445643234.jpg" alt="" />
+      <img :src="commentItemDetail.user_pic" alt="" />
     </div>
     <div class="right-username">
       <div class="nickname-box" v-if="isShowTopComment">
-        <span class="nickname">猪是的念来过倒</span>
-        <el-tag type="warning">Tag 4</el-tag>
+        <span class="nickname">{{ commentItemDetail.user_name }}</span>
+        <el-tag type="warning">Lv.1</el-tag>
       </div>
-      <div class="come-from" v-if="isShowTopComment">海南 • 海口</div>
+      <div class="come-from" v-if="isShowTopComment">
+        中国 • {{ commentItemDetail.user_introduce }}
+      </div>
       <div class="content" v-if="isShowTopComment">
         {{ commentItemDetail?.review_text }}
       </div>
       <div class="relative-comment" v-if="isShowTopComment">
         <div class="date-time" style="font-size: 12px">
-          {{ commentItemDetail?.review_time.replace(/\s*GMT/, '').slice(11) }}
+          <!-- {{ commentItemDetail?.review_time.replace(/\s*GMT/, '').slice(11) }} -->
         </div>
         <div class="comment-act">
           <div class="reply" @click="onOpenDraw(commentItemDetail)">
-            <i class="iconfont icon-comments"></i>
-            <span>回复</span>
+            <el-button type="text">回复</el-button>
           </div>
           <div class="like" @click="onHandLike">
-            <i class="iconfont icon-like_fill" :class="{ avtiveLikeCol: isLike }"></i>
-            <span class="like-num">99</span>
+            <img
+              class="w-5 mr-2"
+              src="https://pic.imgdb.cn/item/662272270ea9cb1403be0c8f.png"
+              alt=""
+            />
+            <span>{{ commentItemDetail.like_count }}</span>
           </div>
         </div>
       </div>
@@ -69,19 +81,19 @@ const onOpenDraw = (commentItemDetail) => {
       >
         <div v-if="isFold" class="second-comment">
           <div class="left-user-avatar">
-            <img src="https://pic1.zhimg.com/v2-30ad0a5f53f6e308620013b140c1aac4_r.jpg" alt="#" />
+            <img :src="item.user_pic" alt="#" />
           </div>
           <div class="right-username">
             <div class="nickname-box">
-              <span class="nickname">一小池勺</span>
-              <el-tag type="warning">Tag 4</el-tag>
+              <span class="nickname">{{ item.user_name }}</span>
+              <el-tag type="warning">Lv.1</el-tag>
             </div>
-            <div class="come-from">海南 • 海口</div>
+            <div class="come-from" v-if="isShowTopComment">中国 • {{ item.user_introduce }}</div>
             <div class="content">
               {{ item.review_text }}
             </div>
             <div class="relative-comment">
-              <div class="date-time">2024-4-11</div>
+              <!-- <div class="date-time">2024-4-11</div> -->
               <div class="comment-act"></div>
             </div>
           </div>

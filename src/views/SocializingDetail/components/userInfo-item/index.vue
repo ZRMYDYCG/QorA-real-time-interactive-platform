@@ -3,14 +3,14 @@
     <div class="user-avatar">
       <el-image
         class="avatar-image"
-        :src="user.avatar"
+        :src="user.user_pic"
         :fit="fit"
         :error-icon-class="defaultAvatar"
         @click="handleAvatar"
       ></el-image>
     </div>
     <div class="user-info">
-      <div class="nickname">{{ user.nickname }}</div>
+      <div class="nickname">{{ user.user_name }}</div>
       <div class="bio">{{ bio }}</div>
     </div>
     <el-button class="action-button" round plain>
@@ -25,14 +25,14 @@ import { computed } from 'vue'
 const emit = defineEmits(['click'])
 const defaultAvatar = '....'
 
+// user_id
 const props = defineProps({
   user: {
     type: Object,
-    required: true,
     default: () => ({
-      nickname: '未命名用户',
-      bio: '',
-      avatar: 'https://pic3.zhimg.com/v2-23937566383e76528b9ce98846136b6a_r.jpg'
+      user_name: '未命名用户',
+      user_introduce: '',
+      user_pic: ''
     })
   },
   buttonText: {
@@ -59,9 +59,9 @@ const props = defineProps({
 
 const bio = computed(() => {
   if (props.user.bio.length > 20) {
-    return props.user.bio.slice(0, 20) + '...'
+    return props.user.user_introduce.slice(0, 20) + '...'
   }
-  return props.user.bio
+  return props.user.user_introduce
 })
 
 const handleAvatar = () => {

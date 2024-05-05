@@ -69,6 +69,19 @@ export const createSpecialApi = (data) => {
   })
 }
 
+// 创建书架
+export const createBookshelf = (id, title) => {
+  return request({
+    url: '/api/bookshelf',
+    method: 'POST',
+    data: {
+      id: id,
+      dylist: [],
+      title: title
+    }
+  })
+}
+
 // 创建专栏下的文章
 /**
  * title：标题
@@ -203,7 +216,7 @@ export const fetchColumnDetail = (user_id) => {
     url: '/api/render/favorite/bag',
     method: 'POST',
     data: {
-      user_id: user_id
+      id: user_id
     }
   })
 }
@@ -220,6 +233,53 @@ export const modyUserInfoApi = (data) => {
       user_name: data.user_name,
       user_birthday: data.user_birthday,
       user_city: data.user_city
+    }
+  })
+}
+
+// 查询用户发布过的回答 ✅
+export const fetchUserAnswer = (user_id) => {
+  return request({
+    url: '/api/user/answer',
+    method: 'POST',
+    data: {
+      user_id: user_id
+    }
+  })
+}
+
+// 删除用户发布过的回答 ✅
+export const deleteUserAnswer = (object_id) => {
+  return request({
+    url: '/api/del',
+    method: 'POST',
+    data: {
+      type: 'review',
+      object_id: object_id
+    }
+  })
+}
+
+// 渲染某个书架的详情 ✅
+export const fetchBookShelfDetail = (object_id) => {
+  return request({
+    url: '/api/show/bookshelf',
+    method: 'POST',
+    data: {
+      object_id: object_id
+    }
+  })
+}
+
+// 将文章添加进书架 ✅
+export const addToBookShelf = (id, bookshelf_id, dylist) => {
+  return request({
+    url: '/api/move/dynamic',
+    method: 'POST',
+    data: {
+      id: id,
+      bookshelf_id: bookshelf_id,
+      dylist: dylist
     }
   })
 }

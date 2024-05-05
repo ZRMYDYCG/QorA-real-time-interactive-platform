@@ -28,7 +28,7 @@ export const createQuestionApi = (questionDetail) => {
   })
 }
 
-// 查询某一个问题的详情
+// 查询某一个问题的详情 ✅
 export const questionDetailApi = (object_id) => {
   return request({
     url: '/api/show/question',

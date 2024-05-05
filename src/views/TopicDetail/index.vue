@@ -8,6 +8,7 @@
 // 评论 https://pic.imgdb.cn/item/662273300ea9cb1403c02a59.png
 import { computed, onMounted, reactive, ref } from 'vue'
 import { useRoute } from 'vue-router'
+import { addToBookShelf } from '@/service/UserHome/index.js'
 import { fetchEssayDetail } from '@/service/ExchangeCommunity/index.js'
 import { fetchPersonalHomepageApi } from '@/service/UserHome/index.js'
 import ArticleMsg from './components/UserInfo/ArticleMsg.vue'
@@ -15,7 +16,10 @@ import AtricleContent from './components/UserInfo/AtricleContent.vue'
 import Comment from './components/Comment/index.vue'
 import { getLocalStorage } from '@/utils/index.js'
 import { usePublishArticleStore } from '@/stores/modules/PublishArticle/index.js'
-import { publicFetch } from '@/service/public/index.js'
+import { publicFetch, publicGenerateHistory } from '@/service/public/index.js'
+import { ElMessage, ElMessageBox } from 'element-plus'
+import 'element-plus/theme-chalk/el-message.css'
+import 'element-plus/theme-chalk/el-message-box.css'
 const route = useRoute()
 const publishArticleStore = usePublishArticleStore()
 
@@ -25,12 +29,17 @@ let srcList = ref([])
 let articalDetail = ref({})
 let userNowInfo = ref({})
 let userOtherArticle = ref([])
+let preList = ref([])
+
 onMounted(() => {
   fetchEssayDetail(route.params.id).then((res) => {
     console.log('动态详情信息:', res)
     articalDetail.value = res.data
 
     srcList.value = res.data.pics_list
+
+    preList.value = srcList.value.map((item) => item.picture_address)
+
     console.log(srcList.value)
     fetchPersonalHomepageApi(res.data.dynamic_now.dynamic_user).then((res) => {
       console.log('用户详情信息:', res)
@@ -60,6 +69,57 @@ let user_id = getLocalStorage('userInfo').value.user_id
 let relateVisible = computed(() => {
   return !articalDetail.value?.dynamic_now?.dynamic_user === user_id
 })
+
+// TODO:将文章添加进专栏
+let selectDialogVisible = ref(false)
+let selectItemData = ref([])
+let itemValue = ref(null)
+const openDialogToSelect = async (articalDetail) => {
+  console.log(articalDetail)
+  selectDialogVisible.value = true
+  let user_id = await getLocalStorage('userInfo')?.value?.user_id
+  publicFetch(user_id, 'bookshelf').then(async (res) => {
+    console.log('书架详情:', res)
+    selectItemData.value = res.data.bookshelf_data
+  })
+}
+
+const confirmAdd = () => {
+  console.log(itemValue.value)
+  let dynamicSelectIdList = []
+  dynamicSelectIdList.push(route.params.id)
+  ElMessageBox.confirm('确定添加该文章到收藏夹吗？', 'Warning', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning'
+  })
+    .then(async () => {
+      let user_id = await getLocalStorage('userInfo')?.value?.user_id
+
+      addToBookShelf(user_id, itemValue.value, dynamicSelectIdList).then(async (res) => {
+        console.log(res)
+        if (res.status === 200) {
+          if (res.data.message === '添加成功') {
+            ElMessage.success(res.data.message)
+
+            let user_id = await getLocalStorage('userInfo')?.value?.user_id
+            publicGenerateHistory(
+              user_id,
+              `将《${articalDetail.value.dynamic_now.dynamic_title}》添加进书架`
+            )
+          } else {
+            ElMessage.success('该篇文章已添加在该专栏中了')
+          }
+        }
+      })
+    })
+    .catch(() => {
+      ElMessage({
+        type: 'info',
+        message: '操作取消'
+      })
+    })
+}
 </script>
 
 <template>
@@ -160,6 +220,33 @@ let relateVisible = computed(() => {
       <template #header>
         <div class="card-header">
           <span>文章详情</span>
+          <div class="addToBookShelf">
+            <el-button @click="openDialogToSelect(articalDetail)" size="large" type="text"
+              >添加到专栏 <el-icon style="margin-left: 5px" size="20"><FolderAdd /></el-icon
+            ></el-button>
+
+            <el-dialog align-center title="选择专栏" width="25%" v-model="selectDialogVisible">
+              <!-- {{ articalDetail }} -->
+              <el-form-item label="选择已有专栏">
+                <el-select
+                  style="margin-top: 15px"
+                  v-model="itemValue"
+                  placeholder="请选择专栏"
+                  size="large"
+                >
+                  <el-option
+                    v-for="item in selectItemData"
+                    :key="item.bookshelf_id"
+                    :label="item.bookshelf_title"
+                    :value="item.bookshelf_id"
+                  />
+                </el-select>
+              </el-form-item>
+              <template #footer>
+                <el-button @click="confirmAdd">添加</el-button>
+              </template>
+            </el-dialog>
+          </div>
         </div>
       </template>
       <div class="aritcle-detail-container">
@@ -169,11 +256,11 @@ let relateVisible = computed(() => {
           <div :class="srcList.length > 0 ? 'left-img-container' : ''" v-if="srcList.length > 0">
             <div class="img-items" v-for="(item, index) in srcList" :key="index">
               <el-image
-                :src="item"
+                :src="item.picture_address"
                 :zoom-rate="1.2"
                 :max-scale="7"
                 :min-scale="0.2"
-                :preview-src-list="srcList"
+                :preview-src-list="preList"
                 :initial-index="index"
                 fit="cover"
               />
@@ -196,6 +283,8 @@ let relateVisible = computed(() => {
 .card-header {
   font-size: 20px;
   font-weight: 550;
+  display: flex;
+  justify-content: space-between;
 }
 .aritcle-detail-container {
   position: relative;

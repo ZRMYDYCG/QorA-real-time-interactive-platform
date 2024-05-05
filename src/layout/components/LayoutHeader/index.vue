@@ -12,7 +12,7 @@
           <el-menu-item index="/exchangeCommunity">体验官社区</el-menu-item>
           <el-menu-item index="/findOut">体验问答</el-menu-item>
           <el-menu-item index="/seek">发现</el-menu-item>
-          <el-menu-item index="4">更多</el-menu-item>
+          <el-menu-item index="/chatRoom/chatDetail">聊天室</el-menu-item>
         </el-menu>
       </div>
       <div class="layout-header--logo">
@@ -20,15 +20,29 @@
       </div>
       <div class="layout-header--userinfo">
         <div class="layout-header--search">
-          <el-popover
-            placement="bottom"
-            :width="370"
-            content="this is content, this is content, this is content"
-          >
+          <el-button class="mr-5" @click="$router.back()">
+            <el-icon><ArrowLeftBold /></el-icon>
+          </el-button>
+          <el-popover placement="bottom" :width="370">
+            <template #default>
+              <el-button type="text" @click="clearSearchHistory"
+                ><el-icon style="margin-right: 10px"><Delete /></el-icon> 清空历史</el-button
+              >
+              <div style="margin-top: 10px padding: 0 15px">
+                <el-tag
+                  v-for="(item, index) in searchHistory"
+                  :key="index"
+                  class="search-history-item mr-2 mb-1"
+                  @click="$router.push(`/searchDetail?keyword?=${item}`)"
+                >
+                  {{ item }}
+                </el-tag>
+              </div>
+            </template>
             <template #reference>
               <el-input
                 prefix-icon="Search"
-                @keydown.enter="searchAction"
+                @keydown.enter="searchAction(searchQuery)"
                 placeholder="快来输入你要搜索的内容吧"
                 v-model="searchQuery"
               ></el-input>
@@ -95,17 +109,18 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import themeSwitch from './theme-switch.vue'
 // import messageItem from './message-item.vue'
 import { useLoginStore } from '@/stores/modules/Login/index.js'
 // import { loginOutApi } from '@/service/Login/index.js'
-import { removeLocalStorage } from '@/utils/index.js'
-import { getLocalStorage } from '@/utils/index.js'
+import { getLocalStorage, setLocalStorage, removeLocalStorage } from '@/utils/index.js'
 import PersonItem from '@/views/ChatRoom/components/person-item/index.vue'
 
 import { useSocketStore } from '@/stores/modules/ChartRoom/index.js'
+import { ElMessage } from 'element-plus'
+import 'element-plus/theme-chalk/el-message.css'
 
 const socketStore = useSocketStore()
 
@@ -128,12 +143,17 @@ const handleInputFocus = () => {
 }
 
 const searchQuery = ref('')
-const searchAction = ($event) => {
-  console.log($event.target.value.trim())
+const searchAction = () => {
+  if (searchQuery.value.length === 0) {
+    ElMessage.warning('搜索内容不能为空')
+    return
+  }
+  console.log(searchQuery.value.trim())
   router.push({
     path: '/searchDetail',
     query: { keyword: searchQuery.value }
   })
+  addSearchToHistory(searchQuery.value)
 }
 
 // 下线
@@ -151,6 +171,31 @@ const navigateToUserHome = async () => {
   } catch (error) {
     console.error(error)
   }
+}
+
+// 历史记录管理
+const searchHistory = ref([])
+
+// 定义一个方法来从localStorage获取历史记录
+const loadSearchHistory = () => {
+  searchHistory.value = getLocalStorage('searchHistory') || []
+}
+
+// 组件挂载时从localStorage加载历史记录
+onMounted(loadSearchHistory)
+
+// 添加搜索记录到历史
+const addSearchToHistory = (searchTerm) => {
+  if (!searchHistory.value.includes(searchTerm)) {
+    searchHistory.value.unshift(searchTerm)
+    setLocalStorage('searchHistory', searchHistory.value)
+  }
+}
+
+// 清空搜索历史
+const clearSearchHistory = () => {
+  searchHistory.value = []
+  removeLocalStorage('searchHistory')
 }
 </script>
 

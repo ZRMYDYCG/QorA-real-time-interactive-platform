@@ -13,6 +13,7 @@ let synchronous = ref(inject('synchronous'))
 watch(
   () => synchronous.value,
   (newValue) => {
+    console.log(newValue)
     fetchLatestQuestions()
   }
 )

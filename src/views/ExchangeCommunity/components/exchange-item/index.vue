@@ -1,5 +1,5 @@
 <script setup>
-// import YsScroll from '@/components/base/ys-scroll/src/ys-scroll.vue'
+import YsImagePreview from '@/components/base/ys-imge-preview/src/ys-image-preview.vue'
 import collapse from '@/components/base/collapse/index.vue'
 import { More } from '@element-plus/icons-vue'
 import { useExchangeCommunityStore } from '@/stores/modules/ExchangeCommunity/index.js'
@@ -54,6 +54,11 @@ onMounted(() => {
     loading.value = false
   }, 1000)
 })
+
+const YsImagePreviewRef = ref()
+const openPreview = (image) => {
+  YsImagePreviewRef.value.openModal(image)
+}
 </script>
 
 <template>
@@ -179,7 +184,7 @@ onMounted(() => {
           </div>
         </div>
         <div style="width: 90%">
-          <collapse :default-height="125">
+          <collapse :default-height="100">
             <div
               v-html="dynamicDetail?.dynamic_text"
               class="item-content"
@@ -187,6 +192,27 @@ onMounted(() => {
             ></div>
           </collapse>
         </div>
+
+        <!-- 封面展示 -->
+        <div
+          style="margin-top: 30px"
+          class="images-grid"
+          v-if="dynamicDetail.dynamic_pic_list.length > 0"
+        >
+          <div
+            class="image-item"
+            v-for="(image, index) in dynamicDetail.dynamic_pic_list"
+            :key="index"
+          >
+            <img
+              @click="openPreview(image?.picture_address)"
+              :src="image?.picture_address"
+              alt=""
+            />
+          </div>
+        </div>
+
+        <YsImagePreview ref="YsImagePreviewRef"></YsImagePreview>
 
         <div class="item-footer">
           <template v-for="item in dynamicDetail.tag_list" :key="item">
@@ -375,5 +401,26 @@ onMounted(() => {
       }
     }
   }
+}
+
+.images-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 150px); /* 固定三列网格布局，每列宽度为120px */
+  gap: 10px; /* 网格项之间的空间为10 */
+}
+
+.image-item {
+  width: 150px;
+  height: 150px;
+  overflow: hidden;
+  border-radius: 10px;
+}
+
+.image-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* 图片覆盖整个容器，不失真 */
+  border-radius: 10px;
+  cursor: pointer;
 }
 </style>

@@ -44,6 +44,7 @@
         </div>
       </YsTabs>
     </div>
+
     <!-- 弹窗编辑用户信息组件 -->
     <el-dialog
       v-model="dialogTableVisible"

@@ -6,6 +6,10 @@ import RichText from '@/components/base/rich-text/index.vue'
 import { ElMessage } from 'element-plus'
 import { Delete, Download, Plus, ZoomIn } from '@element-plus/icons-vue'
 import 'element-plus/theme-chalk/el-message.css'
+import { extractImageUrls } from '@/utils/index.js'
+import { useRouter } from 'vue-router'
+const router = useRouter()
+
 // TODO: 文章发布
 const content = ref('')
 const title = ref('')
@@ -82,6 +86,7 @@ const onSubmit = async () => {
     TagList: dynamicTags.value,
     id: userStore.userInfo.value.user_id
   })
+  router.push('/exchangeCommunity/communityRecommend')
   console.log(res)
 }
 // TODO:文章封面图片上传
@@ -132,7 +137,9 @@ const uploadFiles = async (files) => {
     if (response.ok) {
       const data = await response.json()
       console.log('aaa', data)
-      imgList.value = data.imageUrl.url
+      imgList.value = extractImageUrls(data.imageUrl)
+
+      console.log('控制台打印上传的图片列表:', imgList.value)
       files = []
 
       ElMessage.success('封面上传成功')

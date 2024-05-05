@@ -1,6 +1,4 @@
 <script setup>
-import { More } from '@element-plus/icons-vue'
-
 defineProps({
   itemList: {
     type: Object,
@@ -14,68 +12,10 @@ defineProps({
     <div class="content">
       <div class="content-item" v-for="item in itemList" :key="item.id">
         <div class="item_hd">
-          <div class="hd_user">
-            <el-popover placement="bottom" width="300" trigger="hover">
-              <template #default>
-                <div class="info-popup">
-                  <img
-                    class="popup--img"
-                    src="https://pic.imgdb.cn/item/65d03adf9f345e8d03e6f352.jpg"
-                    alt=""
-                  />
-                  <p class="popup--name">一小池勺</p>
-                  <div class="popup--grade">
-                    <span class="title">体验官等级</span><span class="num">LV.8</span>
-                  </div>
-                  <div class="info-social">
-                    <div class="follow">
-                      <span>关注</span>
-                      <span>{{ 933 }}</span>
-                    </div>
-                    <div class="fans">
-                      <span>粉丝</span>
-                      <span>{{ 559.7 }}万</span>
-                    </div>
-                  </div>
-                  <div class="btn">
-                    <el-button round>关注</el-button>
-                    <el-button round>留言</el-button>
-                    <el-dropdown>
-                      <el-button round>
-                        <el-icon>
-                          <More />
-                        </el-icon>
-                      </el-button>
-                      <template #dropdown>
-                        <el-dropdown-menu>
-                          <el-dropdown-item>拉黑该用户</el-dropdown-item>
-                          <el-dropdown-item>举报</el-dropdown-item>
-                        </el-dropdown-menu>
-                      </template>
-                    </el-dropdown>
-                  </div>
-                </div>
-              </template>
-              <template #reference>
-                <img
-                  class="user_pic"
-                  src="https://pic.imgdb.cn/item/65d03adf9f345e8d03e6f352.jpg"
-                  alt=""
-                />
-              </template>
-            </el-popover>
-            <div class="info">
-              <div class="a">
-                <span class="user_name">{{ item.userName }}</span>
-                <span class="user_level">LV.8</span>
-              </div>
-              <p>学会生活，享受当下。</p>
-            </div>
-          </div>
-          <h2 class="title">{{ item.title }}</h2>
-          <div class="desc">
-            {{ item.desc }}
-          </div>
+          <h2 class="title" @click="$router.push(`/topicDetail/${item.dynamic_id}`)">
+            {{ item?.dynamic_title }}
+          </h2>
+          <div class="desc" v-html="item?.dynamic_text"></div>
         </div>
       </div>
     </div>

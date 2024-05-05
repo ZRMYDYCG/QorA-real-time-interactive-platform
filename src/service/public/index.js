@@ -46,7 +46,7 @@ export const publicComments = (type, object_id) => {
   })
 }
 
-// 产生历史记录
+// 产生历史记录 ✅
 export const publicGenerateHistory = (user_id, content) => {
   return request({
     url: '/api/history/add',

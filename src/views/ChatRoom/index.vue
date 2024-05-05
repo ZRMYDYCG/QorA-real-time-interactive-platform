@@ -118,12 +118,13 @@ onMounted(() => {
 <style scoped lang="scss">
 .chat-room {
   display: flex;
-  width: 50vw;
-  height: 70vh;
+  width: 100vw;
+  height: 90vh;
   margin: 0 auto;
   min-width: 1000px;
   border: 1px solid #eee;
   transition: all 0.3s;
+  margin-top: -30px;
 
   .room-nav {
     display: flex;

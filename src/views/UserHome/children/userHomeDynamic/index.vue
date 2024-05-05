@@ -26,6 +26,7 @@ const actionClick = (value, id) => {
     console.log('还在开发中')
   }
 }
+
 onMounted(() => {
   fetchAllData()
 })
@@ -33,6 +34,8 @@ onMounted(() => {
 
 <template>
   <div class="user-home-dynamic">
+    <el-button type="text" @click="$router.push('/publishArticle')">发布体验</el-button>
+
     <template v-for="(item, index) in dynamicList" :key="index">
       <dynamic-card v-bind="item" @action-click="actionClick"></dynamic-card>
     </template>

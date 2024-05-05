@@ -8,7 +8,7 @@ import 'element-plus/theme-chalk/el-message.css'
 import 'element-plus/theme-chalk/el-message-box.css'
 const route = useRoute()
 
-// TODO:删除某一个问题 该接口 500 报错
+// TODO:删除某一个问题
 const handleDeletClick = async (id) => {
   console.log(id)
   ElMessageBox.confirm('确定删除该求助吗？', 'Warning', {

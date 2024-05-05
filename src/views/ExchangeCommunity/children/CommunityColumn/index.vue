@@ -29,7 +29,7 @@ const phoneImgDate = ref([
     <el-card class="card-container" header="我是头部" shadow="hover" style="width: 100%">
       <template #header>
         <div class="card-header">
-          <span>Card name</span>
+          <span>专栏精选</span>
         </div>
       </template>
       <div class="item-container">
@@ -78,7 +78,7 @@ const phoneImgDate = ref([
     <el-card style="width: 100%" shadow="hover">
       <template #header>
         <div class="card-header">
-          <span>Card name</span>
+          <span>热门专栏</span>
         </div>
       </template>
       <div class="same-theme-container">

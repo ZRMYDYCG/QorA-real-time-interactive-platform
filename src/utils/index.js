@@ -17,3 +17,7 @@ export * from './sortChatContent.js'
 export * from './renameAttentionIdToFansId.js'
 
 export * from './getMaxDiscordIdItems.js'
+
+export * from './extractImageUrls.js'
+
+export * from './filterIsAttention.js'

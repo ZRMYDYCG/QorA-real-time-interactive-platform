@@ -1,27 +1,13 @@
 <script setup>
 import { ref, reactive, onMounted } from 'vue'
 import draggable from 'vuedraggable'
-import { createSpecialApi } from '@/service/UserHome/index.js'
+import { createBookshelf, fetchBookShelfDetail } from '@/service/UserHome/index.js'
 import { publicFetch, publicDelete } from '@/service/public/index.js'
 import { useRoute } from 'vue-router'
+import { ElMessage, ElMessageBox } from 'element-plus'
+import 'element-plus/theme-chalk/el-message.css'
+import 'element-plus/theme-chalk/el-message-box.css'
 const route = useRoute()
-/*
-  draggable 对CSS样式没有什么要求万物皆可拖拽
-  :list="state.list"         //需要绑定的数组
-  ghost-class="ghost"        //被替换元素的样式
-  chosen-class="chosenClass" //选中元素的样式
-  animation="300"            //动画效果
-  @start="onStart"           //拖拽开始的事件
-  @end="onEnd"               //拖拽结束的事件
-  */
-// const state = reactive({
-//   //需要拖拽的数据，拖拽后数据的顺序也会变化
-//   list: [
-//     { name: 'www.itxst.com', id: 0 },
-//     { name: 'www.baidu.com', id: 1 },
-//     { name: 'www.google.com', id: 2 }
-//   ]
-// })
 
 //拖拽开始的事件
 const onStart = () => {
@@ -36,17 +22,22 @@ const onEnd = () => {
 const centerDialogVisible = ref(false)
 
 // TODO:创建专栏
-const columnInfo = ref({})
-columnInfo.value.title = ''
-columnInfo.value.TagList = []
-columnInfo.value.ImgList = []
-columnInfo.value.type = 'bookshelf'
-columnInfo.value.id = parseInt(route.query.user_id)
-const handleCreateSpecialApi = async () => {
-  const res = await createSpecialApi(columnInfo.value)
-  centerDialogVisible.value = false
-  console.log(res)
-  fetchDataAction()
+const columnInfo = reactive({
+  title: '',
+  id: parseInt(route.query.user_id)
+})
+
+const handleCreateBookshelfApi = async () => {
+  try {
+    const res = await createBookshelf(columnInfo.id, columnInfo.title)
+    centerDialogVisible.value = false
+    console.log(res)
+    ElMessage.success('创建成功')
+    columnInfo.title = ''
+    fetchDataAction()
+  } catch {
+    ElMessage.warning('该收藏夹已存在')
+  }
 }
 
 // TODO:渲染专栏列表
@@ -61,10 +52,42 @@ onMounted(async () => {
 })
 
 // TODO:删除某一个专栏
-let deletDialogVisible = ref(false)
-const handleDeleteColumn = async (type = 'bookshelf', object_id) => {
-  await publicDelete(type, object_id)
-  deletDialogVisible.value = false
+const handleDeleteColumn = async (value) => {
+  console.log(value.bookshelf_id)
+  ElMessageBox.confirm('确定删除该求助吗？', 'Warning', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning'
+  })
+    .then(() => {
+      publicDelete('bookshelf', value.bookshelf_id).then(() => {
+        ElMessage({
+          type: 'success',
+          message: '删除成功'
+        })
+        fetchDataAction()
+      })
+    })
+    .catch(() => {
+      ElMessage({
+        type: 'info',
+        message: '操作取消'
+      })
+    })
+}
+
+// TODO:渲染某个书架的详情
+let drawerVisible = ref(false)
+let drawerName = ref('')
+let drawBookShelfDetail = ref({})
+const handleFetchBookShelfDetailApi = (value) => {
+  console.log(value.bookshelf_id)
+  drawerName.value = value
+  drawerVisible.value = true
+  fetchBookShelfDetail(value.bookshelf_id).then((res) => {
+    console.log('书架详情:', res)
+    drawBookShelfDetail.value = res.data.dynamic_list
+  })
 }
 </script>
 
@@ -87,7 +110,7 @@ const handleDeleteColumn = async (type = 'bookshelf', object_id) => {
         >
           <template #item="{ element }">
             <div class="column-items">
-              <div class="about-column">
+              <div class="about-column" @click="handleFetchBookShelfDetailApi(element)">
                 <span class="column-title">专栏名称：{{ element.bookshelf_title }}</span>
                 <span class="create-time"
                   >创建时间：{{ element.bookshelf_time.replace(/\s*GMT/, '') }}</span
@@ -97,7 +120,7 @@ const handleDeleteColumn = async (type = 'bookshelf', object_id) => {
                 <el-button type="primary" size="default" circle>
                   <el-icon><Edit /></el-icon>
                 </el-button>
-                <el-button type="danger" @click="deletDialogVisible = true" :icon="Delete" circle>
+                <el-button type="danger" @click="handleDeleteColumn(element)" :icon="Delete" circle>
                   <el-icon><Delete /></el-icon>
                 </el-button>
               </div>
@@ -122,19 +145,84 @@ const handleDeleteColumn = async (type = 'bookshelf', object_id) => {
       <template #footer>
         <div class="dialog-footer">
           <el-button @click="centerDialogVisible = false">取消</el-button>
-          <el-button type="primary" @click="handleCreateSpecialApi"> 确认创建 </el-button>
+          <el-button type="primary" @click="handleCreateBookshelfApi"> 确认创建 </el-button>
         </div>
       </template>
     </el-dialog>
-
-    <el-dialog title="确定删除该专栏吗？" v-model="deletDialogVisible">
-      <el-button @click="deletDialogVisible = false">取消</el-button>
-      <el-button @click="handleDeleteColumn">删除</el-button>
-    </el-dialog>
   </div>
+
+  <!-- 书架抽屉 -->
+  <el-drawer v-model="drawerVisible" :direction="direction">
+    <template #header>
+      <h4 style="font-size: 28px">{{ drawerName.bookshelf_title }}</h4>
+    </template>
+    <template #default>
+      <div class="empty" v-if="drawBookShelfDetail.length === 0">
+        <img src="https://pic.imgdb.cn/item/663709000ea9cb14032f7190.png" alt="" />
+        <div>书架空空如也</div>
+      </div>
+      <div v-else>
+        <template v-for="(item, index) in drawBookShelfDetail" :key="index">
+          <div class="main" style="margin-bottom: 10px">
+            <div class="main-left">
+              <img :src="item.auth_pic" alt="" />
+            </div>
+            <div
+              class="main-right"
+              style="margin-left: 20px"
+              @click="$router.push(`/topicDetail/${item.dynamic_id}`)"
+            >
+              <div>
+                <h3>{{ item.dynamic_title }}</h3>
+                <div style="color: #ccc; font-size: 13px; padding: 5px 0" class="time">
+                  {{ item.dynamic_time }}
+                </div>
+                <div v-text="item.dynamic_text.slice(0, 40) + '...'"></div>
+              </div>
+              <div>
+                <div class="tag-list" style="margin-top: 5px">
+                  <el-tag
+                    style="margin-right: 4px"
+                    v-for="(item, index) in item.tag_list"
+                    :key="index"
+                    >生活</el-tag
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </template>
+      </div>
+    </template>
+    <template #footer>
+      <div style="flex: auto">
+        <el-button type="wrang" @click="drawerVisible = false">关闭</el-button>
+      </div>
+    </template>
+  </el-drawer>
 </template>
 
 <style scoped lang="scss">
+.main {
+  display: flex;
+  padding: 10px 10px;
+  transition: all 0.3s;
+  &:hover {
+    cursor: pointer;
+    background-color: #ccc;
+  }
+}
+.main-left {
+  width: 80px;
+  height: 80px;
+  border-radius: 10px;
+  overflow: hidden;
+  img {
+    width: 100%;
+    height: 100%;
+  }
+}
+
 .column-items {
   display: flex;
   align-items: center;
@@ -186,5 +274,23 @@ const handleDeleteColumn = async (type = 'bookshelf', object_id) => {
 }
 .chosenClass {
   background-color: #f1f1f1;
+}
+</style>
+
+<style lang="scss">
+.el-drawer__header {
+  border-bottom: 1px solid;
+  padding-bottom: 30px;
+}
+
+.empty {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  img {
+    margin: 100px auto;
+    width: 300px;
+  }
 }
 </style>

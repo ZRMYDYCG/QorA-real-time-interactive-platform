@@ -1,6 +1,6 @@
 import request from '../config/index.js'
 
-// 查询推荐的文章列表
+// 查询推荐的文章列表 ✅
 export const fetchAllRecommendApi = (id) => {
   return request({
     url: '/api/index/dynamic',
@@ -22,7 +22,7 @@ export const fetchEssayDetail = (object_id) => {
   })
 }
 
-// 将文章收藏进入书架
+// 将文章收藏进入书架 ✅
 // dylist 文章id列表
 export const addEassayToColumn = (id, bookshelf_id, dylist) => {
   return request({
@@ -69,7 +69,9 @@ export const searchTagsApi = (search, page_num, page = 1) => {
     data: {
       search: search,
       page_num: page_num,
-      page: page
+      page: page - 1
     }
   })
 }
+
+// 查询链接了该标签的项目

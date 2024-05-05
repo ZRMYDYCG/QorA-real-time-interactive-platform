@@ -1,71 +1,89 @@
 <script setup>
 import { onMounted, ref } from 'vue'
 import YsCard from '@/components/base/ys-card/src/ys-card.vue'
-import { publicFetch, publicDelete } from '@/service/public/index.js'
 import { useRoute } from 'vue-router'
+import { fetchUserAnswer, deleteUserAnswer } from '@/service/UserHome/index.js'
+import { ElMessage, ElMessageBox } from 'element-plus'
+import 'element-plus/theme-chalk/el-message.css'
+import 'element-plus/theme-chalk/el-message-box.css'
 const route = useRoute()
 
-// 模拟
-const items = ref([
-  { id: 1, title: '最近一次认真奔跑是为了什么?', isExpanded: false },
-  { id: 2, title: '你最喜欢的电影是什么?', isExpanded: false }
-])
+// TODO:渲染列表
+let review_list = ref([])
+const handleFetchUserAnswer = () => {
+  console.log('控制台打印', route.query)
+  fetchUserAnswer(route.query.user_id).then((res) => {
+    console.log('最新的列表:', res)
+    review_list.value = res.data.review_list
+  })
+}
 
 // TODO:更新某个卡片的展开状态的方法
 const handleUpdateIsExpanded = (itemId, value) => {
-  items.value = items.value.map((item) => {
-    if (item.id === itemId) {
+  review_list.value = review_list.value.map((item) => {
+    if (item.question_id === itemId) {
       return { ...item, isExpanded: value }
     }
     return item
   })
 }
 
-// 获取某用户的所有求助
-const helpListData = ref([])
-let id = route.query.user_id
-const handlePublicFetchResponse = async () => {
-  const res = await publicFetch(id, 'questions')
-  console.log('Result is:', res)
-}
-
 onMounted(() => {
-  handlePublicFetchResponse()
+  handleFetchUserAnswer()
 })
-// 删除某条提问
+// TODO:删除某条回答
+const deleteItem = (id) => {
+  ElMessageBox.confirm('确定删除该条回答吗？', 'danger', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning'
+  })
+    .then(() => {
+      deleteUserAnswer(id).then((res) => {
+        console.log(res)
+        ElMessage({
+          type: 'success',
+          message: '删除成功'
+        })
+        handleFetchUserAnswer()
+      })
+    })
+    .catch(() => {
+      ElMessage({
+        type: 'info',
+        message: '操作取消'
+      })
+    })
+}
 </script>
 
 <template>
   <div class="user-home-response">
     <ys-card
-      v-for="item in items"
-      :title="item.title"
+      v-for="item in review_list"
+      :title="item.question_title"
       :key="item.id"
       v-model:is-expanded="item.isExpanded"
-      @update:isExpanded="(value) => handleUpdateIsExpanded(item.id, value)"
+      @update:isExpanded="(value) => handleUpdateIsExpanded(item.question_id, value)"
       :is-delete="true"
       showDropdown
     >
+      <template #isDelete>
+        <el-icon @click="deleteItem(item.review_id)"><CircleClose /></el-icon>
+      </template>
       <template #subTitle>
         <div class="subtitle">
-          <span class="time">回答时间: 2024-05-05</span>
+          <span style="font-size: 13px; margin-left: 10px" class="time"
+            >回答时间: {{ item.review_time }}</span
+          >
         </div>
       </template>
       <template #extraContent>
-        <div v-if="item.isExpanded">
-          <div>1</div>
-          <div>1</div>
-          <div>1</div>
-          <div>1</div>
-          <div>1</div>
-          <div>1</div>
-          <div>1</div>
-          <div>1</div>
-          <div>1</div>
-          <div>1</div>
-          <div>1</div>
-          <div>1</div>
-        </div>
+        <div
+          v-if="item.isExpanded"
+          style="padding: 20px 10px; text-indent: 10px"
+          v-html="item.review_text"
+        ></div>
       </template>
     </ys-card>
   </div>
