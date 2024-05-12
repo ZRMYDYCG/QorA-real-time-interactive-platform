@@ -1,9 +1,10 @@
 // 对于 axios 进行二次封装
 import axios from 'axios'
 
-// 1. 利用 axios 对象的方法 create, 去创建一个 axios 实例
+// 1. 利用 axios 对象的方法 create,  去创建一个 axios 实例
 let request = axios.create({
   // create 里面实际就是一个配置对象
+  // baseUrl: 'https://9110f8o425.goho.co',
   baseURL: 'http://127.0.0.1:5000',
   // baseURL: 'http://192.168.31.86:5000',
   // baseURL: 'http://192.168.137.138:8080',
@@ -19,6 +20,7 @@ request.interceptors.request.use((config) => {
   }
   return config
 })
+
 // 3. 响应拦截器
 request.interceptors.response.use(
   (res) => {

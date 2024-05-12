@@ -96,7 +96,7 @@ const hotRankData = ref([
             </div>
             <!-- 讨论主题 -->
             <div class="discuss-theme">
-              <div class="title">GT Neo6 SE手机性能</div>
+              <div class="title" style="cursor: pointer" @click="$router.push('/findOut/detail/14')">GT Neo6 SE手机性能如何？</div>
               <div class="main-content">骁龙7+ Gen3处理器,有着相同的Cortex-X4超大核</div>
             </div>
             <!-- 加入讨论的用户 -->

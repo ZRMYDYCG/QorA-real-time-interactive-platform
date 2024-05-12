@@ -6,7 +6,7 @@
 // 收藏激活 https://pic.imgdb.cn/item/662273060ea9cb1403bfd8c8.png
 
 // 评论 https://pic.imgdb.cn/item/662273300ea9cb1403c02a59.png
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 defineProps({
   commentItemDetail: {
     type: Object,
@@ -39,15 +39,19 @@ const emit = defineEmits(['open-draw'])
 const onOpenDraw = (commentItemDetail) => {
   emit('open-draw', commentItemDetail)
 }
+
+onMounted(() => {
+  console.log("aeifhaesifhawiesfhawiehfwaeiuhfwaiefweuifh",commentItemDetail)
+})
 </script>
 <template>
   <div class="comment-content">
     <div class="left-user-avatar" v-if="isShowTopComment">
-      <img :src="commentItemDetail.user_pic" alt="" />
+      <img :src="commentItemDetail?.user_pic" alt="" />
     </div>
     <div class="right-username">
       <div class="nickname-box" v-if="isShowTopComment">
-        <span class="nickname">{{ commentItemDetail.user_name }}</span>
+        <span class="nickname">{{ commentItemDetail?.user_name }}</span>
         <el-tag type="warning">Lv.1</el-tag>
       </div>
       <div class="come-from" v-if="isShowTopComment">

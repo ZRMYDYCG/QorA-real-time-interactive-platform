@@ -22,17 +22,20 @@ onMounted(() => {})
   <el-card>
     <div class="content">
       <div class="left">
-        <el-tag size="large" type="success"> 21 回答</el-tag>
+        <el-tag size="large" type="success">{{ itemDetail?.review_count }} 回答</el-tag>
       </div>
       <div class="right">
         <div class="right--top" @click="toItemDetail(itemDetail?.question_id)">
           <h5 class="text-2xl">{{ itemDetail?.question_title }}</h5>
         </div>
         <div class="right--bottom">
-          <el-tag type="info" size="small">薯片</el-tag>
-          <el-tag type="info" size="small">乐事</el-tag>
-          <el-tag type="info" size="small">JavaScript</el-tag>
-          <el-tag type="info" size="small">Vue.js</el-tag>
+          {{ itemDetail?.question_text }}
+          <div style="margin-top: 20px">
+            <el-tag type="info" size="small">薯片</el-tag>
+            <el-tag type="info" size="small">乐事</el-tag>
+            <el-tag type="info" size="small">JavaScript</el-tag>
+            <el-tag type="info" size="small">Vue.js</el-tag>
+          </div>
         </div>
       </div>
     </div>

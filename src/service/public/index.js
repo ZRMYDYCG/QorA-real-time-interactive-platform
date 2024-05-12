@@ -151,3 +151,42 @@ export const upLoadFileApi = (data) => {
     data: data
   })
 }
+
+// 增加目标项的浏览量
+export const addSeeNumber = (object_type, object_id) => {
+  return request({
+    url: '/api/type/see',
+    method: 'POST',
+    data: {
+      object_type: object_type,
+      object_id: object_id
+    }
+  })
+}
+
+// 查询当前用户是否收藏该项目
+export const isCollectItem = (object_id, object_type, user_id) => {
+  return request({
+    url: '/api/search/favorite',
+    method: 'POST',
+    dada: {
+      object_id: object_id,
+      object_type: object_type,
+      user_id: user_id
+    }
+  })
+}
+
+// 增删收藏，放入默认收藏夹中
+export const addToDefaultCollect = (id, object_id, object_type, type) => {
+  return request({
+    url: '/api/add/collect',
+    method: 'POST',
+    data: {
+      id: id,
+      object_id: object_id,
+      object_type: object_type,
+      type: type
+    }
+  })
+}

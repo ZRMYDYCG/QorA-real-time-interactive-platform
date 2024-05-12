@@ -37,12 +37,7 @@ defineProps({
   hasImages: {
     type: Array,
     default: () => [
-      'https://pic3.zhimg.com/v2-241f40c96463c998f5e3bae85024a93a_r.jpg',
-      'https://pic2.zhimg.com/v2-24e2b41ffa2236dd97eac7325b40090d_b.jpg',
-      'https://pic2.zhimg.com/v2-631d91ec4e084ccaf3806258ae2deb55_b.jpg',
-      'https://pic1.zhimg.com/v2-bdbde5ab11bf5e9aab1ecb86bfaee730_b.jpg',
-      'https://pic1.zhimg.com/v2-0c8ebcfd29f2a7aba74414227d36b570_b.jpg',
-      'https://pic4.zhimg.com/v2-23ff06c4e69dace67b5097acdd2b5bcb_b.jpg'
+
     ]
   },
   like_count: {
@@ -106,8 +101,7 @@ const handleActionClick = (actionType, id) => {
     <!-- 主要内容区域 -->
     <div class="card-content">
       <!-- 动态文本 -->
-      <div class="text-content">
-        {{ dynamic_text }}
+      <div class="text-content" v-html="dynamic_text">
       </div>
 
       <!-- 九宫格图片展示 -->

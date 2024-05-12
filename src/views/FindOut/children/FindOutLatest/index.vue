@@ -1,10 +1,11 @@
 <script setup>
 import SeekHelpItem from '../../components/seek-help-item/index.vue'
-import { useLoginStore } from '@/stores/modules/Login/index.js'
+// import { useLoginStore } from '@/stores/modules/Login/index.js'
 import { onMounted, ref, inject, watch } from 'vue'
 import { fetchLatestQuestionsApi } from '@/service/FindOut/index.js'
+import { getLocalStorage } from '@/utils/index.js'
 
-const loginStore = useLoginStore()
+// const loginStore = useLoginStore()
 
 let itemDataList = ref([])
 
@@ -19,12 +20,14 @@ watch(
 )
 
 const fetchLatestQuestions = async () => {
-  const res = await fetchLatestQuestionsApi(loginStore.userInfo.value.user_id)
+  let user_id = await getLocalStorage('userInfo')?.value?.user_id
+  const res = await fetchLatestQuestionsApi(user_id)
   itemDataList.value = res.data.data.reverse()
+  console.log('处理竞态问题:', itemDataList.value)
 }
 
-onMounted(async () => {
-  await fetchLatestQuestions()
+onMounted(() => {
+  fetchLatestQuestions()
 })
 
 defineExpose({

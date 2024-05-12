@@ -13,7 +13,12 @@ const router = useRouter()
 // TODO: 文章发布
 const content = ref('')
 const title = ref('')
-let imgList = ref([])
+let imgList = ref(  [
+          'https://tse2-mm.cn.bing.net/th/id/OIP-C.6FOSRiS-6Te-RL2etnGcSQHaD8?w=273&h=180&c=7&r=0&o=5&dpr=1.5&pid=1.7',
+          'https://tse2-mm.cn.bing.net/th/id/OIP-C.-WUW6yaV19NlpqmNR0PC2wHaFj?w=257&h=192&c=7&r=0&o=5&dpr=1.5&pid=1.7',
+          'https://tse3-mm.cn.bing.net/th/id/OIP-C.p8-M28ENjP4cEOHRYc2vTwHaDV?w=280&h=157&c=7&r=0&o=5&dpr=1.5&pid=1.7',
+          'https://tse3-mm.cn.bing.net/th/id/OIP-C.J5ZzD6LS_z9_DaYUE5GqZQHaEK?w=293&h=180&c=7&r=0&o=5&dpr=1.5&pid=1.7'
+        ])
 const getContent = (data) => {
   content.value = data
 }

@@ -26,7 +26,7 @@ export const useExchangeCommunityStore = defineStore('exchangeCommunityStore', (
   const fetchAllRecommend = async (id) => {
     const res = await fetchAllRecommendApi(id)
     console.log(res.data.data)
-    dynamicDetail.value = res.data.data
+    dynamicDetail.value = res.data.data.reverse()
     dynamicConcern.value = filterIsAttention(res.data.data)
 
     console.log('qwe', dynamicConcern)

@@ -12,7 +12,7 @@
           <el-menu-item index="/exchangeCommunity">体验官社区</el-menu-item>
           <el-menu-item index="/findOut">体验问答</el-menu-item>
           <el-menu-item index="/seek">发现</el-menu-item>
-          <el-menu-item index="/chatRoom/chatDetail">聊天室</el-menu-item>
+          <el-menu-item index="/chatRoom">聊天室</el-menu-item>
         </el-menu>
       </div>
       <div class="layout-header--logo">
@@ -80,7 +80,8 @@
         </div>
         <div class="userinfo__avatarPic">
           <el-dropdown>
-            <img :src="loginStore?.userInfo.value?.picture_address" alt="" />
+            <!-- <img :src="loginStore?.userInfo.value?.picture_address" alt="" /> -->
+            <el-icon size="20" style="margin-top: 5px"><Avatar /></el-icon>
             <template #dropdown>
               <el-dropdown-menu>
                 <el-dropdown-item @click="navigateToUserHome">个人主页 </el-dropdown-item>

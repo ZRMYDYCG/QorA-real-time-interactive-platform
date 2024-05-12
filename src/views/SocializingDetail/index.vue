@@ -27,7 +27,7 @@ onMounted(async () => {
           <div class="nickname">{{ item.user_name }}</div>
           <div class="bio">{{ item.user_introduce }}</div>
         </div>
-        <el-button class="action-button" round plain>进入主页</el-button>
+        <el-button class="action-button" @click="$router.push(`/userHome/index?user_id=${item.user_id}`)" round plain>进入主页</el-button>
       </div>
     </template>
   </div>

@@ -1,16 +1,14 @@
 <script setup>
 import SeekHelpItem from '../../components/seek-help-item/index.vue'
+import { useFindOutStore } from '@/stores/modules/findOut/index.js'
+const findOutStore = useFindOutStore()
 </script>
 
 <template>
   <div style="display: flex; flex-direction: column">
-    <seek-help-item></seek-help-item>
-    <seek-help-item></seek-help-item>
-    <seek-help-item></seek-help-item>
-    <seek-help-item></seek-help-item>
-    <seek-help-item></seek-help-item>
-    <seek-help-item></seek-help-item>
-    <seek-help-item></seek-help-item>
+    <template v-for="(item, index) in findOutStore.aList" :key="index">
+      <seek-help-item :item-detail="item"></seek-help-item>
+    </template>
   </div>
 </template>
 

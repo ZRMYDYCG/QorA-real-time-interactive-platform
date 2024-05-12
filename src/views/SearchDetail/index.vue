@@ -70,7 +70,7 @@ onMounted(async () => {
         </el-tab-pane>
       </el-tabs>
     </div>
-    <div class="detail--right">
+    <!-- <div class="detail--right">
       <div class="user">
         <SliderRecommendCard :data="userList" title="体验官推荐">
           <template #headerRight>
@@ -91,16 +91,16 @@ onMounted(async () => {
             <SearchColumn v-for="item in slotProps"></SearchColumn>
           </template>
         </SliderRecommendCard>
-      </div>
+      </div> -->
 
-      <div class="seek">
+      <!-- <div class="seek">
         <SliderRecommendCard title="发现好问题"></SliderRecommendCard>
       </div>
 
       <div class="column">
         <SliderRecommendCard title="专栏推荐"></SliderRecommendCard>
-      </div>
-    </div>
+      </div> -->
+    <!-- </div> -->
     <el-backtop :right="100" :bottom="100" />
   </div>
 </template>

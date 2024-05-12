@@ -3,24 +3,37 @@ import { ref } from 'vue'
 
 const phoneImgDate = ref([
   {
+    title: "华为",
+    name: "伊尔",
     url: 'https://ts1.cn.mm.bing.net/th/id/R-C.603d67ddb3a001fd901e8601596e5b1a?rik=VzQ9nU0DqF9hWQ&riu=http%3a%2f%2fimg1.mydrivers.com%2fimg%2f20200324%2ffaa4430588f9440893058f8afddc9bb7.jpg&ehk=6tjp1wUgdDA84Ed6TjaLETH%2bCVgJbmFytHaq0rjSMWY%3d&risl=1&pid=ImgRaw&r=0'
   },
   {
+    title: "小米",
+    name: "杨菲菲",
     url: 'https://dsfs.oppo.com/archives/201806/201806050706115b1679a702ee6.jpg'
   },
   {
+    title: "联想",
+    name: "菲菲杨",
     url: 'https://img.zcool.cn/community/0198d85c1366bfa80121ab5d098ae2.jpg@3000w_1l_0o_100sh.jpg'
   },
   {
+    title: "ios",
+    name: "二氧花坛",
     url: 'https://gw.alicdn.com/imgextra/i2/3018717955/TB2ctGuvbZnBKNjSZFGXXbt3FXa_!!3018717955-0-daren.jpg'
   },
   {
+    title: "安卓",
+    name: "htllo world",
     url: 'https://ts1.cn.mm.bing.net/th/id/R-C.4bd943e096f11b067421991d500289ed?rik=pRI%2fAl5kzSAYpA&riu=http%3a%2f%2fsinastorage.com%2fstorage.miaosha.sina.com.cn%2fproducts%2f201710%2fb54290d58c21d5c89e75460dfbcfcbfa.jpeg&ehk=IjkmUKRmubFc2SwVK3cUT%2f%2f%2fo5Bu1pnT6cn16PXyiyw%3d&risl=&pid=ImgRaw&r=0'
   },
   {
+    title: "红米",
+    name: "buli",
     url: 'https://designjiaoshi.com/wp-content/uploads/2021/04/08111435452.jpg'
   }
 ])
+
 </script>
 
 <template>
@@ -38,7 +51,7 @@ const phoneImgDate = ref([
             <img :src="item.url" />
             <div class="mask"></div>
           </div>
-          <div class="title">I live to be the ruler of life, not a slave.</div>
+          <div class="title">{{ title }}</div>
           <!-- <div class="detail">
             <p>
               为重归5G后最为轰动的产品，加入了卫星通信，超强的信号和鸿蒙生态，以及极为硬核玻璃，手机信号基本是顶部，产品的情绪价值拉满
@@ -52,7 +65,7 @@ const phoneImgDate = ref([
                   alt=""
                 />
               </div>
-              <div class="username">猪是的念来过倒</div>
+              <div class="username">{{ name }}</div>
             </div>
             <div class="enter-immediate">立即进入</div>
           </div>

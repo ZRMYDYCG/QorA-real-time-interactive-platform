@@ -31,6 +31,7 @@ const handleNewCollection = async () => {
     }
   }
   const res2 = await fetchColumnDetail(user_id)
+  favoriteList.value = res2.data.favorite_name_list_now
   console.log(res2)
 }
 

@@ -5,13 +5,34 @@ import { ElMessage } from 'element-plus'
 import 'element-plus/theme-chalk/el-message.css'
 import { createQuestionApi } from '@/service/FindOut/index.js'
 import { useLoginStore } from '@/stores/modules/Login/index.js'
+import { useFindOutStore } from '@/stores/modules/findOut/index.js'
+import { fetchLatestQuestionsApi } from '@/service/FindOut/index.js'
 
 const router = useRouter()
 const loginStore = useLoginStore()
+const findOutStore = useFindOutStore()
 
 // 切换子路由逻辑
-const handleTabClick = (tab, event) => {
-  console.log(tab.props.name, event)
+const handleTabClick = (tab) => {
+  console.log(tab.props.name)
+  console.log('切换1')
+  if (tab.props.name === 'unresolved') {
+    fetchLatestQuestionsApi(loginStore.userInfo?.value?.user_id).then((res) => {
+      findOutStore.aList = res.data.data.filter((item) => {
+        return item.question_answer === 0
+      })
+    })
+  }
+
+  if (tab.props.name === 'urgent') {
+    fetchLatestQuestionsApi(loginStore.userInfo?.value?.user_id).then((res) => {
+      findOutStore.bList = res.data.data.filter((item) => {
+        return item.question_integral > 3
+      })
+    })
+    console.log('答应好滴哦是否是:', findOutStore.bList)
+  }
+
   router.push(`/findOut/${tab.props.name}`)
 }
 
@@ -140,88 +161,6 @@ const createQuestion = () => {
       console.log(error)
     })
 }
-
-// 图片上传
-// const file = ref(null)
-//
-// const handleFileChange = (e) => {
-//   file.value = e.target.files[0]
-// }
-//
-// const uploadFile = async () => {
-//   if (!file.value) {
-//     console.error('No file selected.')
-//     return
-//   }
-//
-//   const formData = new FormData()
-//   formData.append('image0', file.value)
-//
-//   try {
-//     const response = await fetch('http://192.168.31.86:5000/api/upload/pics', {
-//       method: 'POST',
-//       body: formData
-//     })
-//
-//     if (response.ok) {
-//       const data = await response.json()
-//       console.log(data)
-//     } else {
-//       console.error('Server responded with an error:', response.status)
-//     }
-//   } catch (err) {
-//     console.error('Error uploading file:', err)
-//   }
-// }
-
-// const fileInput = ref(null)
-// const files = ref([])
-// const previewImages = ref([])
-
-// const handleFileChange = (e) => {
-//   console.log(e.target.files)
-//   if (e.target.files.length > 9) {
-//     alert('最多只能选择9张图片')
-//     return
-//   }
-//   const selectedFiles = Array.from(e.target.files)
-//   files.value = selectedFiles
-//   previewImages.value = selectedFiles.map((file) => URL.createObjectURL(file))
-// }
-
-// const uploadFiles = async () => {
-//   if (!files.value.length) {
-//     console.error('No files selected.')
-//     return
-//   }
-
-//   const formData = new FormData()
-//   for (let i = 0; i < files.value.length; i++) {
-//     formData.append('image0', files.value[i])
-//   }
-
-//   try {
-//     const response = await fetch('http://127.0.0.1:5000/api/upload/pics', {
-//       method: 'POST',
-//       body: formData
-//     })
-
-//     if (response.ok) {
-//       const data = await response.json()
-//       console.log(data)
-
-//       files.value = []
-//       previewImages.value = []
-//       alert('上传成功')
-//     } else {
-//       console.error(response.status)
-//     }
-//   } catch (err) {
-//     console.error(err)
-//   } finally {
-//     fileInput.value.value = null
-//   }
-// }
 </script>
 
 <template>

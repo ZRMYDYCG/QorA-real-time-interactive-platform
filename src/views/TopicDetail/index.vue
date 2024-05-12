@@ -16,7 +16,7 @@ import AtricleContent from './components/UserInfo/AtricleContent.vue'
 import Comment from './components/Comment/index.vue'
 import { getLocalStorage } from '@/utils/index.js'
 import { usePublishArticleStore } from '@/stores/modules/PublishArticle/index.js'
-import { publicFetch, publicGenerateHistory } from '@/service/public/index.js'
+import { publicFetch, publicGenerateHistory, addSeeNumber } from '@/service/public/index.js'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import 'element-plus/theme-chalk/el-message.css'
 import 'element-plus/theme-chalk/el-message-box.css'
@@ -120,6 +120,13 @@ const confirmAdd = () => {
       })
     })
 }
+
+// 增加浏览量
+onMounted(() => {
+  addSeeNumber('dynamic', route.params.id).then((res) => {
+    console.log('增加浏览量:', res)
+  })
+})
 </script>
 
 <template>

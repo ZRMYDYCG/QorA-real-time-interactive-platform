@@ -64,8 +64,8 @@ onMounted(async () => {
 
   setInterval(() => {
     socketStore.chatUserMessageList(for_id)
-    // socketStore.toBottom()
-  }, 100)
+    socketStore.toBottom()
+  }, 1000)
 })
 </script>
 
@@ -89,7 +89,9 @@ onMounted(async () => {
             class="mb-20px"
             :class="item.discord_user === loginStore.user_id ? 'flex-row-reverse' : ''"
           >
-            <el-avatar :size="42" :src="item.avatar" />
+            
+            <el-avatar :size="42" src="#" />
+            <!-- <el-avatar v-else="item.discord_user !== loginStore.user_id" :size="42" src="https://pic.imgdb.cn/item/66385dbf0ea9cb1403e2a817.jpg" /> -->
             <div
               :class="item.discord_user !== loginStore.user_id ? 'ml-10px' : 'mr-10px'"
               style="color: #000"
@@ -128,7 +130,7 @@ onMounted(async () => {
 .chat-detail {
   position: relative;
   width: 100%;
-  height: 100%;
+  height: 570px;
 
   .header {
     display: flex;
@@ -147,7 +149,7 @@ onMounted(async () => {
   }
 
   .el-scrollbar {
-    height: calc(100% - 260px);
+    height: 310px; 
   }
 
   .message-list {

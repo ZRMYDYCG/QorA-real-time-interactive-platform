@@ -30,7 +30,7 @@ const handleUpdateIsExpanded = (itemId, value) => {
       showDropdown
     >
       <template #subTitle>
-        <div class="subtitle">
+        <div class="subtitle" @click="$router.push('/findOut/detail/18')">
           <span class="time">回答时间: 2024-05-05</span>
         </div>
       </template>
